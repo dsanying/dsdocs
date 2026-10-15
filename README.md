@@ -33,6 +33,8 @@ pnpm install --frozen-lockfile
 pnpm build
 ```
 
+文件可使用普通 Fumadocs frontmatter；未填写翻译关联键时按页面路径匹配译文。暂时没有内容的语言仍保留语言切换入口。
+
 将 `out` 挂载在域名的 `/docs` 子路径即可，不需要 Node.js 服务。部署到其他子路径时，在构建前设置 `DSDOCS_BASE_PATH`。
 
 后台的“导出”下载已发布文档与附件的 ZIP。将包中的 `content/docs` 和 `public/assets` 放入文件读者端，再构建。替换整站内容时应先清理旧内容，避免已下线文件残留。命令行导出使用：

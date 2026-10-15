@@ -79,6 +79,21 @@ try {
       await expect(page).toHaveURL(/\/zh\/syntax\/?(?:#.*)?$/);
       await page.getByRole('button', { name: '选择语言', exact: true }).click();
       await page.getByRole('button', { name: 'English', exact: true }).click();
+      if (process.env.DSDOCS_EXPECT_EMPTY_LOCALE === 'en') {
+        await expect(page.getByRole('heading', { level: 1 })).toHaveText('No published documents');
+        await page.getByRole('button', { name: 'Choose a language', exact: true }).click();
+        await page.getByRole('button', { name: '简体中文', exact: true }).click();
+        await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+          process.env.DSDOCS_EXPECT_ROOT_TITLE ?? '开始使用'
+        );
+        assert.deepEqual(forbidden, []);
+        assert.deepEqual(errors, []);
+        assert.equal((await context.request.get(`${origin}${prefix}/en/syntax/`)).status(), 404);
+        console.log(
+          `PASS ${name}: title-only MDX, native root page, empty language root and language recovery`
+        );
+        continue;
+      }
       await expect(page.getByRole('heading', { level: 1 })).toHaveText('Syntax and components');
       assert.equal(await page.evaluate(() => localStorage.getItem('dsdocs-language')), 'en');
       await page.goto(`${origin}${prefix}/`);

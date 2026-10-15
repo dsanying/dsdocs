@@ -9,7 +9,9 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   return ['zh', 'en'].flatMap((lang) => [
     { lang, slug: [] },
-    ...pages(lang).map((page) => ({ lang, slug: page.slugs })),
+    ...pages(lang)
+      .filter((page) => page.slugs.length > 0)
+      .map((page) => ({ lang, slug: page.slugs })),
   ]);
 }
 export default async function Page({
@@ -20,8 +22,8 @@ export default async function Page({
   const { lang, slug } = await params;
   if (!['zh', 'en'].includes(lang)) notFound();
   const documents = pages(lang),
-    page = slug?.length ? source.getPage(slug, lang) : documents[0];
-  if (!page) notFound();
+    page = source.getPage(slug ?? [], lang) ?? (!slug?.length ? documents[0] : undefined);
+  if (slug?.length && !page) notFound();
   const tree: Node[] = [];
   for (const entry of documents) {
     let level = tree;
@@ -36,24 +38,43 @@ export default async function Page({
     }
     level.push({ type: 'page', name: entry.data.title, url: entry.url });
   }
+  const identity = page?.data.translationKey ?? page?.slugs.join('/');
   const translations = Object.fromEntries(
     pages()
-      .filter((entry) => entry.data.translationKey === page.data.translationKey)
+      .filter(
+        (entry) =>
+          identity !== undefined &&
+          (entry.data.translationKey ?? entry.slugs.join('/')) === identity
+      )
       .map((entry) => [entry.locale, entry.url])
   );
-  const Body = page.data.body;
+  const Body = page?.data.body;
   return (
     <DocumentationProvider locale={lang} translations={translations}>
       <DocsLayout
-        tree={{ name: 'dsdocs', children: tree }}
+        tree={
+          documents.some((entry) => entry.data.group)
+            ? { name: 'dsdocs', children: tree }
+            : source.getPageTree(lang)
+        }
         tabs={false}
         nav={{ title: 'dsdocs', url: '/' }}
       >
-        <DocsPage toc={page.data.toc}>
-          <DocsTitle>{page.data.title}</DocsTitle>
-          <DocsDescription>{page.data.description}</DocsDescription>
+        <DocsPage toc={page?.data.toc}>
+          <DocsTitle>
+            {page?.data.title ?? (lang === 'zh' ? '暂无已发布文档' : 'No published documents')}
+          </DocsTitle>
+          <DocsDescription>{page?.data.description}</DocsDescription>
           <DocsBody>
-            <Body components={components} />
+            {Body ? (
+              <Body components={components} />
+            ) : (
+              <p>
+                {lang === 'zh'
+                  ? '请切换语言或添加文档文件。'
+                  : 'Switch language or add document files.'}
+              </p>
+            )}
           </DocsBody>
         </DocsPage>
       </DocsLayout>

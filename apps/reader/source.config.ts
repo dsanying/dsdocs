@@ -7,7 +7,7 @@ export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: pageSchema.extend({
-      translationKey: z.string(),
+      translationKey: z.string().optional(),
       group: z.string().default(''),
       order: z.number().default(0),
     }),
