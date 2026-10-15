@@ -16,7 +16,8 @@
     "reader:build": "pnpm -C apps/reader build",
     "export:files": "pnpm -C apps/site export:files",
     "test:reader": "node scripts/test-reader.mjs",
-    "release:prepare": "node scripts/prepare-release.mjs"
+    "release:prepare": "node scripts/prepare-release.mjs",
+    "test:chrome": "node scripts/test-chrome.mjs"
   },
   "license": "MIT",
   "repository": {

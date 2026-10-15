@@ -14,6 +14,7 @@ const types = {
   '.txt': 'text/plain',
   '.woff2': 'font/woff2',
   '.png': 'image/png',
+  '.svg': 'image/svg+xml',
   '.jpg': 'image/jpeg',
   '.webp': 'image/webp',
 };

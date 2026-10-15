@@ -4,6 +4,7 @@ import type { Framework } from 'fumadocs-core/framework';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import PublishedSearch from './search';
 import { chineseUI } from './ui-translations';
 const base = process.env.NEXT_PUBLIC_DSDOCS_BASE_PATH ?? '/docs';
 
@@ -71,7 +72,7 @@ export function DocumentationProvider({
         },
         translations: locale === 'zh' ? chineseUI : {},
       }}
-      search={{ options: { api: `${base}/api/v1/search?locale=${locale}` } }}
+      search={{ SearchDialog: PublishedSearch }}
     >
       {children}
     </RootProvider>

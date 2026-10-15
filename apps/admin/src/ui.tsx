@@ -68,7 +68,7 @@ export function Page({
 }
 export function Action({ label, ...props }: ButtonProps & { label: string }) {
   return (
-    <Tooltip title={label}>
+    <Tooltip title={label} styles={{ root: { pointerEvents: 'none' } }}>
       <Button {...props} aria-label={label}>
         <span className="action-label">{label}</span>
       </Button>

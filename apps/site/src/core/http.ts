@@ -83,7 +83,7 @@ export async function handleApi(
     }
     if (route === 'search' && method === 'GET') {
       const locale = z.enum(['zh', 'en']).parse(url.searchParams.get('locale') ?? 'zh'),
-        q = (url.searchParams.get('query') ?? '').slice(0, 200).toLowerCase();
+        q = (url.searchParams.get('query') ?? '').slice(0, 200).trim().toLowerCase();
       if (!q) return json([]);
       const docs = store
         .published(locale)
