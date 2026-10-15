@@ -1,0 +1,30 @@
+{
+  "name": "dsdocs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.8.1",
+  "scripts": {
+    "install:all": "pnpm -C apps/admin install --frozen-lockfile && pnpm -C apps/site install --frozen-lockfile && pnpm -C apps/reader install --frozen-lockfile",
+    "dev": "pnpm -C apps/site dev",
+    "dev:admin": "pnpm -C apps/admin dev",
+    "build": "pnpm -C apps/admin build && node scripts/bundle-admin.mjs && pnpm -C apps/site build",
+    "start": "pnpm -C apps/site start",
+    "check": "node scripts/check-contracts.mjs && pnpm -C apps/admin check && node scripts/bundle-admin.mjs && pnpm -C apps/site check && pnpm -C apps/reader check && pnpm test:integration && pnpm test:reader",
+    "db:init": "pnpm -C apps/site run init",
+    "test:integration": "node scripts/test-integration.mjs",
+    "reader:build": "pnpm -C apps/reader build",
+    "export:files": "pnpm -C apps/site export:files",
+    "test:reader": "node scripts/test-reader.mjs",
+    "release:prepare": "node scripts/prepare-release.mjs"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dsanying/dsdocs.git"
+  },
+  "author": "dsanying",
+  "engines": {
+    "node": ">=26.0.0"
+  }
+}

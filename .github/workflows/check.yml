@@ -1,0 +1,50 @@
+name: dsdocs-check
+on:
+  push:
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "examples/**"
+      - "docs/规范/**"
+      - "docs/维护手册.md"
+      - "package.json"
+      - "AGENTS.md"
+      - ".github/workflows/check.yml"
+  pull_request:
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "examples/**"
+      - "docs/规范/**"
+      - "docs/维护手册.md"
+      - "package.json"
+      - "AGENTS.md"
+      - ".github/workflows/check.yml"
+permissions:
+  contents: read
+concurrency:
+  group: dsdocs-check-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: "package.json"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: |
+            apps/admin/pnpm-lock.yaml
+            apps/site/pnpm-lock.yaml
+            apps/reader/pnpm-lock.yaml
+      - run: pnpm install:all
+      - run: node scripts/check-contracts.mjs
+      - run: pnpm check
+        working-directory: apps/admin
+      - run: node scripts/bundle-admin.mjs
+      - run: pnpm -C apps/site check
+      - run: pnpm -C apps/reader check

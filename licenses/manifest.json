@@ -1,0 +1,62 @@
+{
+  "@ant-design/icons-svg": {
+    "version": "4.6.0",
+    "file": "ant-design-icons-svg.txt",
+    "source": "ant-design/ant-design-icons@7f2516ac91226d2b41f93b35cb5197c8d94f7189/LICENSE"
+  },
+  "@stylexjs/stylex": {
+    "version": "0.19.0",
+    "file": "stylex.txt",
+    "source": "facebook/stylex@5f51b24444abced04b213726977b9d67339bb26d/LICENSE"
+  },
+  "format": {
+    "version": "0.2.2",
+    "file": "format.txt",
+    "source": "Published package Readme.md declares MIT and Copyright 2010 - 2014 Sami Samhuri. Standard MIT permission text reproduced."
+  },
+  "@next/env": {
+    "version": "16.4.1",
+    "file": "next-env.txt",
+    "source": "vercel/next.js/license.md blob 5948ee9bd0de5064423688a2967ab3111c2658ed at v16.4.1"
+  },
+  "@yuku-toolchain/types": {
+    "version": "0.17.0",
+    "file": "yuku.txt",
+    "source": "yuku-toolchain/yuku/LICENSE blob 2904c90621f4439118ab41378148563f116ab47e"
+  },
+  "react-remove-scroll-bar": {
+    "version": "2.3.8",
+    "file": "react-remove-scroll-bar.txt",
+    "source": "theKashey/react-remove-scroll-bar/LICENSE blob 7c08c3990396ecefd90f99ff5d9a34f26f5b5616"
+  },
+  "remark-math": {
+    "version": "6.0.0",
+    "file": "remark-math.txt",
+    "source": "remarkjs/remark-math/license blob ea3803784aa58da6fa7cd6e196948608def87bf9 at d5d0660b150810a535bbb07eac6cc96a4510aa24"
+  },
+  "rehype-katex": {
+    "version": "7.0.1",
+    "file": "rehype-katex.txt",
+    "source": "remarkjs/remark-math/license blob ea3803784aa58da6fa7cd6e196948608def87bf9 at 88a9497e1ede93b958237c85edbf5651faeca7af"
+  },
+  "yuku-analyzer": {
+    "version": "0.17.0",
+    "file": "yuku.txt",
+    "source": "yuku-toolchain/yuku/LICENSE blob 2904c90621f4439118ab41378148563f116ab47e"
+  },
+  "yuku-ast": {
+    "version": "0.17.0",
+    "file": "yuku.txt",
+    "source": "yuku-toolchain/yuku/LICENSE blob 2904c90621f4439118ab41378148563f116ab47e"
+  },
+  "yuku-core": {
+    "version": "0.17.0",
+    "file": "yuku.txt",
+    "source": "yuku-toolchain/yuku/LICENSE blob 2904c90621f4439118ab41378148563f116ab47e"
+  },
+  "client-only": {
+    "version": "0.0.1",
+    "file": "client-only.txt",
+    "source": "Published package declares MIT, without a repository or copyright notice. Standard MIT permission text reproduced; no copyright owner invented."
+  }
+}

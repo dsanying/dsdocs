@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: .
+      args:
+        DSDOCS_BASE_PATH: ${DSDOCS_BASE_PATH:-/docs}
+    environment:
+      DSDOCS_ORIGIN: ${DSDOCS_ORIGIN:-http://localhost:3200}
+    ports:
+      - "127.0.0.1:3200:3200"
+    volumes:
+      - content:/app/data
+    restart: unless-stopped
+volumes:
+  content:

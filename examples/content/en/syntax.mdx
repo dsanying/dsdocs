@@ -1,0 +1,34 @@
+## Markdown and GFM
+
+Use **strong text**, *emphasis*, ~~strikethrough~~, `inline code`, tables and task lists.
+
+| Operation | Public content |
+| --- | --- |
+| Save | Previous published revision |
+| Publish | New revision |
+
+## Code
+
+```ts title="example.ts" {2}
+const title = 'dsdocs';
+console.log(title);
+```
+
+## Native components
+
+<Tabs items={["Linux", "Windows"]}>
+<Tab value="Linux">Use your Linux terminal.</Tab>
+<Tab value="Windows">Use your Windows terminal.</Tab>
+</Tabs>
+
+<Callout type="warn" title="Execution boundary">
+CMS-authored documents cannot execute arbitrary JavaScript. Unsupported syntax produces an explicit diagnostic.
+</Callout>
+
+## Mathematics
+
+Inline math: $E=mc^2$.
+
+$$
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+$$

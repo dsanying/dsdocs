@@ -1,0 +1,32 @@
+name: prepare-release
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+      - run: pnpm install:all
+      - run: node scripts/check-contracts.mjs
+      - run: pnpm check
+        working-directory: apps/admin
+      - run: node scripts/bundle-admin.mjs
+      - run: pnpm -C apps/site check
+      - run: pnpm -C apps/reader check
+      - run: node scripts/reader-notices.mjs
+      - name: Build local container without publishing
+        run: docker build --tag dsdocs:preflight .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dsdocs-example-static-reader
+          path: apps/reader/out
+          if-no-files-found: error
+          include-hidden-files: true
