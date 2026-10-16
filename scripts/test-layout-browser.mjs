@@ -86,6 +86,8 @@ try {
       nav = page.getByRole('region', { name: '主导航', exact: true });
     await expect(page.locator('html')).toHaveCSS('overflow-anchor', 'none');
     await expect(page.locator('body')).toHaveCSS('overflow-anchor', 'none');
+    for (const region of [body, tree, nav])
+      await expect(region).toHaveCSS('overflow-anchor', 'none');
     for (const theme of ['light', 'dark']) {
       if (theme === 'dark')
         await page.getByRole('button', { name: '切换主题', exact: true }).click();

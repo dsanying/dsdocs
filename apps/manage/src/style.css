@@ -136,3 +136,8 @@
     height: 420px;
   }
 }
+
+.management-page--scroll,
+.editor-pane {
+  overflow-anchor: none;
+}
