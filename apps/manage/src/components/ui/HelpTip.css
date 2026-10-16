@@ -1,0 +1,28 @@
+/* 与 Ant Form.Item tooltip 问号同色同尺寸：说明色、正文字号、紧贴前一个元素 */
+.ds-help-tip {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: var(--ds-space-4);
+  color: var(--ant-color-text-description);
+  cursor: help;
+  border-radius: var(--ds-radius-xs);
+  vertical-align: middle;
+}
+
+.ds-help-tip:focus-visible {
+  outline: 2px solid var(--ds-color-focus);
+  outline-offset: 2px;
+}
+
+/* 说明是整句话：按可读宽度自然换行（共享 Tooltip 默认单行不换，只适合短名称），窄屏以视口为上限 */
+.ds-help-tip__popup {
+  max-width: min(calc(var(--ds-space-40) * 8), calc(100vw - var(--ds-space-32)));
+}
+
+.ds-help-tip__popup .ds-tooltip__container {
+  width: auto;
+  max-width: none;
+  white-space: normal;
+  /* 正文折行：帮助说明是句子 */
+  overflow-wrap: anywhere;
+}

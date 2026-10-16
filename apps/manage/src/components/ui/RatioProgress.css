@@ -1,0 +1,42 @@
+/*
+ * 比例值：一行文字（当前 / 总量  百分比）+ 下方一条细进度条。
+ * 宽度随内容（max-content）而不是铺满槽位：金额与百分比之间只留固定间隔，进度条与文字同宽；
+ * 金额、分隔符、总量、百分比同一字号，只用颜色区分主次。
+ */
+.ds-ratio-progress {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+  vertical-align: middle;
+}
+
+/* 金额、总量与百分比共用独立横滚槽，窄列不折行；进度条保持在列内。 */
+.ds-ratio-progress__text {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: var(--ds-space-4);
+  min-width: 0;
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-ratio-progress__separator,
+.ds-ratio-progress__total,
+.ds-ratio-progress__percent {
+  color: var(--ds-color-text-tertiary);
+}
+
+/* 百分比与金额之间的固定间隔 */
+.ds-ratio-progress__percent {
+  margin-inline-start: var(--ds-space-8);
+}
+
+/* Ant Progress 默认带底部外边距与行内留白，在网格/单元格里不需要 */
+.ds-ratio-progress .ant-progress {
+  margin: 0;
+  line-height: 0;
+}

@@ -1,12 +1,7 @@
-# Public reader: domain subpath, independent of Studio.
-:3200 {
-  redir /docs /docs/ 308
-  handle_path /docs/* {
-    root * /srv/reader
-    file_server
-  }
-  handle {
-    respond 404
+# Replace the domain and expose management on its own protected hostname.
+{$DSDOCS_READER_HOST:localhost} {
+  redir / /docs/ 302
+  handle /docs/* {
+    reverse_proxy reader:3300
   }
 }
-

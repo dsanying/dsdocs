@@ -1,0 +1,44 @@
+.ds-sidebar-menu {
+  width: 100%;
+  background: transparent;
+}
+
+.ds-account-menu {
+  min-width: 0;
+  cursor: pointer;
+}
+
+.ds-account-menu--compact {
+  width: 80px;
+}
+
+.ds-account-menu:focus-visible {
+  outline: none;
+}
+
+.ds-account-menu:focus-visible .ant-menu-item {
+  box-shadow: var(--ds-shadow-focus);
+}
+
+/* 缩短而非禁用：动画事件仍驱动弹层挂载/落位生命周期，名称一变 rc-motion 会卡死在预备或退出态 */
+
+/* 缩短而非禁用：动画事件仍驱动弹层挂载/落位生命周期，名称一变 rc-motion 会卡死在预备或退出态 */
+
+/* 减动态模式的弹层定位兜底：antd 在 reduce 下清空动画名会让 rc-motion 等待 animationend
+   挂起，给一个真实短 keyframes 保住生命周期；同时禁掉 inset/位置过渡，防止定位写入被
+   过渡动画延迟、rc-align 在动画中读到中间值反复误判 */
+@keyframes ds-account-menu-motion {
+}
+@keyframes ds-account-menu-motion-out {
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-account-menu__popup.ant-dropdown {
+    animation-name: ds-account-menu-motion;
+    animation-duration: 1ms;
+    animation-fill-mode: none;
+    transition: none;
+  }
+  .ds-account-menu__popup.ant-dropdown[class*='leave'] {
+    animation-name: ds-account-menu-motion-out;
+  }
+}

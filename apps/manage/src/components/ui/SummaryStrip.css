@@ -1,0 +1,112 @@
+/*
+ * 关键指标条（与信息网格、正文形成三级层次）：
+ * 标签小字在上、数值以指标字号加粗在下，项与项之间只用 1px 竖线分隔，
+ * 不套卡片壳；一行摆多项，窄容器按内容宽度与项数均衡降列（不留孤儿行）。
+ */
+.ds-summary-strip {
+  width: 100%;
+  min-width: 0;
+}
+
+/*
+ * 列数由 SummaryStrip 按各项内容固有宽度、自身宽度与项数计算（balancedColumns.ts），写入 --summary-columns：
+ * 放得下就多列，只取均衡档位（整除，或 3 列以上末行只空一格），不用固定阈值强制单列。
+ */
+.ds-summary-strip__track {
+  display: grid;
+  grid-template-columns: repeat(var(--summary-columns, 1), minmax(0, 1fr));
+  gap: var(--ds-space-12) 0;
+  align-items: stretch;
+}
+
+.ds-summary-strip__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--ds-space-4);
+  min-width: 0;
+  padding-inline: var(--ds-space-24);
+  border-inline-start: var(--ant-line-width) solid var(--ds-color-border);
+}
+
+/* 每行首格不画分隔线、不缩进 */
+.ds-summary-strip__item[data-row-start='true'] {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+/* 测量态：各项按内容不折行横排，读出固有宽度后立即撤销（同一帧内，不会被绘制） */
+.ds-summary-strip__track[data-measuring='true'] {
+  display: flex;
+  width: max-content;
+}
+
+.ds-summary-strip__track[data-measuring='true'] > .ds-summary-strip__item {
+  flex: none;
+  width: max-content;
+  padding-inline-start: var(--ds-space-24);
+  border-inline-start: var(--ant-line-width) solid var(--ds-color-border);
+}
+
+/* 标签与值都是单个词项：只允许整项换到下一行，不在词内折行 */
+.ds-summary-strip__label {
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.ds-summary-strip__value {
+  display: inline-flex;
+  align-items: center;
+  min-height: calc(var(--ds-font-size-metric) * 1.15);
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-metric);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* 值的构成算式：小字、次要色，各部分整项换行，不在词内折行 */
+.ds-summary-strip__breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--ds-space-8);
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-summary-strip__part {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ds-space-4);
+  white-space: nowrap;
+}
+
+.ds-summary-strip__part-value {
+  color: var(--ds-color-text);
+}
+
+/* 强调色只给语义状态：正/负/警示 */
+.ds-summary-strip__item[data-tone='success'] .ds-summary-strip__value {
+  color: var(--ds-color-success);
+}
+
+.ds-summary-strip__item[data-tone='warning'] .ds-summary-strip__value {
+  color: var(--ds-color-warning);
+}
+
+.ds-summary-strip__item[data-tone='error'] .ds-summary-strip__value {
+  color: var(--ds-color-error);
+}
+
+@media (max-width: 480px) {
+  .ds-summary-strip__value {
+    font-size: var(--ds-font-size-title);
+  }
+}

@@ -1,0 +1,6 @@
+.ds-chart-tooltip {
+  box-sizing: border-box;
+  max-width: 100%;
+  /* 保留原生单行文字；超长名称在提示框内滚动查看，不越过画布边界。 */
+  overflow-x: auto;
+}

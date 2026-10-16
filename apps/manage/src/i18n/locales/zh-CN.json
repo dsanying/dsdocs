@@ -1,0 +1,173 @@
+{
+  "app": {
+    "404": {
+      "subtitle": "抱歉，您访问的页面不存在。",
+      "title": "404"
+    },
+    "pagination": {
+      "totalData": "共 {total} 条数据"
+    }
+  },
+  "common": {
+    "vocab": {
+      "hour": "时",
+      "day": "日",
+      "month": "月",
+      "request": "请求",
+      "status": "状态",
+      "users": "关联$t(common.vocab.user)",
+      "chinese": "中文",
+      "user": "用户",
+      "permission": "权限",
+      "searchPermissions": "$t(common.vocab.permission)点",
+      "search": "搜索",
+      "json": "JSON",
+      "dropHereToCancel": "拖到这里$t(common.actions.cancel)排序，或按 Esc",
+      "menu": "菜单",
+      "expandSidebar": "展开侧边栏",
+      "collapseSidebar": "收起侧边栏",
+      "min": "分",
+      "everyDay": "每天",
+      "everyMonth": "每月",
+      "week": "周",
+      "close": "关闭"
+    },
+    "actions": {
+      "cancel": "取消",
+      "create": "新增",
+      "delete": "删除",
+      "edit": "编辑",
+      "query": "查询",
+      "retry": "重试",
+      "save": "保存",
+      "reset": "重置",
+      "disable": "禁用",
+      "enable": "启用",
+      "sync": "同步",
+      "export": "导出",
+      "update": "更新",
+      "upload": "上传",
+      "publish": "发布",
+      "unpublish": "下线",
+      "clear": "清空",
+      "clone": "克隆",
+      "copy": "复制",
+      "send": "发送",
+      "back": "返回",
+      "view": "查看",
+      "logout": "退出登录"
+    },
+    "loadingPage": "页面加载中",
+    "requestFailed": "$t(common.vocab.request)失败",
+    "objects": {
+      "quotaPool": "配额池"
+    },
+    "theme": {
+      "toggle": "切换亮暗主题"
+    },
+    "confirm": {
+      "execute": "确认执行？"
+    },
+    "copy": {
+      "copied": "已$t(common.actions.copy)",
+      "hint": "点击$t(common.actions.copy)"
+    },
+    "table": {
+      "selected": "已选 {count} 项"
+    },
+    "chart": {
+      "titleTemplate": "{dimension}{metric}{form}",
+      "titleTemplateNoDimension": "{metric}{form}",
+      "metricJoiner": "与",
+      "byDimension": "按{dimension}",
+      "dimensions": {
+        "department": "部门",
+        "person": "个人",
+        "model": "模型",
+        "service": "服务",
+        "identity": "身份",
+        "hour": "时段"
+      },
+      "metrics": {
+        "cost": "费用",
+        "requests": "$t(common.vocab.request)数",
+        "tokens": "Token",
+        "costPerRequest": "单次$t(common.chart.metrics.cost)",
+        "tokensPerRequest": "单次 $t(common.chart.metrics.tokens)",
+        "activeUsers": "活跃$t(common.vocab.user)"
+      },
+      "forms": {
+        "ranking": "排行",
+        "share": "占比",
+        "trend": "趋势",
+        "composition": "构成",
+        "distribution": "分布",
+        "comparison": "对比"
+      }
+    },
+    "language": {
+      "short": {
+        "enUS": "EN"
+      },
+      "switch": "切换语言"
+    },
+    "brand": "DSdocs",
+    "request": {
+      "noResponse": "没有收到响应，请$t(common.actions.retry)",
+      "failed": "$t(common.requestFailed)，请$t(common.actions.retry)"
+    },
+    "calendar": {
+      "weekdays": {
+        "mon": "周一",
+        "tue": "周二",
+        "wed": "周三",
+        "thu": "周四",
+        "fri": "周五",
+        "sat": "周六",
+        "sun": "周日"
+      }
+    },
+    "feedback": {
+      "actionSucceeded": "{action}成功",
+      "actionFailed": "{action}失败",
+      "pasteIgnoredValues": "{count} 个粘贴项不在候选中，未加入",
+      "similarCandidates": "近似候选"
+    },
+    "unsavedChanges": "有未$t(common.actions.save)的修改"
+  },
+  "components": {
+    "cronVisualSelector": {
+      "hour": {
+        "every": "每小时"
+      },
+      "dayOfWeek": {},
+      "minute": {
+        "every": "每分钟"
+      },
+      "month": {}
+    },
+    "jsonEditor": {
+      "loading": "$t(common.vocab.json) $t(common.actions.edit)器加载中"
+    }
+  },
+  "menu": {
+    "home": "首页"
+  },
+  "pages": {
+    "analysis": {
+      "model": {}
+    },
+    "policyList": {
+      "permissionDefinition": {
+        "search": {
+          "hint": "按空格拆分多个关键词，全部命中才显示"
+        }
+      }
+    }
+  },
+  "common.feedback.errorDetail": "错误详情",
+  "common.feedback.valuesAutoCorrected": "已修正输入值",
+  "common.rangePresets.7": "最近7天",
+  "common.rangePresets.30": "最近30天",
+  "common.rangePresets.90": "最近90天"
+}

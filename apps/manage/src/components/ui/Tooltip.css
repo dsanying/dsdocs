@@ -1,0 +1,11 @@
+.ds-tooltip__container {
+  width: max-content;
+  max-width: calc(100vw - var(--ds-space-32));
+  white-space: nowrap;
+}
+
+/* 自动图标名称提示只读，不接收指针；按钮更替时不能拦截相邻操作。 */
+.ds-icon-label-hint,
+.ds-icon-label-hint * {
+  pointer-events: none;
+}

@@ -1,0 +1,19 @@
+.ds-scroll-region {
+  max-width: 100%;
+  min-width: 0;
+  overscroll-behavior: contain;
+}
+
+.ds-scroll-region--x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ds-scroll-region--y {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ds-scroll-region--both {
+  overflow: auto;
+}

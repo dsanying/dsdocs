@@ -35,7 +35,7 @@ export async function collectLicenses(application, output) {
       const readme = names.find((name) => /^readme(?:\.md)?$/i.test(name));
       if (readme) {
         const text = await readFile(path.join(directory, readme), 'utf8');
-        const start = text.search(/^#{1,3}\s+Licen[sc]e\s*$/im);
+        const start = text.search(/^(?:#{1,3}\s+Licen[sc]e\s*$|Licen[sc]e\s*\n[-=]+\s*$)/im);
         if (start >= 0 && /Permission is hereby granted/.test(text.slice(start))) {
           sections.push(text.slice(start));
           continue;

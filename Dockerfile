@@ -2,40 +2,31 @@ ARG NODE_VERSION=26.10.0
 FROM node:${NODE_VERSION}-bookworm-slim AS build
 WORKDIR /app
 RUN npm install --global pnpm@12.8.1
+COPY package.json ./
+COPY apps/manage/package.json apps/manage/pnpm-lock.yaml apps/manage/pnpm-workspace.yaml ./apps/manage/
+COPY apps/manage/patches ./apps/manage/patches
+COPY apps/reader/package.json apps/reader/pnpm-lock.yaml apps/reader/pnpm-workspace.yaml ./apps/reader/
+RUN --mount=type=cache,id=dsdocs-pnpm,target=/root/.local/share/pnpm/store pnpm install:all
 COPY . .
-RUN pnpm -C apps/reader install --frozen-lockfile && node scripts/sync-assets.mjs && pnpm -C apps/reader build && node scripts/reader-notices.mjs
+RUN pnpm build
 
-FROM caddy:2.11.7 AS reader
-COPY --from=build /app/apps/reader/out /srv/reader
-COPY deploy/Caddyfile /etc/caddy/Caddyfile
-
-FROM node:${NODE_VERSION}-bookworm-slim AS studio
+FROM node:${NODE_VERSION}-bookworm-slim AS reader
 WORKDIR /app
-RUN npm install --global pnpm@12.8.1
-COPY --chown=node:node apps/studio ./apps/studio
-COPY LICENSE THIRD_PARTY_NOTICES.md ./
-COPY licenses ./licenses
-COPY scripts/collect-licenses.mjs scripts/studio-notices.mjs ./scripts/
-RUN pnpm -C apps/studio install --prod --frozen-lockfile && node scripts/studio-notices.mjs && chown -R node:node /app
-COPY --chown=node:node apps/reader/content/docs ./apps/reader/content/docs
+COPY --from=build --chown=node:node /app/apps/reader/.next/standalone ./
+COPY --from=build --chown=node:node /app/apps/reader/.next/static ./apps/reader/.next/static
+COPY --from=build --chown=node:node /app/apps/reader/public ./apps/reader/public
+RUN mkdir /data && chown node:node /data
+ENV DSDOCS_DATA_DIR=/data HOSTNAME=0.0.0.0 PORT=3300
 USER node
-WORKDIR /app/apps/studio
-EXPOSE 5180
-CMD ["node", "node_modules/@fumadocs-editor/studio/dist/cli.js", "--host", "--no-open"]
+EXPOSE 3300
+CMD ["node", "apps/reader/server.js"]
 
-# Optional DSdocs shell; the official Studio target remains independently usable.
 FROM node:${NODE_VERSION}-bookworm-slim AS management
 WORKDIR /app
-RUN npm install --global pnpm@12.8.1
-COPY --chown=node:node apps/manage/package.json apps/manage/pnpm-lock.yaml apps/manage/pnpm-workspace.yaml ./apps/manage/
-RUN pnpm -C apps/manage install --prod --frozen-lockfile
-COPY --chown=node:node apps/manage ./apps/manage
-COPY LICENSE THIRD_PARTY_NOTICES.md ./
-COPY licenses ./licenses
-COPY scripts/collect-licenses.mjs scripts/manage-notices.mjs ./scripts/
-RUN node scripts/manage-notices.mjs && chown -R node:node /app
-COPY --chown=node:node apps/reader/content/docs ./apps/reader/content/docs
+COPY --from=build --chown=node:node /app/apps/manage ./apps/manage
+COPY --from=build --chown=node:node /app/packages ./packages
+RUN mkdir /data && chown node:node /data
+ENV DSDOCS_DATA_DIR=/data DSDOCS_HOST=0.0.0.0 DSDOCS_PORT=5182
 USER node
-WORKDIR /app/apps/manage
 EXPOSE 5182
-CMD ["node", "node_modules/vite/bin/vite.js", "--host", "0.0.0.0", "--port", "5182"]
+CMD ["node", "apps/manage/server/start.mjs"]

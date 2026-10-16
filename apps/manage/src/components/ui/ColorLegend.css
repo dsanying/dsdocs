@@ -1,0 +1,24 @@
+/* 图例：一行横排、可换行；色块与文字同高居中 */
+.ds-color-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-8) var(--ds-space-16);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-color-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+}
+
+.ds-color-legend__swatch {
+  width: var(--ds-space-12);
+  height: var(--ds-space-12);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-xs);
+}

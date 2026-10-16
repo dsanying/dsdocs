@@ -1,0 +1,9 @@
+/* 多行结构化内容：宽度跟列走、高度封顶、格内纵向滚动，滚动条细 */
+.ds-tall-content {
+  max-width: 100%;
+  max-height: var(--ds-layout-cell-max-height);
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}

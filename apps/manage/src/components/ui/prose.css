@@ -1,0 +1,192 @@
+/*
+ * 渲染后的 Markdown/富文本正文：段落、列表、标题、代码块、表格之间的排版节奏。
+ * 这是内容排版而不是组件间隔，因此允许在共享层用 margin 表达段落流。
+ */
+.ds-prose {
+  line-height: 1.5;
+
+  .ds-prose__table-block {
+    margin: var(--ds-space-8) 0;
+    overflow-x: auto;
+
+    .ds-prose__table-title {
+      margin-bottom: var(--ds-space-8);
+      font-weight: 600;
+    }
+  }
+
+  .ds-prose__chart-block {
+    margin: var(--ds-space-12) 0;
+    padding: var(--ds-space-12);
+    border: 1px solid var(--ds-color-border);
+    border-radius: var(--ds-radius-md);
+    background: var(--ds-color-surface);
+
+    .ds-prose__chart-title {
+      margin-bottom: var(--ds-space-8);
+      font-weight: 600;
+    }
+  }
+
+  .ds-prose__code-block {
+    position: relative;
+    margin: var(--ds-space-8) 0;
+
+    .ds-prose__code-copy {
+      position: absolute;
+      z-index: 1;
+      top: var(--ds-space-8);
+      right: var(--ds-space-8);
+      border: 1px solid var(--ds-color-border-strong);
+      background: var(--ds-color-surface-elevated);
+      color: var(--ds-color-text);
+
+      &:hover,
+      &:focus-visible {
+        background: var(--ds-color-surface-muted);
+        color: var(--ds-color-text);
+      }
+    }
+
+    pre {
+      margin: 0;
+      overflow-x: auto;
+      padding: var(--ds-space-40) var(--ds-space-8) var(--ds-space-8);
+      border-radius: var(--ds-radius-xs);
+      border: 1px solid var(--ds-color-border);
+      background: var(--ds-color-surface-muted);
+      color: var(--ds-color-text);
+      line-height: 1.5;
+
+      code {
+        padding: 0;
+        background: transparent;
+      }
+    }
+
+    /* rehype-highlight 词法类名：只用字重与文字层级表达语法，颜色随主题 token。 */
+    .hljs-comment,
+    .hljs-quote {
+      color: var(--ds-color-text-tertiary);
+      font-style: italic;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-built_in,
+    .hljs-type,
+    .hljs-literal {
+      font-weight: 600;
+    }
+
+    .hljs-string,
+    .hljs-attr,
+    .hljs-number,
+    .hljs-symbol,
+    .hljs-meta {
+      color: var(--ds-color-text-secondary);
+    }
+
+    .hljs-title,
+    .hljs-section,
+    .hljs-name {
+      font-weight: 600;
+      color: var(--ds-color-text);
+    }
+
+    .hljs-deletion {
+      background: var(--ds-color-error-surface);
+    }
+
+    .hljs-addition {
+      background: var(--ds-color-success-surface);
+    }
+  }
+
+  code {
+    padding: var(--ds-space-2) var(--ds-space-4);
+    border-radius: var(--ds-radius-xs);
+    background: var(--ds-color-surface-muted);
+    font-family: var(--ds-font-family-code);
+  }
+
+  p {
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: var(--ds-space-8);
+    }
+  }
+
+  ul,
+  ol {
+    margin: var(--ds-space-8) 0;
+    padding-left: var(--ds-space-24);
+    list-style-position: outside;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li + li {
+    margin-top: var(--ds-space-4);
+  }
+
+  blockquote {
+    margin: var(--ds-space-8) 0;
+    padding-left: var(--ds-space-12);
+    border-left: var(--ds-space-2) solid var(--ds-color-border-strong);
+    color: var(--ds-color-text-secondary);
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: var(--ds-space-8) 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: var(--ds-space-4) var(--ds-space-8);
+      border: 1px solid var(--ds-color-border);
+      text-align: left;
+      line-height: 1.5;
+    }
+
+    th {
+      background: var(--ds-color-surface-muted);
+      font-weight: 600;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: var(--ds-space-16) 0 var(--ds-space-8);
+    font-weight: 600;
+    line-height: 1.3;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  a {
+    color: var(--ds-color-link);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.ds-json-preview {
+  min-width: max-content;
+  margin: 0;
+  padding: var(--ds-space-16);
+  border: var(--ant-line-width) solid var(--ds-color-border);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-canvas);
+  color: var(--ds-color-text);
+  font-family: var(--ds-font-family-code);
+  font-size: var(--ds-font-size-xs);
+  line-height: 1.6;
+  white-space: pre;
+}

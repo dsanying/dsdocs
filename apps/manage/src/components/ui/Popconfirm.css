@@ -1,0 +1,5 @@
+/* 宽内容确认气泡：容器放宽到对话框宽度，让字段网格有地方铺开 */
+.ds-popconfirm--wide {
+  width: min(var(--ds-layout-dialog-width), 100vw - var(--ds-space-24) * 2);
+  max-width: none;
+}

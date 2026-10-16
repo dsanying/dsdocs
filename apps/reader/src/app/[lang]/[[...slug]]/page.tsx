@@ -1,18 +1,11 @@
+import { PublishedRefresh } from '@/content/live';
 import { notFound } from 'next/navigation';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { DocsPage, DocsTitle, DocsDescription, DocsBody } from 'fumadocs-ui/layouts/docs/page';
-import { source, pages } from '@/lib/source';
-import { components } from '@/content/components';
+import { readPublished, pageTree, pageUrl, publishedRevision } from '@/lib/source';
+import { DocumentBody, documentHeadings } from '@/content/components';
 import { DocumentationProvider } from '@/content/provider';
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return ['zh', 'en'].flatMap((lang) => [
-    { lang, slug: [] },
-    ...pages(lang)
-      .filter((page) => page.slugs.length > 0)
-      .map((page) => ({ lang, slug: page.slugs })),
-  ]);
-}
+export const dynamic = 'force-dynamic';
 export default async function Page({
   params,
 }: {
@@ -20,30 +13,32 @@ export default async function Page({
 }) {
   const { lang, slug } = await params;
   if (!['zh', 'en'].includes(lang)) notFound();
-  const documents = pages(lang),
-    page = source.getPage(slug ?? [], lang) ?? (!slug?.length ? documents[0] : undefined);
+  const data = readPublished(),
+    docs = data.documents.filter((x) => x.locale === lang),
+    page = slug?.length ? docs.find((x) => x.slug === slug.join('/')) : docs[0];
   if (slug?.length && !page) notFound();
-  const identity = page?.slugs.join('/');
   const translations = Object.fromEntries(
-    pages()
-      .filter((entry) => identity !== undefined && entry.slugs.join('/') === identity)
-      .map((entry) => [entry.locale, entry.url])
+    data.documents
+      .filter((x) => x.translationId === page?.translationId)
+      .map((x) => [x.locale, pageUrl(x)])
   );
-  const Body = page?.data.body;
   return (
     <DocumentationProvider locale={lang} translations={translations}>
-      <DocsLayout tree={source.getPageTree(lang)} tabs={false} nav={{ title: 'DSdocs', url: '/' }}>
-        <DocsPage toc={page?.data.toc}>
-          <DocsTitle>{page?.data.title ?? (lang === 'zh' ? '暂无文档' : 'No documents')}</DocsTitle>
-          <DocsDescription>{page?.data.description}</DocsDescription>
-          <DocsBody>
-            {Body ? (
-              <Body components={components} />
+      <PublishedRefresh revision={publishedRevision(data)} />
+      <DocsLayout tree={pageTree(lang, data)} tabs={false} nav={{ title: 'DSdocs', url: '/' }}>
+        <DocsPage toc={page ? documentHeadings(page.body) : []}>
+          <DocsTitle>
+            {page?.title ?? (lang === 'zh' ? '暂无已发布文档' : 'No published documents')}
+          </DocsTitle>
+          <DocsDescription>{page?.description}</DocsDescription>
+          <DocsBody className="document-prose">
+            {page ? (
+              <DocumentBody body={page.body} />
             ) : (
               <p>
                 {lang === 'zh'
-                  ? '请切换语言或添加文档文件。'
-                  : 'Switch language or add document files.'}
+                  ? '发布第一篇文档后在此显示。'
+                  : 'Publish your first document to get started.'}
               </p>
             )}
           </DocsBody>

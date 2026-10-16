@@ -1,0 +1,137 @@
+/* 表格与其上方操作区（新建等）的间距只由父布局管理；DataTable 的工具栏共用同一版式 */
+.ds-data-table,
+.ds-table__wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  min-width: 0;
+}
+
+.ds-data-table__toolbar,
+.ds-table__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ds-space-8);
+  min-width: 0;
+}
+
+/* 单元格与纵向多行格的每一行是横向滚动槽位（规则在 overflowScroll.css）：不折行、不省略、不盖到邻列。
+   多行格（名称在上、键/obj · act 在下）的每行钳在列宽内，各自滚动，放得下的标题不随长键移走 */
+.ds-table .ant-table-tbody > tr > td > .ds-layout-stack:not(.ds-layout-stack--row) > * {
+  max-width: 100%;
+}
+
+/* 列标题整体占一行：宽度已按标题文字抬到能放下（tableConfig.titleFitWidth），这里只保证不折行 */
+.ds-table .ant-table-thead > tr > th {
+  white-space: nowrap;
+}
+
+/* 可拖动行：整行是激活区，手柄只是提示 */
+.ds-table__row--sortable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.ds-table__row--sortable:focus-visible {
+  outline: 2px solid var(--ds-color-border-strong);
+  outline-offset: -2px;
+}
+
+.ds-table__drag-handle {
+  display: inline-flex;
+  width: var(--ds-space-32);
+  height: var(--ds-space-32);
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-text-secondary);
+}
+
+.ds-table__row--sortable[data-dnd-dragging] {
+  position: relative;
+  z-index: 1;
+  cursor: grabbing;
+}
+
+.ds-table__row--sortable[data-dnd-dragging] > .ant-table-cell {
+  background: var(--ds-color-surface-elevated);
+}
+
+/* 拖动中顶部的取消区：虚线框、次级文字；拖入时变为警示色 */
+.ds-table__sortable {
+  position: relative;
+}
+
+.ds-table__cancel-zone {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--ds-space-40);
+  margin-block-end: var(--ds-space-8);
+  border: 1px dashed var(--ds-color-border-strong);
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+  background: var(--ds-color-surface-muted);
+}
+
+.ds-table__sortable[data-dragging='true'] .ds-table__cancel-zone {
+  display: flex;
+}
+
+.ds-table__cancel-zone--over {
+  border-color: var(--ds-color-warning);
+  color: var(--ds-color-warning);
+}
+
+/* 比较数值使用等宽数字，金额、数量与比例可纵向扫描。 */
+.ds-table .ant-table-tbody > tr > td {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 动作组位于操作区域右侧；表头和数据正文仍保持左对齐。 */
+.ds-table .ant-table-cell .ds-responsive-actions {
+  justify-content: flex-end;
+}
+
+/* 固定尾列是动作区域，不能成为格内滚动槽或折叠成菜单。 */
+.ds-table__action-cell {
+  overflow: visible;
+}
+
+.ds-table__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ds-table__actions .ds-responsive-actions,
+.ds-table__actions .ds-layout-stack--row {
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.ds-table__actions button,
+.ds-table__actions a {
+  flex-shrink: 0;
+}
+
+.ds-table__actions[data-compact] .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
+.ds-table__actions[data-compact] .ds-action-link > .ds-action-link__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ds-table__actions[data-compact] .ant-btn:has(> .ant-btn-icon) {
+  padding-inline: var(--ds-space-8);
+}
+
+.ds-table__actions[data-compact] .ds-action-link {
+  gap: 0;
+}

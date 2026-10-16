@@ -1,0 +1,82 @@
+/*
+ * 表单字段并排：按自身可用宽度（容器查询）定列数，而不是视口断点——表单常放在“表单 + 预览”分栏、抽屉里，
+ * 视口很宽但表单本身只有几百像素。各行同一列宽对齐：用固定列数而不是 auto-fill，项数少时整行留空而不是把字段拉宽。
+ * 容器查询条件不能引用 CSS 变量，阈值 = 列数 × 最小字段宽 + (列数 - 1) × 16px 间距：
+ *   short（数字 + 单位、开关、候选很短的下拉）最小 120px：2 列 256px，3 列 392px；
+ *   medium（日期时间、短文本，默认）最小 200px：2 列 416px，3 列 632px。
+ * lead（首项是短标识 + 两个短字段）：首项按自身宽度（至少 100px）+ 两列各 120px：
+ *   ≥ 372px 三项一行；256–372px 标识独占一行、其余两列；更窄单列。
+ */
+.ds-form-grid {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.ds-form-grid__track {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--ds-space-16);
+}
+
+.ds-form-grid__track[data-row-gap='control'] {
+  row-gap: var(--ds-space-8);
+}
+
+.ds-form-grid__track > * {
+  min-width: 0;
+}
+
+@container (min-width: 256px) {
+  .ds-form-grid__track[data-field='short'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 392px) {
+  .ds-form-grid__track[data-field='short']:not([data-columns='2']) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 416px) {
+  .ds-form-grid__track[data-field='medium'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 632px) {
+  .ds-form-grid__track[data-field='medium']:not([data-columns='2']) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 256px) {
+  .ds-form-grid__track[data-lead='true'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ds-form-grid__track[data-lead='true'] > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@container (min-width: 372px) {
+  .ds-form-grid__track[data-lead='true'] {
+    /* 首列至少 100px：同一列表里各项的标识长短不一（“关闭” / “外部链接”），保底宽度让各行输入框对齐 */
+    grid-template-columns: minmax(100px, max-content) repeat(2, minmax(0, 1fr));
+  }
+
+  .ds-form-grid__track[data-lead='true'] > :first-child {
+    grid-column: auto;
+  }
+}
+
+/* 五项短字段的组合使用控件间距：5 × 120px + 4 × 8px = 632px。 */
+.ds-form-grid__track[data-columns='5'] {
+  column-gap: var(--ds-space-8);
+}
+@container (min-width: 632px) {
+  .ds-form-grid__track[data-field='short'][data-columns='5'] {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}

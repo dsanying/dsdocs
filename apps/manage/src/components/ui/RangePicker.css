@@ -1,0 +1,10 @@
+/* 原生双月/带时间面板在窄屏超出视口；限制弹层宽度并把多面板区裹成可横滚容器。 */
+.ds-range-picker__popup {
+  max-width: calc(100vw - 2 * var(--ds-space-12));
+}
+
+.ds-range-picker__panel-scroll {
+  max-width: calc(100vw - 2 * var(--ds-space-12));
+  overflow-x: auto;
+  pointer-events: auto;
+}

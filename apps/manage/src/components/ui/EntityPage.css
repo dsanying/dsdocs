@@ -1,0 +1,34 @@
+/*
+ * 详情页头说明区：摘要条与字段网格是同一张表面的两个区块（一条分隔线衔接），
+ * 字段网格并入后去掉自带外框，字段间只剩留白分格。
+ */
+.ds-entity-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  min-width: 0;
+  padding: var(--ds-space-16) var(--ds-space-24);
+  background: var(--ds-color-surface);
+  border: var(--ant-line-width) solid var(--ds-color-border);
+  border-radius: var(--ds-radius-lg);
+}
+
+/* 并入说明区表面的字段网格：外框由表面提供，列间距由网格 gutter 承担 */
+.ds-entity-info .ds-information-grid {
+  gap: var(--ds-space-12) var(--ds-space-24);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.ds-entity-info .ds-information-grid__field > dt,
+.ds-entity-info .ds-information-grid__field > dd {
+  padding-inline: 0;
+}
+
+/* 摘要条与字段网格同在一张表面时，中间一条分隔线 */
+.ds-entity-info > .ds-summary-strip + .ds-information-grid {
+  border-block-start: var(--ant-line-width) solid var(--ds-color-border);
+  padding-block-start: var(--ds-space-12);
+}

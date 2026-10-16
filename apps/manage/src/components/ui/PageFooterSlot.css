@@ -1,0 +1,7 @@
+/* 底部槽位：吸住视口底部、占满内容区整宽；为空时不占高度 */
+.ds-page-footer-slot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}

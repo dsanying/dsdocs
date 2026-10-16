@@ -1,19 +1,17 @@
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
-import { editorSync } from '@fumadocs-editor/core/vite';
-import { identityMiddleware } from './server/identity.mjs';
-
 export default defineConfig({
-  plugins: [
-    editorSync({
-      root: process.env.DSDOCS_CONTENT_ROOT ?? '../reader/content/docs',
-      upload: { maxBytes: 5 * 1024 * 1024, types: /^image\/(png|jpeg|webp)$/ },
-    }),
-    {
-      name: 'dsdocs-identity-adapter',
-      configureServer(server) {
-        server.middlewares.use(identityMiddleware());
+  build: {
+    rolldownOptions: {
+      onLog(level, log, handler) {
+        if (log.code === 'MODULE_LEVEL_DIRECTIVE' && log.id?.includes('/node_modules/')) return;
+        handler(level, log);
       },
     },
-  ],
-  server: { strictPort: true, fs: { deny: ['**/.env', '**/.env.*', '**/server/**'] } },
+  },
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  server: {
+    strictPort: true,
+    fs: { deny: ['**/.env', '**/.env.*', '**/server/**', '**/*.sqlite*', '**/*.key'] },
+  },
 });

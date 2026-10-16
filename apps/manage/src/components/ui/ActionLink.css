@@ -1,0 +1,47 @@
+.ds-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+  min-height: var(--ds-space-24);
+  padding-inline: var(--ds-space-8);
+  border-radius: var(--ds-radius-xs);
+  color: var(--ds-color-link);
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color var(--ds-motion-fast) ease,
+    color var(--ds-motion-fast) ease;
+}
+
+.ds-action-link:hover,
+.ds-action-link:focus-visible {
+  background: var(--ds-color-surface-muted);
+  color: var(--ds-color-link-hover);
+}
+
+.ds-action-link:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-shadow-focus);
+}
+
+.ds-action-link__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+/* 名称可能成为共享滚动槽位的直接子项，留白不能随内容滚走。 */
+.ds-action-link[data-variant='name'] {
+  padding-inline: 0;
+  border-inline: var(--ds-space-8) solid transparent;
+}
+
+/* 关联名称在自己的列内滚动，图标保持可见；操作链接保留原有布局。 */
+.ds-action-link[data-variant='name'] {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.ds-action-link[data-variant='name'] > .ds-action-link__label {
+  min-width: 0;
+}

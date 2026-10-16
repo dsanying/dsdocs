@@ -1,0 +1,104 @@
+/*
+ * 全站下拉与多选：候选项与已选标签都完整展开——不省略、不折叠成 +N。
+ * 通过 ConfigProvider.select.classNames 挂到 Ant 的语义槽位（候选项 listItem、已选标签内容 itemContent），
+ * 文本过长时单行左右滚动而不是截断（overflowScroll.css）。
+ */
+/* 下拉面板随控件限宽，且不超出视口（两侧各留 16px）：超长候选在自身一行内左右滚动，面板不会伸到屏幕外 */
+.ant-select-dropdown {
+  max-width: calc(100vw - var(--ds-space-32));
+  min-width: 0;
+}
+
+/* 候选各占独立一行：长项不能把列表的固有宽度传给弹层，也不带动其它候选横滚。 */
+.ant-select-dropdown .ds-select-option {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ant-select-dropdown .ds-select-option .ant-select-item-option-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 控件的过渡只用于颜色/阴影反馈：宽度、外边距这类布局变化不做动画，避免内容变化时左右滑动 */
+.ant-select {
+  transition-property: border-color, box-shadow, background-color, color;
+}
+
+/* 已选值不在候选集中（粘贴误入或候选后来被删）：错误色系标出，标签结构仍与默认一致 */
+.ant-select-selection-item.ds-select-tag--unknown {
+  background: var(--ds-color-error-surface);
+}
+
+.ant-select-selection-item.ds-select-tag--unknown,
+.ant-select-selection-item.ds-select-tag--unknown .ant-select-selection-item-content,
+.ant-select-selection-item.ds-select-tag--unknown .ant-select-selection-item-remove {
+  color: var(--ds-color-error);
+}
+
+/* 幽灵值可点修正：内容区保持标签本色，靠鼠标指针与悬停下划线表达可交互。 */
+.ant-select-selection-item.ds-select-tag--unknown .ds-select-tag__content--fixable {
+  cursor: pointer;
+}
+
+.ant-select-selection-item.ds-select-tag--unknown .ds-select-tag__content--fixable:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* 近似候选弹层：一栏纵向列表，长值在项内横向滚动。 */
+.ds-select-tag__suggestions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: var(--ds-layout-scroll-region-max-height);
+  overflow-y: auto;
+}
+
+.ds-select-tag__suggestion {
+  display: block;
+  width: 100%;
+  padding: var(--ds-space-4) var(--ds-space-8);
+  border: 0;
+  border-radius: var(--ds-radius-xs);
+  background: transparent;
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-xs);
+  text-align: start;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ds-select-tag__suggestion:hover {
+  background: var(--ds-color-primary-surface);
+  color: var(--ds-color-primary-text);
+}
+
+/* 多选已选区：只排一行，过长在控件内横向滚动，不换行撑高、不折叠；全部查看/编辑走控件后缀的“展开”弹窗 */
+.ant-select-multiple .ds-select-content {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.ant-select-multiple .ds-select-content > * {
+  flex: 0 0 auto;
+  /* Ant 默认把单个标签钳在控件宽度内并省略；一行滚动的已选区里标签按内容定宽 */
+  max-width: none;
+}
+
+.ant-select-multiple .ds-select-content .ant-select-selection-item,
+.ant-select-multiple .ds-select-content .ant-select-selection-item-content,
+.ant-select-multiple .ds-select-content .ds-select-tag-content {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* 单选已选值与占位：同全站规则，放不下在控件内左右滚动，不省略 */
+/* 选择器需高于 Ant 的 .ant-select-single:not(.ant-select-customize) .ant-select-content */
+.ant-select.ant-select-single .ant-select-content.ds-select-content,
+.ant-select.ant-select-single .ant-select-placeholder,
+.ant-select .ds-select-content .ant-select-placeholder {
+  overflow-x: auto;
+  text-overflow: clip;
+  scrollbar-width: none;
+}

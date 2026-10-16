@@ -1,0 +1,42 @@
+/*
+ * CronVisualSelector 样式
+ *
+ * 目标：把重复的内联布局/文字样式抽离到样式文件，
+ * 保留组件内部仅与数据绑定相关的逻辑。
+ */
+
+.ds-cron-visual-selector {
+  width: 100%;
+}
+
+.ds-cron-visual-selector__field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ds-space-4);
+  min-width: 0;
+}
+
+.ds-cron-visual-selector__label {
+  font-size: var(--ds-font-size-xs);
+  color: var(--ds-color-text-secondary);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ds-cron-visual-selector__select {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.ds-cron-visual-selector__expression {
+  padding-top: var(--ds-space-8);
+}
+
+.ds-cron-visual-selector__expression-input[readonly] {
+  background: var(--ds-color-surface-muted);
+  border-color: var(--ds-color-border);
+  color: var(--ds-color-text-tertiary);
+}

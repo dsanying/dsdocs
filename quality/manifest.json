@@ -1,0 +1,108 @@
+{
+  "gates": [
+    {
+      "id": "project-contract",
+      "rule": "docs/维护手册.md",
+      "command": [
+        "node",
+        "scripts/check-project.mjs"
+      ]
+    },
+    {
+      "id": "format",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/manage",
+        "exec",
+        "prettier",
+        "--check",
+        "src",
+        "server",
+        "tests",
+        "vite.config.ts",
+        "tsconfig.json",
+        "package.json",
+        "../reader/src",
+        "../../packages"
+      ]
+    },
+    {
+      "id": "shared-regression",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "node",
+        "scripts/test-shared.mjs"
+      ]
+    },
+    {
+      "id": "backup-regression",
+      "rule": "docs/规范/后端.md",
+      "command": [
+        "node",
+        "--test",
+        "scripts/tests/backup.test.mjs"
+      ]
+    },
+    {
+      "id": "service-regression",
+      "rule": "docs/规范/后端.md",
+      "command": [
+        "node",
+        "--test",
+        "apps/manage/tests/system.test.mjs"
+      ]
+    },
+    {
+      "id": "management-types",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/manage",
+        "exec",
+        "tsc",
+        "--noEmit"
+      ]
+    },
+    {
+      "id": "reader-types",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/reader",
+        "typecheck"
+      ]
+    },
+    {
+      "id": "management-build",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/manage",
+        "build"
+      ]
+    },
+    {
+      "id": "reader-build",
+      "rule": "docs/规范/前端.md",
+      "command": [
+        "pnpm",
+        "-C",
+        "apps/reader",
+        "build"
+      ]
+    },
+    {
+      "id": "dependency-notices",
+      "rule": "THIRD_PARTY_NOTICES.md",
+      "command": [
+        "node",
+        "scripts/notices.mjs"
+      ]
+    }
+  ]
+}

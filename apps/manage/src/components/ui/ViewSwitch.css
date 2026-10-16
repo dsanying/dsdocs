@@ -1,0 +1,54 @@
+/*
+ * ViewSwitch 是原生 Segmented：轨道与药丸造型全部走主题 token（trackBg/itemSelectedBg/
+ * itemSelectedColor），共享层只管布局契约——宿主内可收缩、等分模式占满宽度、选项文字不省略。
+ */
+/* 宿主是 flex/grid 项或行内容器时，控件必须能收缩到容器宽度以下：
+   默认 min-content 地板会把宿主撑出内容宽，滚动永远轮不到组内 */
+.ds-view-switch {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ds-view-switch__control {
+  /* 外框固定控件高度时，内部分组与药丸必须随之拉伸，否则文字贴顶不居中 */
+  display: inline-flex;
+  align-items: stretch;
+  width: fit-content;
+  max-width: 100%;
+  min-block-size: var(--ds-control-height);
+  min-inline-size: 0;
+  scrollbar-width: none;
+}
+
+.ds-view-switch__control::-webkit-scrollbar {
+  display: none;
+}
+
+.ds-view-switch--block .ds-view-switch__control {
+  width: 100%;
+}
+
+.ds-view-switch__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 标签内容（文字或图标）在项内正中：图标不能按基线排布抬高 */
+.ds-view-switch__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* 选项文字不省略：放不下由共享滚动槽在选项内左右滚动（data-overflowing，见 overflowScroll.css）。
+   槽位不留水平内边距（滚动后文字会贴到项边缘）——留白换成同宽透明边框，Ant 内边距为 padding 减线宽 */
+.ds-view-switch .ant-segmented-item-label.ds-view-switch__label {
+  padding-inline: 0;
+  border-inline: calc(
+      var(--ant-segmented-item-padding-horizontal, var(--ant-padding, 8px)) -
+        var(--ant-line-width, 1px)
+    )
+    solid transparent;
+  scrollbar-width: none;
+}

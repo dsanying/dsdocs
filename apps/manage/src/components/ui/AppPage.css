@@ -1,0 +1,117 @@
+/* 页面根：页头与正文纵向排布，左右内边距与布局内容区对齐 */
+.ds-app-page {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  padding: var(--ds-space-24);
+}
+
+/* 页头各块（面包屑/标题行/说明区/页级页签）同属一个簇：间距统一取 block 角色，由父级 gap 表达 */
+.ds-app-page__header {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+}
+
+/* 页级页签的尾部留白归页面 gap 管理：导航型页签不带内容面板，尾部 margin 会与父级 gap 叠加出双倍间距 */
+.ds-app-page__tabs > .ds-responsive-tabs__header {
+  margin-block-end: 0;
+}
+
+/* 面包屑各项是单行词项：上级各项完整不收缩、放不下整项换行；末项（当前对象名）以保底宽度参与排布，
+   超长时在所在行剩余宽度内横向滚动，而不是把名称折成多行。 */
+.ds-app-page__header > .ant-breadcrumb li {
+  flex: none;
+  white-space: nowrap;
+}
+
+.ds-app-page__header > .ant-breadcrumb li:last-child {
+  flex: 1 1 calc(var(--ds-space-40) * 3);
+  max-width: 100%;
+}
+
+/* 标题行：返回键、标题、操作区同一水平中线；窄屏操作区整体换行 */
+.ds-app-page__heading {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-8) var(--ds-space-16);
+}
+
+/* 剩余宽度只给标题组；操作区按自身宽度靠右，不与标题平分空间而截断标题。 */
+.ds-app-page__heading > .ds-responsive-actions {
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+/* 标题与状态成组：组的弹性基准只取保底宽度，超长标题在组内收缩并横向滚动，不把状态和操作挤到下一行；
+   保底宽度都放不下时才让操作区换行。 */
+.ds-app-page__title-group {
+  display: flex;
+  flex: 1 1 calc(var(--ds-space-40) * 5);
+  min-width: 0;
+  align-items: center;
+  gap: var(--ds-space-8) var(--ds-space-16);
+}
+
+.ds-app-page__status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+}
+
+/* 标题是横向滚动槽位（规则在 overflowScroll.css） */
+.ds-app-page__title {
+  margin: 0;
+  color: inherit;
+  font-family: var(--ds-font-family-body);
+  font-size: var(--ds-font-size-title);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ds-app-page__content {
+  min-width: 0;
+  color: var(--ds-color-text-secondary);
+}
+
+.ds-app-page__body {
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .ds-app-page {
+    padding: var(--ds-space-16);
+  }
+}
+
+/*
+ * 页头一行放不下完整按钮时（useFitHeading 判定），操作按钮先收成仅图标、与标题同行；
+ * 文字视觉隐藏但仍是可访问名称，与窄屏（≤640px）的全站收起规则同一形态。
+ */
+.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
+.ds-app-page__heading[data-compact='true']
+  .ds-action-link:not([data-variant='name'])
+  > .ds-action-link__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) {
+  padding-inline: var(--ds-space-8);
+}
+
+.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) > .ant-btn-icon {
+  margin-inline-end: 0;
+}

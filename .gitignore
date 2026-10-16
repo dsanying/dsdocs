@@ -18,7 +18,8 @@ apps/reader/out/
 release-artifacts/
 
 apps/reader/public/assets/
-apps/studio/node_modules/
-apps/studio/THIRD_PARTY_NOTICES.txt
 
 apps/manage/THIRD_PARTY_NOTICES.txt
+
+apps/reader/public/THIRD_PARTY_NOTICES.txt
+*.key

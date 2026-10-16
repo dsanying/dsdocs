@@ -1,0 +1,62 @@
+/*
+ * 字段网格是留白分格不是切割格：同一表面上只靠内边距分栏（无内部框线），
+ * 键值信息读作“一组字段”而不是“一张数据表”；外框由表面（卡片/说明区）提供。
+ */
+.ds-information-grid {
+  display: grid;
+  /* 最多四列，按当前容器宽度逐步降列；长值完整折行。 */
+  gap: var(--ds-space-8) var(--ds-space-16);
+  margin: 0;
+  padding: var(--ds-space-12) var(--ds-space-16);
+  overflow: clip;
+  border: var(--ant-line-width) solid var(--ds-color-border);
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-surface);
+}
+
+/* 贴边填满卡片正文：外框由卡片提供，网格只保留卡片的底部圆角 */
+.ds-information-grid--flush {
+  border: 0;
+  /* 卡片正文向上覆盖了卡片头 1px 分隔线，这里补回同色顶线，保证所有卡片标题下都有分隔线 */
+  border-top: var(--ant-line-width) solid var(--ds-color-border);
+  border-radius: 0 0 var(--ds-radius-lg) var(--ds-radius-lg);
+}
+
+.ds-information-grid__field {
+  /* 标签在上、值在下：多列窄格中长标签不挤占值宽度，邮箱、账号等值不被拆成两行。 */
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* 外圈留白由网格自身 padding 提供，字段内的内边距只管标签与值的垂直节奏 */
+.ds-information-grid__field dt,
+.ds-information-grid__field dd {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.ds-information-grid__field dt {
+  padding-bottom: var(--ds-space-4);
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-information-grid__field dd {
+  /* 详情完整展开，标签和值不使用单行滚动槽。 */
+  flex: 1;
+  color: var(--ds-color-text);
+}
+
+.ds-information-grid .ds-information-grid__field[data-span='full'] {
+  grid-column: 1 / -1;
+}
+
+.ds-information-grid__group {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  gap: inherit;
+  min-width: 0;
+}

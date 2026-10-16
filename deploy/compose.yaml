@@ -1,0 +1,22 @@
+services:
+  management:
+    build:
+      context: ..
+      target: management
+    environment:
+      DSDOCS_URL: ${DSDOCS_MANAGEMENT_URL:-http://127.0.0.1:5182}
+    ports: ["127.0.0.1:5182:5182"]
+    volumes: ["content:/data"]
+    init: true
+    restart: unless-stopped
+  reader:
+    build:
+      context: ..
+      target: reader
+    ports: ["127.0.0.1:3300:3300"]
+    volumes: ["content:/data:ro"]
+    depends_on: [management]
+    init: true
+    restart: unless-stopped
+volumes:
+  content:

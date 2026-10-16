@@ -1,0 +1,20 @@
+/* 单行标签集合：项不换行排成一行；滚动规则统一在 overflowScroll.css */
+.ds-inline-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--ds-space-8);
+  /* 宽度跟列走（表格为 fixed 布局，列宽由 columnWidth 决定） */
+  max-width: 100%;
+}
+
+.ds-inline-list__item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+/* Ant Tag 自带右外边距，在 gap 布局里清零避免双倍间距 */
+.ds-inline-list__item > .ant-tag {
+  margin-inline-end: 0;
+}

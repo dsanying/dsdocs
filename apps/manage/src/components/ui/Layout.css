@@ -1,0 +1,130 @@
+.ds-layout-stack {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+}
+
+.ds-layout-stack--page {
+  gap: var(--ds-space-24);
+}
+
+.ds-layout-stack--block {
+  gap: var(--ds-space-16);
+}
+
+.ds-layout-stack--control {
+  gap: var(--ds-space-8);
+}
+
+.ds-layout-stack--tight {
+  gap: var(--ds-space-4);
+}
+
+.ds-layout-stack--row {
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  max-width: 100%;
+}
+
+.ds-layout-stack--wrap {
+  flex-wrap: wrap;
+}
+
+.ds-layout-stack--align-start {
+  align-items: flex-start;
+}
+.ds-layout-stack--align-center {
+  align-items: center;
+}
+.ds-layout-stack--align-end {
+  align-items: flex-end;
+}
+.ds-layout-stack--align-stretch {
+  align-items: stretch;
+}
+.ds-layout-stack--align-baseline {
+  align-items: baseline;
+}
+.ds-layout-stack--justify-start {
+  justify-content: flex-start;
+}
+.ds-layout-stack--justify-center {
+  justify-content: center;
+}
+.ds-layout-stack--justify-end {
+  justify-content: flex-end;
+}
+.ds-layout-stack--justify-between {
+  justify-content: space-between;
+}
+
+/* 相邻间距只由父级 stack 的 gap 表达：stack 直接子级的组件不再自带尾部外边距
+   （页签 header、查询条的 margin-block-end 放在 stack 里会穿透出来与 gap 叠加成非标准间距，
+   在卡片/弹层体内不受此约束——那里没有父级 gap，组件自带的留白就是间距本身）。 */
+.ds-layout-stack > .ds-responsive-tabs > .ds-responsive-tabs__header,
+.ds-layout-stack > .ds-query-form,
+.ds-layout-stack > .ds-query-feedback {
+  margin-block-end: 0;
+}
+
+.ds-section-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--ds-space-8);
+  min-width: 0;
+}
+
+.ds-section-header__title {
+  min-width: 0;
+  margin: 0;
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-lg);
+  line-height: 1.5;
+}
+
+.ds-section-header__extra {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/** 筛选及检索控件保留稳定桌面宽度，在窄容器内收缩而不撑宽页面。 */
+.ds-responsive-control {
+  width: min(100%, var(--ds-layout-control-width));
+}
+
+.ds-responsive-control--wide {
+  width: min(100%, var(--ds-layout-wide-control-width));
+}
+
+/* 菜单项不省略：项高固定不宜换行，放不下在项内左右滚动
+   （选择器需高于 Ant 的 .ant-menu-inline.ant-menu-root .ant-menu-item > .ant-menu-title-content） */
+.ant-menu.ant-menu.ant-menu-root .ant-menu-item,
+.ant-menu.ant-menu.ant-menu-root .ant-menu-submenu-title,
+.ant-menu.ant-menu.ant-menu-root .ant-menu-item > .ant-menu-title-content,
+.ant-menu.ant-menu.ant-menu-root .ant-menu-submenu-title > .ant-menu-title-content {
+  text-overflow: clip;
+}
+
+.ant-menu.ant-menu.ant-menu-root .ant-menu-item > .ant-menu-title-content,
+.ant-menu.ant-menu.ant-menu-root .ant-menu-submenu-title > .ant-menu-title-content {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* 视觉隐藏但仍是页面内容（读屏可读、IconLabelHint 可取出显示），用于空间不足时只留图标的按钮文字 */
+.ds-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

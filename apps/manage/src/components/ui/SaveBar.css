@@ -1,0 +1,26 @@
+/* 编辑动作默认正常流；仅 footer 模式提供抬升底部表面。 */
+.ds-save-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-8) var(--ds-space-16);
+}
+
+/* 全宽页脚表面：横向内边距与 AppPage 页面留白对齐，操作与卡片右缘齐平 */
+.ds-save-bar--footer {
+  padding: var(--ds-space-12) var(--ds-space-24);
+  border-top: 1px solid var(--ds-color-border);
+  background: var(--ds-color-surface-elevated);
+  box-shadow: var(--ds-shadow-choice);
+}
+
+@media (max-width: 640px) {
+  .ds-save-bar--footer {
+    padding-inline: var(--ds-space-16);
+  }
+}
+
+.ds-save-bar__hint {
+  color: var(--ds-color-text-secondary);
+}

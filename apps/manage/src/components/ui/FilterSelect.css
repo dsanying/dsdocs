@@ -1,0 +1,19 @@
+/* 筛选条件的多选：已选标签换行完整展示（Ant 默认形态），不走一行滚动 + 弹窗 */
+.ant-select-multiple .ds-select-content.ds-filter-select__content {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+/* 换行时约束单项宽度；超长文字由统一滚动槽位接管，关闭图标留在标签内。 */
+.ant-select-multiple .ds-select-content.ds-filter-select__content > .ant-select-content-item,
+.ant-select-multiple .ds-select-content.ds-filter-select__content .ant-select-selection-item {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* 单个超长标签不独占整行：给尾随的搜索输入留出位置，避免控件多出一行空白。 */
+.ant-select-multiple
+  .ds-select-content.ds-filter-select__content
+  > .ant-select-content-item:not(.ant-select-content-item-suffix) {
+  max-width: calc(100% - var(--ds-space-8));
+}

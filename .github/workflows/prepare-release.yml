@@ -19,10 +19,12 @@ jobs:
       - name: Build images without publishing
         run: |
           docker build --target reader --tag dsdocs-reader:preflight .
-          docker build --target studio --tag dsdocs-studio:preflight .
+          docker build --target management --tag dsdocs-management:preflight .
       - uses: actions/upload-artifact@v4
         with:
-          name: dsdocs-example-static-reader
-          path: apps/reader/out
+          name: dsdocs-build-evidence
+          path: |
+            apps/manage/dist
+            apps/reader/public/THIRD_PARTY_NOTICES.txt
           if-no-files-found: error
           include-hidden-files: true

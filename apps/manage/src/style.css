@@ -1,271 +1,72 @@
-:root {
-  font-size: 14px;
-  font-family: 'Geist Variable', sans-serif;
-}
-.shell {
+.management-shell {
   min-height: 100dvh;
-  font-family: 'Geist Variable', sans-serif;
-  --surface: light-dark(#fff, #161616);
-  --muted: light-dark(#f5f5f5, #212121);
-  --border: light-dark(#e5e5e5, #333);
-  --text: light-dark(#171717, #eee);
-  background: var(--surface);
-  color: var(--text);
-  font-size: 14px;
 }
-* {
-  box-sizing: border-box;
+.brand {
+  padding: var(--ds-space-24);
+  font-size: 24px;
+  font-weight: 600;
 }
-body {
-  margin: 0;
-}
-.shell-header button,
-.document-status button,
-.account-page button,
-.account-page input {
-  font: inherit;
-}
-:is(.shell-header, .document-status, .account-page) button {
-  min-height: 32px;
-  padding: 4px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: inherit;
-  cursor: pointer;
-}
-:is(.shell-header, .document-status, .account-page) button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-:is(.shell-header, .document-status, .account-page) button:hover:not(:disabled),
-.shell-header button[aria-current='page'] {
-  background: var(--muted);
-}
-:is(.shell-header, .document-status, .account-page) button:focus-visible,
-.account-page input:focus-visible {
-  outline: 2px solid #1677ff;
-  outline-offset: 2px;
-}
-.shell-header {
-  height: 56px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  padding: 0 20px;
-}
-.shell-header strong {
-  font-size: 20px;
-}
-.shell-header nav {
-  display: flex;
+.account-menu {
+  padding: 16px;
+  display: grid;
   gap: 8px;
+}
+.resource-page {
+  padding: 24px;
 }
 .documents {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  height: calc(100dvh - 56px);
+  grid-template-columns: 240px minmax(0, 1fr);
+  min-height: 100dvh;
 }
 .documents > aside {
-  padding: 12px;
-  overflow: auto;
-  border-right: 1px solid var(--border);
-  background: var(--muted);
+  padding: 16px;
+  border-inline-end: 1px solid var(--ds-color-border);
 }
-.editor {
-  overflow: auto;
+.editor-pane {
+  padding: 24px;
   min-width: 0;
 }
-.document-status {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 12px 20px;
-  border-bottom: 1px solid var(--border);
-  font-family: monospace;
-  overflow-wrap: anywhere;
+.document-metadata {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 16px;
 }
-.account-page {
-  max-width: 1200px;
-  margin: auto;
-  padding: 24px;
-}
-.account-page > header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.account-page h1 {
-  font-size: 24px;
-}
-.account-page p {
-  line-height: 1.7;
-}
-.table-scroll {
+.markdown-editor {
+  border: 1px solid var(--ds-color-border);
+  border-radius: 8px;
   overflow: auto;
 }
-.account-page table {
-  border-collapse: collapse;
-  width: 100%;
-  text-align: left;
+.mdxeditor {
+  --baseBg: var(--ds-color-surface);
+  --baseText: var(--ds-color-text);
+  --baseBase: var(--ds-color-surface);
+  --baseBorder: var(--ds-color-border);
+  color: var(--ds-color-text);
+  background: var(--ds-color-surface);
 }
-.account-page th,
-.account-page td {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
+.document-prose {
+  min-height: 320px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
 }
-.account-page td button + button {
-  margin-left: 8px;
+.document-prose img {
+  max-width: 100%;
 }
-.danger {
-  color: light-dark(#cf1322, #ff7875);
-}
-.account-page dialog {
-  width: min(480px, calc(100vw - 32px));
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  color: var(--text);
-  padding: 24px;
-}
-.account-page dialog::backdrop {
-  background: #0006;
-}
-.account-page dialog form {
-  display: grid;
-  gap: 16px;
-}
-.account-page dialog h2 {
-  margin: 0;
-  font-size: 20px;
-}
-.account-page dialog label {
-  display: grid;
-  gap: 6px;
-}
-.account-page dialog input {
-  width: 100%;
-  min-height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  color: var(--text);
-  padding: 6px 10px;
-}
-.account-page dialog footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-.notice:not(:empty) {
-  position: fixed;
-  right: 20px;
-  top: 72px;
-  max-width: min(400px, 90vw);
-  padding: 16px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 4px 20px #0002;
-  z-index: 10000;
-}
-@media (max-width: 760px) {
-  .document-status {
-    font-size: 12px;
-    padding: 8px;
-  }
-  .account-page {
-    padding: 16px;
-  }
-  .shell-header {
-    padding: 0 12px;
-    gap: 8px;
-  }
-}
-@media (max-width: 480px) {
-  .documents > aside {
-    padding: 4px;
-  }
-}
-.documents.with-sidebar {
-  grid-template-columns: 280px minmax(0, 1fr);
-}
-.documents > aside[hidden] {
-  display: none;
-}
-.shell-header > button:last-child {
-  margin-left: auto;
-}
-@media (max-width: 760px) {
-  .documents.with-sidebar {
-    grid-template-columns: 190px minmax(0, 1fr);
-  }
-}
-@media (max-width: 480px) {
-  .documents.with-sidebar {
+@media (max-width: 768px) {
+  .documents {
     grid-template-columns: minmax(0, 1fr);
   }
-  .documents.with-sidebar > aside {
-    position: fixed;
-    z-index: 20;
-    top: 56px;
-    bottom: 0;
-    width: 230px;
-    box-shadow: 0 8px 24px #0003;
+  .documents > aside {
+    border-inline-end: 0;
+    max-height: 240px;
+    overflow: auto;
   }
-  .document-status {
-    position: sticky;
-    top: 0;
-    background: var(--surface);
-    z-index: 21;
+  .document-metadata {
+    grid-template-columns: minmax(0, 1fr);
   }
-  .documents.with-sidebar .editor {
-    padding-top: 0;
+  .editor-pane,
+  .resource-page {
+    padding: 16px;
   }
-}
-
-.account-search {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 20px 0;
-}
-.account-search input,
-.pagination select {
-  font: inherit;
-  color: inherit;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  min-height: 32px;
-  padding: 4px 8px;
-}
-.account-search input {
-  width: min(320px, 65vw);
-}
-.pagination {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  padding: 16px 0;
-}
-.pagination label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.shell-header > a {
-  margin-left: auto;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  white-space: nowrap;
-}
-.shell-header > a + button:last-child {
-  margin-left: 0;
 }

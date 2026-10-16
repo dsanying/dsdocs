@@ -1,0 +1,65 @@
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--ds-font-family-body);
+  font-size: var(--ds-font-size-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  color: var(--ds-color-text);
+  background: var(--ds-color-canvas);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* 内容媒体不溢出容器；图标 svg（.anticon）按 1em 固定，不参与收缩，否则在窄容器里被压成 0 宽 */
+img,
+video,
+svg:not(.anticon svg) {
+  max-width: 100%;
+}
+
+a {
+  color: var(--ds-color-link);
+}
+
+:focus-visible {
+  outline: var(--ds-space-2) solid var(--ds-color-focus);
+  outline-offset: var(--ds-space-2);
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ds-page-root {
+  width: min(100%, var(--ds-layout-content-max));
+  min-width: 0;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}

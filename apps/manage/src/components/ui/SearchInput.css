@@ -1,0 +1,8 @@
+.ds-search-input {
+  width: min(100%, var(--ds-layout-control-width));
+  min-width: 0;
+}
+
+.ds-search-input__control {
+  width: 100%;
+}

@@ -1,0 +1,182 @@
+/*
+ * 唯一设计标度的 CSS 发布：颜色以本文件为唯一来源，
+ * 亮色定义在 :root，暗色通过 :root[data-theme="dark"] 覆盖同名变量；
+ * 尺寸、字体与数据色板由 src/design/tokens.ts 为 JS 侧同源派生。
+ */
+:root {
+  color-scheme: light;
+
+  /*
+   * 唯一品牌种子：改这一处即可更换全站主题色。
+   * primary 的亮暗、悬停、按下、弱背景、边框与焦点色全部在下方自动派生；
+   * 黑白只作为保证任意品牌种子仍有可读前景的对比度锚点，不是第二个品牌配置。
+   */
+  --ds-color-brand: #1677ff;
+
+  /*
+   * 中性梯与参考基线同构：纯黑纯白是产品锚点，灰阶只承担层级、悬停与浮起，
+   * 不带蓝紫等色偏；默认蓝色表达品牌主操作、链接、焦点与信息，状态色只表达真实状态。
+   */
+  --ds-color-canvas: #f6f6f4;
+  --ds-color-surface: #ffffff;
+  --ds-color-surface-subtle: #fafaf9;
+  --ds-color-surface-muted: #f0f0ee;
+  --ds-color-surface-elevated: #ffffff;
+  --ds-color-text: #000000;
+  /* 次级文字是真次级灰：标签/表头/说明需要与正文值区分开，未选中与禁用才用 tertiary/disabled */
+  --ds-color-text-secondary: #5a5a55;
+  --ds-color-text-tertiary: #686864;
+  --ds-color-text-disabled: #8f8f8b;
+  --ds-color-border: #dededb;
+  --ds-color-border-strong: #b7b7b3;
+  --ds-color-primary: color-mix(in srgb, var(--ds-color-brand) 94%, #000000);
+  --ds-color-primary-hover: color-mix(in srgb, var(--ds-color-primary) 85%, #ffffff);
+  --ds-color-primary-active: color-mix(in srgb, var(--ds-color-primary) 90%, #000000);
+  --ds-color-primary-foreground: #ffffff;
+  --ds-color-primary-text: color-mix(in srgb, var(--ds-color-primary) 95%, #000000);
+  --ds-color-primary-surface: color-mix(in srgb, var(--ds-color-brand) 7%, #ffffff);
+  --ds-color-primary-border: color-mix(in srgb, var(--ds-color-brand) 30%, #ffffff);
+  --ds-color-link: #245bdb;
+  --ds-color-link-hover: #1d4bb8;
+  --ds-color-focus: var(--ds-color-primary);
+  --ds-color-info: #245bdb;
+  --ds-color-info-surface: #edf2ff;
+  --ds-color-info-border: #9db7f5;
+  --ds-color-success: #217a4b;
+  --ds-color-success-surface: #edf8f2;
+  --ds-color-success-border: #9ccfb2;
+  --ds-color-warning: #925400;
+  --ds-color-warning-surface: #fff6e7;
+  --ds-color-warning-border: #dfbd7d;
+  --ds-color-error: #bd3038;
+  --ds-color-error-surface: #fff0f1;
+  --ds-color-error-border: #e5a2a7;
+  /* 反色表面（亮色主题里的黑底：选中的分段项/页签）上的语义色：取暗色主题的同名值 */
+  --ds-color-link-on-inverse: #85a7ff;
+  --ds-color-info-on-inverse: #85a7ff;
+  --ds-color-success-on-inverse: #65d697;
+  --ds-color-warning-on-inverse: #f1b85b;
+  --ds-color-error-on-inverse: #ff858c;
+  --ds-color-shadow: #111110;
+  /*
+   * 图表分类色板：8 档固定顺序（蓝/橙/青/黄/品红/绿/紫/红），经色觉缺陷与对比度校验；
+   * 运行时派生 40 档分类色，展示全部系列，不按索引取模循环。暗色主题有自己的一组档位。
+   */
+  --ds-color-data-1: #2a78d6;
+  --ds-color-data-2: #eb6834;
+  --ds-color-data-3: #1baf7a;
+  --ds-color-data-4: #eda100;
+  --ds-color-data-5: #e87ba4;
+  --ds-color-data-6: #008300;
+  --ds-color-data-7: #4a3aa7;
+  --ds-color-data-8: #e34948;
+  --ds-font-family-body:
+    'IBM Plex Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --ds-font-family-code: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --ds-space-2: 2px;
+  --ds-space-4: 4px;
+  --ds-space-8: 8px;
+  --ds-space-12: 12px;
+  --ds-space-16: 16px;
+  --ds-space-24: 24px;
+  --ds-space-32: 32px;
+  --ds-space-40: 40px;
+  --ds-font-size-xs: 12px;
+  --ds-font-size-body: 14px;
+  --ds-font-size-lg: 16px;
+  --ds-font-size-title: 20px;
+  --ds-font-size-metric: 28px;
+  --ds-radius-xs: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-motion-fast: 120ms;
+  --ds-shadow-raised: 0 8px 24px rgb(17 17 16 / 10%), 0 2px 8px rgb(17 17 16 / 7%);
+  --ds-shadow-focus: 0 0 0 3px color-mix(in srgb, var(--ds-color-primary) 22%, transparent);
+  --ds-shadow-choice: 0 1px 2px rgb(17 17 16 / 10%), 0 1px 3px rgb(17 17 16 / 6%);
+  --ds-control-height: 32px;
+  --ds-layout-header-height: 60px;
+  --ds-layout-content-max: 1600px;
+  --ds-layout-control-width: 320px;
+  --ds-layout-query-control-width: 240px;
+  --ds-layout-wide-control-width: 420px;
+  --ds-layout-scroll-region-max-height: 300px;
+  --ds-layout-cell-max-height: 120px;
+  --ds-layout-dialog-width: 720px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ds-color-canvas: #080808;
+  --ds-color-surface: #111111;
+  --ds-color-surface-subtle: #151515;
+  --ds-color-surface-muted: #1b1b1b;
+  --ds-color-surface-elevated: #202020;
+  --ds-color-text: #ffffff;
+  --ds-color-text-secondary: #d9d9d4;
+  --ds-color-text-tertiary: #a3a39e;
+  --ds-color-text-disabled: #777773;
+  --ds-color-border: #2c2c2b;
+  --ds-color-border-strong: #4a4a48;
+  --ds-color-primary: color-mix(in srgb, var(--ds-color-brand) 85%, var(--ds-color-surface));
+  --ds-color-primary-hover: color-mix(in srgb, var(--ds-color-primary) 85%, #ffffff);
+  --ds-color-primary-active: color-mix(in srgb, var(--ds-color-primary) 85%, #000000);
+  --ds-color-primary-foreground: #ffffff;
+  --ds-color-primary-text: color-mix(in srgb, var(--ds-color-primary) 60%, #ffffff);
+  --ds-color-primary-surface: color-mix(
+    in srgb,
+    var(--ds-color-primary) 16%,
+    var(--ds-color-surface)
+  );
+  --ds-color-primary-border: color-mix(
+    in srgb,
+    var(--ds-color-primary) 48%,
+    var(--ds-color-surface)
+  );
+  --ds-color-link: #85a7ff;
+  --ds-color-link-hover: #a3bdff;
+  --ds-color-focus: var(--ds-color-primary);
+  --ds-color-info: #85a7ff;
+  --ds-color-info-surface: #182447;
+  --ds-color-info-border: #445e9c;
+  --ds-color-success: #65d697;
+  --ds-color-success-surface: #13291d;
+  --ds-color-success-border: #2d6c49;
+  --ds-color-warning: #f1b85b;
+  --ds-color-warning-surface: #33240f;
+  --ds-color-warning-border: #785521;
+  --ds-color-error: #ff858c;
+  --ds-color-error-surface: #351719;
+  --ds-color-error-border: #7a383d;
+  /* 暗色主题里的反色表面是白底：语义色取亮色主题的同名值 */
+  --ds-color-link-on-inverse: #245bdb;
+  --ds-color-info-on-inverse: #245bdb;
+  --ds-color-success-on-inverse: #217a4b;
+  --ds-color-warning-on-inverse: #925400;
+  --ds-color-error-on-inverse: #bd3038;
+  --ds-color-shadow: #000000;
+  --ds-color-data-1: #3987e5;
+  --ds-color-data-2: #d95926;
+  --ds-color-data-3: #199e70;
+  --ds-color-data-4: #c98500;
+  --ds-color-data-5: #d55181;
+  --ds-color-data-6: #008300;
+  --ds-color-data-7: #9085e9;
+  --ds-color-data-8: #e66767;
+  --ds-shadow-raised: 0 10px 28px rgb(0 0 0 / 42%), 0 2px 10px rgb(0 0 0 / 30%);
+  --ds-shadow-focus: 0 0 0 3px color-mix(in srgb, var(--ds-color-primary) 30%, transparent);
+  --ds-shadow-choice: 0 1px 2px rgb(0 0 0 / 38%), 0 1px 4px rgb(0 0 0 / 24%);
+}
+
+/*
+ * 显式反色表面；普通页签/分段项使用品牌弱背景，不属于反色表面。
+ * 语义色变量可继承，在这里改绑到 *-on-inverse 后，里面任何 var(--ds-color-success) 等的图标/文字自动换色，
+ * 业务不需要知道自己在不在反色表面上。需要反色的其他容器加 data-surface="inverse"。
+ */
+[data-surface='inverse'] {
+  --ds-color-link: var(--ds-color-link-on-inverse);
+  --ds-color-info: var(--ds-color-info-on-inverse);
+  --ds-color-success: var(--ds-color-success-on-inverse);
+  --ds-color-warning: var(--ds-color-warning-on-inverse);
+  --ds-color-error: var(--ds-color-error-on-inverse);
+}

@@ -1,0 +1,54 @@
+.ds-status-tag {
+  align-items: center;
+  max-width: 100%;
+  border-color: var(--ds-color-border);
+  background: var(--ds-color-surface-muted);
+  color: var(--ds-color-text-secondary);
+  /* 状态是单个词项；长文本由统一槽位局部滚动，图标与关闭入口留在外侧。 */
+  white-space: nowrap;
+}
+
+/* 保留 Ant 关闭后的 hidden 默认行为，布局增强不重新显示已关闭标签。 */
+.ds-status-tag:not(.ant-tag-hidden) {
+  display: inline-flex;
+}
+
+.ds-status-tag__content {
+  display: block;
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+
+/* Ant 有 icon 时会在 children 外加 span；该共享结构也必须允许收缩。 */
+.ds-status-tag > span:not(.anticon) {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.ds-status-tag > .anticon {
+  flex: 0 0 auto;
+}
+
+.ds-status-tag--info {
+  border-color: var(--ds-color-info-border);
+  background: var(--ds-color-info-surface);
+  color: var(--ds-color-info);
+}
+
+.ds-status-tag--success {
+  border-color: var(--ds-color-success-border);
+  background: var(--ds-color-success-surface);
+  color: var(--ds-color-success);
+}
+
+.ds-status-tag--warning {
+  border-color: var(--ds-color-warning-border);
+  background: var(--ds-color-warning-surface);
+  color: var(--ds-color-warning);
+}
+
+.ds-status-tag--error {
+  border-color: var(--ds-color-error-border);
+  background: var(--ds-color-error-surface);
+  color: var(--ds-color-error);
+}

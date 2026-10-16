@@ -1,0 +1,4 @@
+/* 单行长文本：宽度跟列走（表格为 fixed 布局，列宽由 columnWidth 决定）；单行与滚动规则统一在 overflowScroll.css */
+.ds-long-text {
+  max-width: 100%;
+}

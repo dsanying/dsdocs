@@ -1,0 +1,9 @@
+.ds-drawer-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.ds-drawer-form-footer > * {
+  max-width: 100%;
+}

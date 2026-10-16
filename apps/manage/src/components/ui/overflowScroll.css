@@ -1,0 +1,147 @@
+/*
+ * 横向滚动槽位的全部样式只在这里：选择器与 overflowSlots.ts 的 SCROLL_SLOTS 逐条一致（设计门禁校验）。
+ * 槽位默认不是滚动容器（放得下时左右拖动 / 滚轮交给外层）；overflowScroll 量出真溢出后标 data-overflowing 才打开滚动。
+ * 组件样式只管布局（display、max-width），不得再写自己的溢出规则。
+ * 句子与段落（说明、报错、帮助、正文）按正常排版折行，不属于槽位。
+ */
+.ds-table .ant-table-tbody > tr.ant-table-row > td:not(.ds-table__action-cell),
+.ds-table
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td
+  > .ds-layout-stack:not(.ds-layout-stack--row)
+  > *,
+.ds-action-link[data-variant='name'] > .ds-action-link__label,
+.ds-ratio-progress__text,
+.ds-status-tag__content,
+.ds-atomic-value,
+.ds-long-text,
+.ds-inline-list,
+.ds-single-line,
+.ds-app-page__title,
+.ds-app-page__header > .ant-breadcrumb li:last-child,
+.ant-card .ant-card-head-title,
+.ds-select-option .ant-select-item-option-content,
+.ant-select-multiple .ds-select-content.ds-multi-select__content--wrap .ds-select-tag-content,
+.ant-select-multiple .ds-select-content.ds-filter-select__content .ds-select-tag-content,
+.ds-view-switch .ant-segmented-group,
+.ds-view-switch .ant-segmented-item-label.ds-view-switch__label {
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+.ds-table
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td:not(.ds-table__action-cell)[data-overflowing='true'],
+.ds-table
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td
+  > .ds-layout-stack:not(.ds-layout-stack--row)
+  > *[data-overflowing='true'],
+.ds-action-link[data-variant='name'] > .ds-action-link__label[data-overflowing='true'],
+.ds-ratio-progress__text[data-overflowing='true'],
+.ds-status-tag__content[data-overflowing='true'],
+.ds-atomic-value[data-overflowing='true'],
+.ds-long-text[data-overflowing='true'],
+.ds-inline-list[data-overflowing='true'],
+.ds-single-line[data-overflowing='true'],
+.ds-app-page__title[data-overflowing='true'],
+.ds-app-page__header > .ant-breadcrumb li:last-child[data-overflowing='true'],
+.ant-card .ant-card-head-title[data-overflowing='true'],
+.ds-select-option .ant-select-item-option-content[data-overflowing='true'],
+.ant-select-multiple
+  .ds-select-content.ds-multi-select__content--wrap
+  .ds-select-tag-content[data-overflowing='true'],
+.ant-select-multiple
+  .ds-select-content.ds-filter-select__content
+  .ds-select-tag-content[data-overflowing='true'],
+.ds-view-switch .ant-segmented-group[data-overflowing='true'],
+.ds-view-switch .ant-segmented-item-label.ds-view-switch__label[data-overflowing='true'] {
+  overflow-x: auto;
+}
+
+/* 通用单行槽位的布局：业务里需要单行展示的名称/标签直接加 ds-single-line */
+.ds-single-line {
+  display: block;
+  max-width: 100%;
+}
+
+/*
+ * 滚动槽位不用水平内边距：滚动容器的内边距属于可滚动区域，滚动后内容会滑进内边距、贴到格子边缘，
+ * 相邻两格同时滚动时看起来连成一片。这里把留白换成同宽的透明行内边框——尺寸与对齐不变、背景（悬停色）照常铺满，
+ * 而滚动内容只在内容区里裁切，任何时候与邻格之间都隔着固定留白。
+ */
+/* 选择器带上 .ant-table 与尺寸类，高于 Ant 各尺寸（medium / small）的单元格内边距规则；操作列不是滚动槽位，保留 Ant 内边距；透明边框会把固定列阴影向内容区推移 */
+.ds-table
+  .ant-table
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td.ant-table-cell:not(.ds-table__action-cell):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ) {
+  padding-inline: 0;
+  border-inline: var(--ant-table-cell-padding-inline) solid transparent;
+  /* 透明行内边框与底边斜接会让行分隔线在列边界处变尖断开；底边保留占位但透明，改由铺满边框盒的背景线绘制。 */
+  border-bottom-color: transparent;
+  background-image: linear-gradient(var(--ant-table-border-color), var(--ant-table-border-color));
+  background-size: 100% var(--ant-line-width);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+}
+
+.ds-table
+  .ant-table.ant-table-medium
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td.ant-table-cell:not(.ds-table__action-cell):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ) {
+  padding-inline: 0;
+  border-inline-width: var(--ant-table-cell-padding-inline-md);
+}
+
+.ds-table
+  .ant-table.ant-table-small
+  .ant-table-tbody
+  > tr.ant-table-row
+  > td.ant-table-cell:not(.ds-table__action-cell):not(.ant-table-selection-column):not(
+    .ant-table-row-expand-icon-cell
+  ) {
+  padding-inline: 0;
+  border-inline-width: var(--ant-table-cell-padding-inline-sm);
+}
+
+/* 单对象详情完整展示；复用的单行组件在此语境自然折行，不保留内部横滚。 */
+.ds-information-grid .ds-action-link[data-variant='name'] > .ds-action-link__label,
+.ds-information-grid
+  :is(
+    dt,
+    dd,
+    .ds-atomic-value,
+    .ds-long-text,
+    .ds-single-line,
+    .ds-status-tag__content,
+    .ds-action-link__label,
+    .ds-inline-list
+  ) {
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  /* 详情正文折行：完整展示值，包括超长连续标识。 */
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+}
+.ds-information-grid .ds-inline-list {
+  flex-wrap: wrap;
+}
+.ds-information-grid .ds-inline-list__item {
+  min-width: 0;
+  max-width: 100%;
+  flex-shrink: 1;
+}

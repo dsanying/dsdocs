@@ -1,0 +1,69 @@
+/*
+ * 竖排表单里的控件铺满控件区：带前后缀附加区的 InputNumber/Input（Ant 6 用 Space.Compact 包裹）
+ * 默认只按内容收缩，这里与其它控件保持同宽。
+ */
+.ant-form:not(.ant-form-inline) .ant-form-item-control-input-content > .ant-space-compact {
+  display: flex;
+  width: 100%;
+}
+
+.ant-form:not(.ant-form-inline)
+  .ant-form-item-control-input-content
+  > .ant-space-compact
+  > .ant-input-number,
+.ant-form:not(.ant-form-inline)
+  .ant-form-item-control-input-content
+  > .ant-space-compact
+  > .ant-input {
+  flex: 1 1 auto;
+}
+
+/*
+ * 字段说明与校验提示是句子而非单个词项：含 "A/B/C/D" 这类无空格长串时允许在串内换行，
+ * 否则整串撑出表单与卡片，窄屏整页出现横向滚动。
+ */
+.ant-form-item-extra,
+.ant-form-item-explain {
+  /* 正文折行：字段说明与校验提示是句子 */
+  overflow-wrap: anywhere;
+}
+
+/* 日期输入不省略：输入框本身可随光标左右滚动（选择器需高于 Ant 的 .ant-picker .ant-picker-input > input） */
+.ant-picker.ant-picker .ant-picker-input > input {
+  text-overflow: clip;
+}
+
+/* Picker 定位补丁以零偏移贴合视口；透明边框保持输入与面板的 4px 间距，也计入定位尺寸。 */
+.ant-picker-dropdown.ant-picker-dropdown {
+  border-block: var(--ds-space-4) solid transparent;
+}
+
+/* 日历保留库选择机制；双面板按实际视口换行，短视口只在弹层内纵滚。 */
+.ant-picker-dropdown.ant-picker-dropdown .ant-picker-panel-container {
+  max-width: calc(100vw - 2 * var(--ds-space-16));
+  max-height: calc(100dvh - 2 * var(--ds-space-24));
+  overflow: auto;
+}
+
+.ant-picker-dropdown.ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout,
+.ant-picker-dropdown.ant-picker-dropdown .ant-picker-panel-container .ant-picker-panels {
+  max-width: calc(100vw - 2 * var(--ds-space-16));
+  flex-wrap: wrap;
+}
+
+.ant-picker-dropdown
+  .ant-picker-panel
+  :is(
+    .ant-picker-date-panel,
+    .ant-picker-month-panel,
+    .ant-picker-year-panel,
+    .ant-picker-decade-panel,
+    .ant-picker-quarter-panel,
+    .ant-picker-week-panel
+  ) {
+  max-width: calc(100vw - 2 * var(--ds-space-16));
+}
+
+.ant-picker-dropdown .ant-picker-datetime-panel {
+  flex-wrap: wrap;
+}

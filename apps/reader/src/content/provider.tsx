@@ -4,7 +4,7 @@ import type { Framework } from 'fumadocs-core/framework';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import StaticSearch from './search';
+import DocumentSearch from './search';
 import { chineseUI } from './ui-translations';
 const base = process.env.NEXT_PUBLIC_DSDOCS_BASE_PATH ?? '/docs';
 
@@ -21,8 +21,7 @@ export const DocumentationLink: NonNullable<Framework['Link']> = ({ href = '', .
   return <Link href={target} {...props} />;
 };
 
-// Studio stores root-relative workspace assets; static readers use the public copy.
-// Keep the native Fumadocs MDX image wrapper, with the provider's standard HTML image adapter.
+// Uploaded image dimensions are unknown; use the framework HTML image adapter.
 export const DocumentationImage: NonNullable<Framework['Image']> = ({
   src,
   priority,
@@ -34,7 +33,7 @@ export const DocumentationImage: NonNullable<Framework['Image']> = ({
   return (
     <img
       {...props}
-      src={source?.startsWith('./assets/') ? `${base}/${source.slice(2)}` : source}
+      src={source}
       alt={alt ?? ''}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
@@ -72,7 +71,7 @@ export function DocumentationProvider({
         },
         translations: locale === 'zh' ? chineseUI : {},
       }}
-      search={{ SearchDialog: StaticSearch }}
+      search={{ SearchDialog: DocumentSearch }}
     >
       {children}
     </RootProvider>

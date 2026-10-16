@@ -1,0 +1,24 @@
+diff --git a/lib/coreBundle.js b/lib/coreBundle.js
+index 8ed8bb5de1b12c7c050191123b22a119298826bb..aedc5e75400cfb7477058e1f3dea0cf30daa73ff 100644
+--- a/lib/coreBundle.js
++++ b/lib/coreBundle.js
+@@ -14997,6 +14997,19 @@ function frameSnapshotStreamer(snapshotStreamer, removeNoScript) {
+         this.resetHistory();
+       if (reset)
+         ++this._targetGeneration;
++      // Do not measure a parsing document: Firefox reports forced layout while stylesheets are loading.
++      // Preserve the navigation snapshot; subsequent snapshots retain the complete DOM and resources.
++      if (document.readyState !== "complete") {
++        return {
++          html: ["html", { "data-playwright-document-ready-state": document.readyState }],
++          doctype: document.doctype ? document.doctype.name : void 0,
++          resourceOverrides: [],
++          viewport: { width: 0, height: 0 },
++          url: location.href,
++          wallTime: Date.now(),
++          collectionTime: 0
++        };
++      }
+       let nodeCounter = 0;
+       let shadowDomNesting = 0;
+       let headNesting = 0;

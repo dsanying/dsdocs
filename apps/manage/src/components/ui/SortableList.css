@@ -1,0 +1,78 @@
+/* 可排序列表：手柄在左、内容占满；拖动中的项抬起 */
+.ds-sortable-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-sortable-list__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-8);
+  min-width: 0;
+}
+
+.ds-sortable-list__item--dragging {
+  position: relative;
+  z-index: 1;
+}
+
+.ds-sortable-list__handle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--ds-space-32);
+  height: var(--ds-space-32);
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-color-text-secondary);
+  cursor: grab;
+  touch-action: none;
+}
+
+.ds-sortable-list__handle:hover,
+.ds-sortable-list__handle:focus-visible {
+  background: var(--ds-color-surface-muted);
+  color: var(--ds-color-text);
+  outline: none;
+}
+
+.ds-sortable-list__handle:disabled {
+  color: var(--ds-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ds-sortable-list[data-align='center'] > .ds-sortable-list__item {
+  align-items: center;
+}
+
+.ds-sortable-list__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* card：整项就是一块卡片；手柄是项首行里的小组件（由 renderItem 放置），不占独立一列 */
+.ds-sortable-list[data-variant='card'] > .ds-sortable-list__item {
+  display: block;
+  padding: var(--ds-space-8) var(--ds-space-12);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-surface);
+}
+
+.ds-sortable-list[data-variant='card'] > .ds-sortable-list__item[data-selected='true'] {
+  border-color: var(--ds-color-border-strong);
+  background: var(--ds-color-surface-muted);
+}
+
+/* 首行里的小手柄：与小号控件同高，不撑高标题行 */
+.ds-sortable-list__handle--inline {
+  width: var(--ds-space-24);
+  height: var(--ds-space-24);
+}

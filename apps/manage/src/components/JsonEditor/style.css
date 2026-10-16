@@ -1,0 +1,19 @@
+.ds-json-editor {
+  min-width: 0;
+  overflow: hidden;
+  border: var(--ant-line-width) solid var(--ds-color-border-strong);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-surface);
+}
+
+.ds-json-editor--error {
+  border-color: var(--ds-color-error);
+}
+
+.ds-json-editor__error {
+  padding: var(--ds-space-8) var(--ds-space-12);
+  color: var(--ds-color-error);
+  font-size: var(--ds-font-size-xs);
+  /* 正文折行：解析错误是句子 */
+  overflow-wrap: anywhere;
+}

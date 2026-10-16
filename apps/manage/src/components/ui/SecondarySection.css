@@ -1,0 +1,36 @@
+/*
+ * 次要信息区：一条无壳折叠栏，标题用正文字重、摘要用次级色，
+ * 与上方卡片区块靠一条 hairline 分隔；展开后的内容沿用区块间距。
+ */
+.ds-secondary-section.ant-collapse-ghost > .ant-collapse-item > .ant-collapse-header {
+  padding-inline: 0;
+  padding-block: var(--ds-space-12);
+  border-top: var(--ant-line-width) solid var(--ds-color-border);
+  color: var(--ds-color-text-secondary);
+}
+
+.ds-secondary-section.ant-collapse-ghost
+  > .ant-collapse-item
+  > .ant-collapse-content
+  > .ant-collapse-content-box {
+  padding: 0;
+  padding-top: var(--ds-space-16);
+}
+
+.ds-secondary-section__label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ds-space-8);
+  min-width: 0;
+}
+
+.ds-secondary-section__title {
+  font-weight: 600;
+  color: var(--ds-color-text);
+  white-space: nowrap;
+}
+
+.ds-secondary-section__summary {
+  color: var(--ds-color-text-tertiary);
+}

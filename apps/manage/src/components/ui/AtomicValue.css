@@ -1,0 +1,7 @@
+/* 单行值：宽度跟容器走；单行与滚动规则统一在 overflowScroll.css */
+/* inline-block：表格据此量出内容宽度，短值整列放宽到刚好放下（见 tableConfig.contentFitWidth） */
+.ds-atomic-value {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 100%;
+}

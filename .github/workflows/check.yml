@@ -1,7 +1,5 @@
 name: dsdocs-check
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
 permissions:
   contents: read
 concurrency:
@@ -21,11 +19,8 @@ jobs:
           cache: pnpm
           cache-dependency-path: |
             apps/manage/pnpm-lock.yaml
-            apps/studio/pnpm-lock.yaml
             apps/reader/pnpm-lock.yaml
       - run: pnpm install:all
       - run: pnpm check
-      - run: pnpm -C apps/studio exec playwright install --with-deps chromium firefox
-      - run: pnpm test:reader
-      - run: DSDOCS_CHROME_CHANNEL=chromium DSDOCS_HEADLESS=1 pnpm test:studio
-      - run: DSDOCS_CHROME_CHANNEL=chromium DSDOCS_HEADLESS=1 pnpm test:management
+      - run: pnpm -C apps/manage exec playwright install --with-deps chromium firefox
+      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:browser

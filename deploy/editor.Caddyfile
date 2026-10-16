@@ -1,7 +1,0 @@
-# Separate private editor entry: upstream uses root-level protocol endpoints.
-:5180 {
-  basic_auth {
-    {$DSDOCS_EDITOR_USER} {$DSDOCS_EDITOR_PASSWORD_HASH}
-  }
-  reverse_proxy studio:5180
-}

@@ -1,0 +1,34 @@
+.ds-permission-point-table__statuses {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ds-permission-point-table__status {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ds-space-8);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 数量为 0 的状态只作参照，弱化显示 */
+.ds-permission-point-table__statuses > [data-empty='true'] {
+  opacity: 0.55;
+}
+
+.ds-permission-point-table__target {
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-xs);
+}
+
+.ds-permission-point-table__row--clickable {
+  cursor: pointer;
+}
+
+.ds-permission-point-table__row--clickable[data-selected='true'] > td {
+  background: var(--ds-color-primary-surface);
+}

@@ -53,5 +53,30 @@
     "version": "0.0.1",
     "file": "client-only.txt",
     "source": "Published package declares MIT, without a repository or copyright notice. Standard MIT permission text reproduced; no copyright owner invented."
+  },
+  "@ant-design/icons-svg": {
+    "version": "4.6.0",
+    "file": "ant-designicons-svg.txt",
+    "source": "https://raw.githubusercontent.com/ant-design/ant-design-icons/7f2516ac91226d2b41f93b35cb5197c8d94f7189/LICENSE"
+  },
+  "@better-auth/utils": {
+    "version": "0.5.0",
+    "file": "better-authutils.txt",
+    "source": "https://raw.githubusercontent.com/better-auth/utils/main/LICENSE"
+  },
+  "cm6-theme-basic-light": {
+    "version": "0.2.0",
+    "file": "cm6-theme-basic-light.txt",
+    "source": "https://raw.githubusercontent.com/craftzdog/cm6-themes/fc765963a365ec4dc3b6771cea7a881350359d9a/LICENSE"
+  },
+  "mdast-util-highlight-mark": {
+    "version": "1.2.2",
+    "file": "mdast-util-highlight-mark.txt",
+    "source": "https://raw.githubusercontent.com/shlroland/remark-highlight-mark/master/License"
+  },
+  "micromark-extension-highlight-mark": {
+    "version": "1.2.0",
+    "file": "micromark-extension-highlight-mark.txt",
+    "source": "https://raw.githubusercontent.com/shlroland/remark-highlight-mark/master/License"
   }
 }

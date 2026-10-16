@@ -8,7 +8,11 @@
     "skipLibCheck": true,
     "noEmit": true,
     "allowJs": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "allowImportingTsExtensions": true
   },
   "include": ["src", "vite.config.ts"]
 }

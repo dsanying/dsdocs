@@ -1,0 +1,173 @@
+{
+  "app": {
+    "404": {
+      "subtitle": "sorry, the page you visited does not exist.",
+      "title": "404"
+    },
+    "pagination": {
+      "totalData": "{total} items total"
+    }
+  },
+  "common": {
+    "vocab": {
+      "hour": "hour",
+      "day": "day",
+      "month": "month",
+      "request": "request",
+      "status": "status",
+      "users": "users",
+      "chinese": "Chinese",
+      "user": "user",
+      "permission": "permission",
+      "searchPermissions": "$t(common.vocab.search) permissions",
+      "search": "search",
+      "json": "JSON",
+      "dropHereToCancel": "drop here to $t(common.actions.cancel) reordering, or press esc",
+      "menu": "menu",
+      "expandSidebar": "expand sidebar",
+      "collapseSidebar": "collapse sidebar",
+      "min": "min",
+      "everyDay": "every $t(common.vocab.day)",
+      "everyMonth": "every $t(common.vocab.month)",
+      "week": "week",
+      "close": "close"
+    },
+    "actions": {
+      "cancel": "cancel",
+      "create": "create",
+      "delete": "delete",
+      "edit": "edit",
+      "query": "query",
+      "retry": "retry",
+      "save": "save",
+      "reset": "reset",
+      "disable": "disable",
+      "enable": "enable",
+      "sync": "sync",
+      "export": "export",
+      "update": "update",
+      "upload": "upload",
+      "publish": "publish",
+      "unpublish": "unpublish",
+      "clear": "clear",
+      "clone": "clone",
+      "copy": "copy",
+      "send": "send",
+      "back": "back",
+      "view": "view",
+      "logout": "sign out"
+    },
+    "loadingPage": "loading page",
+    "requestFailed": "$t(common.vocab.request) failed",
+    "objects": {
+      "quotaPool": "quota pool"
+    },
+    "theme": {
+      "toggle": "toggle theme"
+    },
+    "confirm": {
+      "execute": "confirm?"
+    },
+    "copy": {
+      "copied": "copied",
+      "hint": "click to $t(common.actions.copy)"
+    },
+    "table": {
+      "selected": "{count} selected"
+    },
+    "chart": {
+      "titleTemplate": "{metric} {form} by {dimension}",
+      "titleTemplateNoDimension": "{metric} {form}",
+      "metricJoiner": " & ",
+      "byDimension": "by {dimension}",
+      "dimensions": {
+        "department": "department",
+        "person": "person",
+        "model": "model",
+        "service": "service",
+        "identity": "identity",
+        "hour": "$t(common.vocab.hour) of $t(common.vocab.day)"
+      },
+      "metrics": {
+        "cost": "cost",
+        "requests": "requests",
+        "tokens": "tokens",
+        "costPerRequest": "$t(common.chart.metrics.cost) per $t(common.vocab.request)",
+        "tokensPerRequest": "$t(common.chart.metrics.tokens) per $t(common.vocab.request)",
+        "activeUsers": "active $t(common.vocab.users)"
+      },
+      "forms": {
+        "ranking": "ranking",
+        "share": "share",
+        "trend": "trend",
+        "composition": "composition",
+        "distribution": "distribution",
+        "comparison": "comparison"
+      }
+    },
+    "language": {
+      "short": {
+        "enUS": "EN"
+      },
+      "switch": "switch language"
+    },
+    "brand": "DSdocs",
+    "request": {
+      "noResponse": "no response received, please $t(common.actions.retry)",
+      "failed": "$t(common.requestFailed), please $t(common.actions.retry)"
+    },
+    "calendar": {
+      "weekdays": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+      }
+    },
+    "feedback": {
+      "actionSucceeded": "{action} succeeded",
+      "actionFailed": "{action} failed",
+      "pasteIgnoredValues": "{count} pasted entries are not among the candidates",
+      "similarCandidates": "Similar candidates"
+    },
+    "unsavedChanges": "unsaved changes"
+  },
+  "components": {
+    "cronVisualSelector": {
+      "hour": {
+        "every": "every $t(common.vocab.hour)"
+      },
+      "dayOfWeek": {},
+      "minute": {
+        "every": "every minute"
+      },
+      "month": {}
+    },
+    "jsonEditor": {
+      "loading": "loading $t(common.vocab.json) editor"
+    }
+  },
+  "menu": {
+    "home": "home"
+  },
+  "pages": {
+    "analysis": {
+      "model": {}
+    },
+    "policyList": {
+      "permissionDefinition": {
+        "search": {
+          "hint": "separate keywords with spaces; all must match"
+        }
+      }
+    }
+  },
+  "common.feedback.errorDetail": "Error details",
+  "common.feedback.valuesAutoCorrected": "Input values corrected",
+  "common.rangePresets.7": "Last 7 days",
+  "common.rangePresets.30": "Last 30 days",
+  "common.rangePresets.90": "Last 90 days"
+}

@@ -1,0 +1,31 @@
+/*
+ * 动作按钮/链接在窄屏（≤640px）统一收成“仅图标”：文字视觉隐藏但仍是可访问名称。
+ * 所有按钮都必须带图标（业务 Button 由静态门禁强制，Modal/Popconfirm 的确定/取消由共享层注入），
+ * 因此整页同步收起，不出现“有的收了有的没收”；运行时门禁 expectConsistentActionButtons 兜底。
+ */
+@media (max-width: 640px) {
+  .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
+  .ds-action-link:not([data-variant='name']) > .ds-action-link__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ant-btn:has(> .ant-btn-icon) {
+    padding-inline: var(--ds-space-8);
+  }
+
+  .ant-btn:has(> .ant-btn-icon) > .ant-btn-icon {
+    margin-inline-end: 0;
+  }
+
+  .ds-action-link:not([data-variant='name']) {
+    gap: 0;
+  }
+}

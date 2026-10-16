@@ -1,0 +1,33 @@
+/* 虚拟列表保留透明拖拽轨道，显色滑块与原生兼容路径统一为 2px。 */
+:root {
+  --rc-virtual-list-scrollbar-size: var(--ds-space-2);
+  --rc-virtual-list-scrollbar-bg: var(--ds-color-border-strong);
+}
+
+/* 标准浏览器使用最细原生档；WebKit 兼容路径使用共享细线标度。 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-color-border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: var(--ds-space-2);
+  height: var(--ds-space-2);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--ds-color-border-strong);
+  border-radius: var(--ds-radius-xs);
+}
+
+/* Chromium 的标准 thin 会覆盖伪元素尺寸；支持此路径时用 2px 实现。 */
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+}

@@ -1,0 +1,119 @@
+/*
+ * 横向页签用 Ant Tabs line 原生形态：通栏底线、下划线指示器与主色选中文字，
+ * 共享层只管收缩/填充布局与等分变体；垂直工作区保留导航栏样式。
+ */
+.ds-responsive-tabs {
+  min-width: 0;
+}
+
+/* Ant 的 body 语义位于 holder 内；每一层都须能收缩，候选列表才在有界高度内滚动。 */
+.ds-responsive-tabs--fill > :has(> .ds-responsive-tabs__body) {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ds-responsive-tabs--fill > :has(> .ds-responsive-tabs__body) > .ds-responsive-tabs__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 只布局活动语义面板，隐藏成员继续由原生 Tabs/CSSMotion 管理。 */
+.ds-responsive-tabs--fill
+  > :has(> .ds-responsive-tabs__body)
+  > .ds-responsive-tabs__body
+  > .ds-responsive-tabs__content[aria-hidden='false'] {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.ds-responsive-tabs--horizontal > .ds-responsive-tabs__header {
+  width: 100%;
+  max-width: 100%;
+  margin-block-end: var(--ds-space-16);
+}
+
+.ds-responsive-tabs--horizontal > .ds-responsive-tabs__header .ant-tabs-nav-wrap {
+  min-width: 0;
+}
+
+/* 等分变体：项均分整行，其余交给原生 line 形态。 */
+.ds-responsive-tabs--equal > .ds-responsive-tabs__header .ant-tabs-nav-list {
+  width: 100%;
+}
+
+.ds-responsive-tabs--equal > .ds-responsive-tabs__header .ds-responsive-tabs__item {
+  flex: 1;
+  justify-content: center;
+}
+
+/* 非横向(导航/工作区)变体:导航栏样式,选中用弱表面底、无浮起阴影。 */
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal) > .ds-responsive-tabs__header {
+  align-self: stretch;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+  > .ds-responsive-tabs__header
+  .ant-tabs-nav-list {
+  flex: 0 0 auto;
+  width: 100%;
+  gap: var(--ds-space-2);
+  overflow: visible;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+  > .ds-responsive-tabs__header
+  .ds-responsive-tabs__item {
+  margin: 0;
+  border: 0;
+  border-radius: var(--ds-radius-md);
+  color: var(--ds-color-text-tertiary);
+  transition:
+    background-color var(--ds-motion-fast) ease,
+    color var(--ds-motion-fast) ease,
+    box-shadow var(--ds-motion-fast) ease;
+}
+
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+  > .ds-responsive-tabs__header
+  .ds-responsive-tabs__item:hover {
+  color: var(--ds-color-text);
+  background: var(--ds-color-surface-muted);
+}
+
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+  > .ds-responsive-tabs__header
+  .ds-responsive-tabs__item:has(> [role='tab'][aria-selected='true']) {
+  background: var(--ds-color-surface-muted);
+  box-shadow: none;
+}
+
+.ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+  > .ds-responsive-tabs__header
+  .ds-responsive-tabs__item:has(> [role='tab'][aria-selected='true'])
+  [role='tab'] {
+  color: var(--ds-color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
+    > .ds-responsive-tabs__header
+    .ds-responsive-tabs__item {
+    transition: none;
+  }
+}

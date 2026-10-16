@@ -1,0 +1,40 @@
+/*
+ * 表格面板：查询条 / 汇总 / 表格 / 分页纵向排列，只用 16px 间距分隔，不画带线；
+ * 表格的表头无填充、无外框（见主题 Table 映射），因而在卡片内边距里不会出现第二个小框。
+ */
+.ds-table-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  min-width: 0;
+}
+
+.ds-table-panel__query > .ds-query-form {
+  margin-block-end: 0;
+}
+
+/* 查询槽位里的独立 Select 同受查询控件宽度约束（与 QueryForm 内的控件同一标度） */
+.ds-table-panel__query > .ant-select {
+  width: min(100%, var(--ds-layout-query-control-width));
+}
+
+/* 分页行是面板的最后一行，不再额外留底部外边距 */
+.ds-table-panel .ant-table-wrapper .ant-table-pagination.ant-pagination {
+  margin-block-end: 0;
+}
+
+/* 页码去边框：选中用弱蓝底圆角、悬停用弱底，与页签/侧栏选中同一 accent 语言；
+   条数选择器保留输入控件形态不跟随 */
+.ds-table-panel .ant-pagination :is(.ant-pagination-item, .ant-pagination-item-link) {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ds-table-panel .ant-pagination-item:hover {
+  background: var(--ds-color-surface-muted);
+}
+
+.ds-table-panel .ant-pagination-item-active,
+.ds-table-panel .ant-pagination-item-active:hover {
+  background: var(--ds-color-primary-surface);
+}

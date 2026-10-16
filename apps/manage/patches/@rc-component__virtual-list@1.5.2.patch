@@ -1,0 +1,48 @@
+diff --git a/es/ScrollBar.js b/es/ScrollBar.js
+index 800413c6889755d3f891c2335a69fde7e805cbd8..ed3bbc28e61713d29af768cd9067e7d8dc8d9cf1 100644
+--- a/es/ScrollBar.js
++++ b/es/ScrollBar.js
+@@ -237,7 +237,8 @@ const ScrollBar = /*#__PURE__*/React.forwardRef((props, ref) => {
+       bottom: 0
+     });
+     Object.assign(thumbStyle, {
+-      height: '100%',
++      height: 'var(--rc-virtual-list-scrollbar-size, 100%)',
++      bottom: 0,
+       width: spinSize,
+       [isLTR ? 'left' : 'right']: top
+     });
+@@ -249,7 +250,8 @@ const ScrollBar = /*#__PURE__*/React.forwardRef((props, ref) => {
+       [isLTR ? 'right' : 'left']: 0
+     });
+     Object.assign(thumbStyle, {
+-      width: '100%',
++      width: 'var(--rc-virtual-list-scrollbar-size, 100%)',
++      [isLTR ? 'right' : 'left']: 0,
+       height: spinSize,
+       top
+     });
+diff --git a/lib/ScrollBar.js b/lib/ScrollBar.js
+index fb446bc2788d0dd406d97508decae43c02c1c5d4..4693ea9024e22d9f8e72aec5891147d885f30aa9 100644
+--- a/lib/ScrollBar.js
++++ b/lib/ScrollBar.js
+@@ -245,7 +245,8 @@ const ScrollBar = /*#__PURE__*/React.forwardRef((props, ref) => {
+       bottom: 0
+     });
+     Object.assign(thumbStyle, {
+-      height: '100%',
++      height: 'var(--rc-virtual-list-scrollbar-size, 100%)',
++      bottom: 0,
+       width: spinSize,
+       [isLTR ? 'left' : 'right']: top
+     });
+@@ -257,7 +258,8 @@ const ScrollBar = /*#__PURE__*/React.forwardRef((props, ref) => {
+       [isLTR ? 'right' : 'left']: 0
+     });
+     Object.assign(thumbStyle, {
+-      width: '100%',
++      width: 'var(--rc-virtual-list-scrollbar-size, 100%)',
++      [isLTR ? 'right' : 'left']: 0,
+       height: spinSize,
+       top
+     });

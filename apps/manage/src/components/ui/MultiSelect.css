@@ -1,0 +1,54 @@
+/*
+ * 多选控件：行内只是一行滚动的已选展示，点击控件区域打开弹窗编辑；弹窗里标签换行铺开。
+ */
+.ds-multi-select__inline:not(.ant-select-disabled) {
+  cursor: pointer;
+}
+
+.ds-multi-select__inline:not(.ant-select-disabled) .ant-select-selection-search-input {
+  cursor: pointer;
+}
+
+.ds-multi-select__full {
+  width: 100%;
+}
+
+/* 弹窗里的已选区：换行铺开，随内容增高到上限后在区内上下滚动——候选下拉紧贴已选标签下方，而不是落在一块固定高的空白之下 */
+.ant-select-multiple .ds-multi-select__content--wrap {
+  flex-wrap: wrap;
+  align-content: flex-start;
+  max-height: var(--ds-layout-scroll-region-max-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 换行铺开时单个超长标签不超出控件：钳在控件宽度内，标签文字单行、放不下在标签内左右滚动（overflowScroll.css） */
+.ant-select-multiple .ds-select-content.ds-multi-select__content--wrap > .ant-select-content-item,
+.ant-select-multiple .ds-select-content.ds-multi-select__content--wrap .ant-select-selection-item {
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* 单个超长标签不独占整行：给尾随的搜索输入留出位置，避免已选区多出一行空白。 */
+.ant-select-multiple
+  .ds-select-content.ds-multi-select__content--wrap
+  > .ant-select-content-item:not(.ant-select-content-item-suffix) {
+  max-width: calc(100% - var(--ds-space-8));
+}
+
+.ds-multi-select__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ds-space-12);
+}
+
+.ds-multi-select__count {
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-body);
+  font-weight: normal;
+}
+
+/* 行内控件的 mousedown 拦截层：不产生布局盒 */
+.ds-multi-select__inline-scope {
+  display: contents;
+}
