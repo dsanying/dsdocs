@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 const root = path.resolve(import.meta.dirname, '..');
 export async function collectLicenses(application, output) {
   const groups = JSON.parse(
@@ -53,6 +54,7 @@ export async function collectLicenses(application, output) {
       }
     }
   }
+  await mkdir(path.dirname(output instanceof URL ? fileURLToPath(output) : output), { recursive: true });
   await writeFile(output, sections.join('\n\n') + '\n');
   if (missing.length) throw new Error(`Missing license files: ${missing.join(', ')}`);
 }

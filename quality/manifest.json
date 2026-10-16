@@ -46,6 +46,15 @@
       ]
     },
     {
+      "id": "license-output-regression",
+      "rule": "THIRD_PARTY_NOTICES.md",
+      "command": [
+        "node",
+        "--test",
+        "scripts/tests/licenses.test.mjs"
+      ]
+    },
+    {
       "id": "service-regression",
       "rule": "docs/规范/后端.md",
       "command": [
