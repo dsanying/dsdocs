@@ -19,6 +19,9 @@ if (
   credentials.id === credentials.foreignId
 )
   throw new Error('Provide distinct isolated editor and foreign identity IDs.');
+const secrets = new Set([credentials.password, credentials.nonEditor?.password].filter(Boolean));
+const sanitize = (text) =>
+  [...secrets].reduce((value, secret) => value.split(secret).join('[redacted]'), text);
 const artifacts = process.env.DSDOCS_ARTIFACTS;
 await mkdir(artifacts, { recursive: true });
 const browser = await chromium.launch({
@@ -72,7 +75,7 @@ try {
   });
   const context = await browser.newContext({ locale: 'zh-CN' });
   const p = await login(context, credentials.username, credentials.password);
-  p.on('pageerror', (e) => errors.push(e.message));
+  p.on('pageerror', (e) => errors.push(sanitize(e.message)));
   await expect(p.getByRole('button', { name: '账号', exact: true })).toBeVisible({
     timeout: 30000,
   });
@@ -89,6 +92,8 @@ try {
   const username = 'browser-' + Date.now();
   const password = randomBytes(24).toString('base64url');
   const replacement = randomBytes(24).toString('base64url');
+  secrets.add(password);
+  secrets.add(replacement);
   await check('create cancel discards fields', async () => {
     await p.getByRole('button', { name: '创建账号' }).click();
     await p.getByLabel('用户名', { exact: true }).fill('discarded');
@@ -227,6 +232,9 @@ try {
     }
   });
   assert.deepEqual(errors, []);
+} catch (error) {
+  // Playwright failure snapshots may include filled password values.
+  throw new Error(sanitize(String(error.stack ?? error)));
 } finally {
   await browser.close();
   await writeFile(
