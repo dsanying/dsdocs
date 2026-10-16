@@ -1,5 +1,27 @@
 .management-shell {
-  min-height: 100dvh;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.management-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.management-page {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.management-page[hidden] {
+  display: none;
+}
+.management-page--scroll {
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 .brand {
   padding: var(--ds-space-24);
@@ -17,15 +39,36 @@
 .documents {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
-  min-height: 100dvh;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 .documents > aside {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
   padding: 16px;
   border-inline-end: 1px solid var(--ds-color-border);
 }
+.document-tree-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+}
 .editor-pane {
+  min-height: 0;
+  overflow: hidden;
   padding: 24px;
   min-width: 0;
+}
+.editor-pane > .ds-layout-stack {
+  height: 100%;
+  min-height: 0;
+}
+.editor-pane > .ds-layout-stack > :not(.markdown-editor) {
+  flex: none;
 }
 .document-metadata {
   display: grid;
@@ -33,9 +76,17 @@
   gap: 0 16px;
 }
 .markdown-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
   border: 1px solid var(--ds-color-border);
   border-radius: 8px;
-  overflow: auto;
+  overflow: hidden;
+}
+.document-body-scroll {
+  flex: 1 1 0;
+  min-height: 0;
 }
 .mdxeditor {
   --baseBg: var(--ds-color-surface);
@@ -56,11 +107,11 @@
 @media (max-width: 768px) {
   .documents {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(80px, 160px) minmax(0, 1fr);
   }
   .documents > aside {
     border-inline-end: 0;
-    max-height: 240px;
-    overflow: auto;
+    border-block-end: 1px solid var(--ds-color-border);
   }
   .document-metadata {
     grid-template-columns: minmax(0, 1fr);
@@ -68,5 +119,20 @@
   .editor-pane,
   .resource-page {
     padding: 16px;
+  }
+}
+
+@media (max-width: 768px), (max-height: 640px) {
+  .editor-pane {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .editor-pane > .ds-layout-stack {
+    height: auto;
+    min-height: 100%;
+  }
+  .markdown-editor {
+    flex: none;
+    height: 420px;
   }
 }

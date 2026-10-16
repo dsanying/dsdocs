@@ -40,7 +40,14 @@ import {
   type MDXEditorMethods,
 } from '@mdxeditor/editor';
 import '@mdxeditor/editor/style.css';
-import { DrawerForm, SidebarMenu, PageStack, Stack, Popconfirm } from '@/components/ui';
+import {
+  DrawerForm,
+  SidebarMenu,
+  PageStack,
+  Stack,
+  Popconfirm,
+  ScrollRegion,
+} from '@/components/ui';
 import { notifyActionSuccess, notifyActionFailed } from '@/utils/feedback';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { content, upload, type Doc, type Folder } from '../services';
@@ -219,18 +226,20 @@ export function Documents({ visible = true }: { visible?: boolean }) {
         <Button icon={<PlusOutlined aria-hidden />} onClick={() => setCreating(true)}>
           新建文档
         </Button>
-        <SidebarMenu
-          selectedKeys={active ? [active.id] : []}
-          onClick={({ key }) => {
-            if (!key.startsWith('folder:')) void select(key);
-          }}
-          items={[
-            ...folderItems(null),
-            ...docs
-              .filter((x) => !x.folder)
-              .map((x) => ({ key: x.id, label: `${x.title} · ${x.locale}` })),
-          ]}
-        />
+        <ScrollRegion label="文档目录列表" axis="y" className="document-tree-scroll">
+          <SidebarMenu
+            selectedKeys={active ? [active.id] : []}
+            onClick={({ key }) => {
+              if (!key.startsWith('folder:')) void select(key);
+            }}
+            items={[
+              ...folderItems(null),
+              ...docs
+                .filter((x) => !x.folder)
+                .map((x) => ({ key: x.id, label: `${x.title} · ${x.locale}` })),
+            ]}
+          />
+        </ScrollRegion>
       </aside>
       <section className="editor-pane">
         <PageStack>
@@ -352,73 +361,75 @@ export function Documents({ visible = true }: { visible?: boolean }) {
                 </Form.Item>
               </Form>
               <div className="markdown-editor">
-                <MDXEditor
-                  className={theme === 'dark' ? 'dark-theme' : undefined}
-                  key={active.id}
-                  readOnly={busy}
-                  ref={editor}
-                  markdown={active.body}
-                  suppressHtmlProcessing
-                  onChange={(body) => {
-                    if (body !== draft.current?.body) change({ body });
-                  }}
-                  onError={({ error }) => setError(`正文格式错误：${error}`)}
-                  contentEditableClassName="document-prose"
-                  plugins={[
-                    headingsPlugin(),
-                    listsPlugin(),
-                    quotePlugin(),
-                    thematicBreakPlugin(),
-                    markdownShortcutPlugin(),
-                    linkPlugin(),
-                    linkDialogPlugin(),
-                    imagePlugin({
-                      imagePreviewHandler: async (src) =>
-                        src.replace('/docs/assets/', '/__dsdocs_content/assets/'),
-                      imageUploadHandler: async (file) => (await upload(file)).src,
-                    }),
-                    tablePlugin(),
-                    codeBlockPlugin({ defaultCodeBlockLanguage: 'text' }),
-                    codeMirrorPlugin({
-                      codeBlockLanguages: {
-                        text: '纯文本',
-                        bash: 'Shell',
-                        json: 'JSON',
-                        python: 'Python',
-                        js: 'JavaScript',
-                        ts: 'TypeScript',
-                        yaml: 'YAML',
-                        sql: 'SQL',
-                      },
-                    }),
-                    directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
-                    diffSourcePlugin(),
-                    toolbarPlugin({
-                      toolbarContents: () => (
-                        <DiffSourceToggleWrapper>
-                          <UndoRedo />
-                          <BoldItalicUnderlineToggles options={['Bold', 'Italic']} />
-                          <ListsToggle />
-                          <BlockTypeSelect />
-                          <CreateLink />
-                          <InsertImage />
-                          <InsertTable />
-                          <InsertAdmonition />
-                          <InsertThematicBreak />
-                          <ConditionalContents
-                            options={[
-                              {
-                                when: (e) => e?.editorType === 'codeblock',
-                                contents: () => <ChangeCodeMirrorLanguage />,
-                              },
-                              { fallback: () => <InsertCodeBlock /> },
-                            ]}
-                          />
-                        </DiffSourceToggleWrapper>
-                      ),
-                    }),
-                  ]}
-                />
+                <ScrollRegion label="文档正文" axis="y" className="document-body-scroll">
+                  <MDXEditor
+                    className={theme === 'dark' ? 'dark-theme' : undefined}
+                    key={active.id}
+                    readOnly={busy}
+                    ref={editor}
+                    markdown={active.body}
+                    suppressHtmlProcessing
+                    onChange={(body) => {
+                      if (body !== draft.current?.body) change({ body });
+                    }}
+                    onError={({ error }) => setError(`正文格式错误：${error}`)}
+                    contentEditableClassName="document-prose"
+                    plugins={[
+                      headingsPlugin(),
+                      listsPlugin(),
+                      quotePlugin(),
+                      thematicBreakPlugin(),
+                      markdownShortcutPlugin(),
+                      linkPlugin(),
+                      linkDialogPlugin(),
+                      imagePlugin({
+                        imagePreviewHandler: async (src) =>
+                          src.replace('/docs/assets/', '/__dsdocs_content/assets/'),
+                        imageUploadHandler: async (file) => (await upload(file)).src,
+                      }),
+                      tablePlugin(),
+                      codeBlockPlugin({ defaultCodeBlockLanguage: 'text' }),
+                      codeMirrorPlugin({
+                        codeBlockLanguages: {
+                          text: '纯文本',
+                          bash: 'Shell',
+                          json: 'JSON',
+                          python: 'Python',
+                          js: 'JavaScript',
+                          ts: 'TypeScript',
+                          yaml: 'YAML',
+                          sql: 'SQL',
+                        },
+                      }),
+                      directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
+                      diffSourcePlugin(),
+                      toolbarPlugin({
+                        toolbarContents: () => (
+                          <DiffSourceToggleWrapper>
+                            <UndoRedo />
+                            <BoldItalicUnderlineToggles options={['Bold', 'Italic']} />
+                            <ListsToggle />
+                            <BlockTypeSelect />
+                            <CreateLink />
+                            <InsertImage />
+                            <InsertTable />
+                            <InsertAdmonition />
+                            <InsertThematicBreak />
+                            <ConditionalContents
+                              options={[
+                                {
+                                  when: (e) => e?.editorType === 'codeblock',
+                                  contents: () => <ChangeCodeMirrorLanguage />,
+                                },
+                                { fallback: () => <InsertCodeBlock /> },
+                              ]}
+                            />
+                          </DiffSourceToggleWrapper>
+                        ),
+                      }),
+                    ]}
+                  />
+                </ScrollRegion>
               </div>
               <input
                 id="document-attachment"

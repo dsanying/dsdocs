@@ -122,3 +122,6 @@ export { notificationDefaults } from './notificationDefaults';
 
 export { SidebarMenu } from './SidebarMenu';
 export { AccountMenu, type AccountMenuProps } from './AccountMenu';
+
+export { ViewportFrame, SidebarFrame } from './ViewportFrame';
+export type { SidebarFrameProps } from './ViewportFrame';

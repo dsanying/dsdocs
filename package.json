@@ -19,7 +19,8 @@
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='apps/manage/server/**' --test-coverage-include='packages/content/**' apps/manage/tests/system.test.mjs scripts/tests/starter.test.mjs apps/manage/tests/files.test.mjs",
     "content:init": "node --env-file-if-exists=.env scripts/initialize-content.mjs",
     "test:starter:browser": "node scripts/test-starter-browser.mjs",
-    "test:settings:browser": "node scripts/test-settings-browser.mjs"
+    "test:settings:browser": "node scripts/test-settings-browser.mjs",
+    "test:layout:browser": "node scripts/test-layout-browser.mjs"
   },
   "license": "MIT",
   "repository": {

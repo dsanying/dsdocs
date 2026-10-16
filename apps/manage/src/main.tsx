@@ -27,6 +27,8 @@ import {
   notificationDefaults,
   installOverflowScroll,
   AccountMenu,
+  ViewportFrame,
+  SidebarFrame,
 } from '@/components/ui';
 import { setStaticInstances } from '@/utils/antdStatic';
 import { Settings, FileSync } from './features/Settings';
@@ -66,91 +68,103 @@ function Shell() {
       .catch((e) => setError(e.message));
   }, []);
   return (
-    <Layout className="management-shell">
-      <Layout.Sider breakpoint="md" collapsedWidth={0} theme="light">
-        <div className="brand">{siteName}</div>
-        <SidebarMenu
-          selectedKeys={[page]}
-          onClick={({ key }) => setPage(key)}
-          items={[
-            { key: 'documents', icon: <FileTextOutlined aria-hidden />, label: '文档' },
-            { key: 'folders', icon: <FolderOutlined aria-hidden />, label: '目录' },
-            { key: 'assets', icon: <PaperClipOutlined aria-hidden />, label: '附件' },
-            { key: 'settings', icon: <SettingOutlined aria-hidden />, label: '网站设置' },
-            { key: 'files', icon: <SyncOutlined aria-hidden />, label: '文件同步' },
-            ...(current
-              ? [
-                  {
-                    key: 'accounts',
-                    icon: <UserOutlined aria-hidden />,
-                    label: current.role === 'superadmin' ? '账号管理' : '我的账号',
-                  },
-                ]
-              : []),
-          ]}
-        />
-        <div className="account-menu">
-          {current && (
-            <AccountMenu
-              name={current.username}
-              items={[{ key: 'account', label: '我的账号', onClick: () => setPage('accounts') }]}
-              logout={{
-                label: '退出登录',
-                onClick: () => {
-                  void request('/__dsdocs_accounts/logout', 'POST', {}).then(() =>
-                    location.assign('/login')
-                  );
-                },
-              }}
-            />
-          )}
-          <Button
-            icon={mode === 'dark' ? <SunOutlined aria-hidden /> : <MoonOutlined aria-hidden />}
-            onClick={() => setPreference(mode === 'dark' ? 'light' : 'dark')}
+    <ViewportFrame>
+      <Layout className="management-shell">
+        <Layout.Sider breakpoint="md" collapsedWidth={0} theme="light">
+          <SidebarFrame
+            header={<div className="brand">{siteName}</div>}
+            footer={
+              <div className="account-menu">
+                {current && (
+                  <AccountMenu
+                    name={current.username}
+                    items={[
+                      { key: 'account', label: '我的账号', onClick: () => setPage('accounts') },
+                    ]}
+                    logout={{
+                      label: '退出登录',
+                      onClick: () => {
+                        void request('/__dsdocs_accounts/logout', 'POST', {}).then(() =>
+                          location.assign('/login')
+                        );
+                      },
+                    }}
+                  />
+                )}
+                <Button
+                  icon={
+                    mode === 'dark' ? <SunOutlined aria-hidden /> : <MoonOutlined aria-hidden />
+                  }
+                  onClick={() => setPreference(mode === 'dark' ? 'light' : 'dark')}
+                >
+                  切换主题
+                </Button>
+              </div>
+            }
+            label="主导航"
           >
-            切换主题
-          </Button>
-        </div>
-      </Layout.Sider>
-      <Layout.Content>
-        {error && <Alert type="error" title={error} />}{' '}
-        {ready && (
-          <>
-            <div hidden={page !== 'documents'}>
-              <Documents visible={page === 'documents'} />
-            </div>
-            <div hidden={page !== 'settings'}>
-              <Settings
-                onSaved={(value) => {
-                  setSiteName(value.siteName);
-                  document.title = value.siteName + ' · 管理';
-                }}
-              />
-            </div>
-            {page === 'files' && (
-              <div className="resource-page">
-                <FileSync />
+            <SidebarMenu
+              selectedKeys={[page]}
+              onClick={({ key }) => setPage(key)}
+              items={[
+                { key: 'documents', icon: <FileTextOutlined aria-hidden />, label: '文档' },
+                { key: 'folders', icon: <FolderOutlined aria-hidden />, label: '目录' },
+                { key: 'assets', icon: <PaperClipOutlined aria-hidden />, label: '附件' },
+                { key: 'settings', icon: <SettingOutlined aria-hidden />, label: '网站设置' },
+                { key: 'files', icon: <SyncOutlined aria-hidden />, label: '文件同步' },
+                ...(current
+                  ? [
+                      {
+                        key: 'accounts',
+                        icon: <UserOutlined aria-hidden />,
+                        label: current.role === 'superadmin' ? '账号管理' : '我的账号',
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+          </SidebarFrame>
+        </Layout.Sider>
+        <Layout.Content className="management-content">
+          {error && <Alert type="error" title={error} />}{' '}
+          {ready && (
+            <>
+              <div className="management-page" hidden={page !== 'documents'}>
+                <Documents visible={page === 'documents'} />
               </div>
-            )}
-            {page === 'folders' && (
-              <div className="resource-page">
-                <Folders />
+              <div className="management-page management-page--scroll" hidden={page !== 'settings'}>
+                <Settings
+                  onSaved={(value) => {
+                    setSiteName(value.siteName);
+                    document.title = value.siteName + ' · 管理';
+                  }}
+                />
               </div>
-            )}
-            {page === 'assets' && (
-              <div className="resource-page">
-                <Assets />
-              </div>
-            )}
-            {page === 'accounts' && current && (
-              <div className="resource-page">
-                <Accounts current={current} />
-              </div>
-            )}
-          </>
-        )}
-      </Layout.Content>
-    </Layout>
+              {page === 'files' && (
+                <div className="resource-page management-page management-page--scroll">
+                  <FileSync />
+                </div>
+              )}
+              {page === 'folders' && (
+                <div className="resource-page management-page management-page--scroll">
+                  <Folders />
+                </div>
+              )}
+              {page === 'assets' && (
+                <div className="resource-page management-page management-page--scroll">
+                  <Assets />
+                </div>
+              )}
+              {page === 'accounts' && current && (
+                <div className="resource-page management-page management-page--scroll">
+                  <Accounts current={current} />
+                </div>
+              )}
+            </>
+          )}
+        </Layout.Content>
+      </Layout>
+    </ViewportFrame>
   );
 }
 function Root() {

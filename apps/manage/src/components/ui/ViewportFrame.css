@@ -1,0 +1,37 @@
+.ds-viewport-frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100dvh;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  overflow-anchor: none;
+}
+.ds-viewport-frame > * {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+}
+.ds-sidebar-frame {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.ds-sidebar-frame__header,
+.ds-sidebar-frame__footer {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+.ds-sidebar-frame__body {
+  flex: 1 1 0;
+  min-height: 0;
+}
+.ds-sidebar-frame__footer {
+  max-height: 50%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

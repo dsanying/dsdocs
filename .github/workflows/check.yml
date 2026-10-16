@@ -28,3 +28,5 @@ jobs:
       - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:starter:browser
 
       - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:settings:browser
+
+      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:layout:browser
