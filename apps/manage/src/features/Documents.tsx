@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Alert, Form, Input, Select, Typography } from 'antd';
+import { Button, Alert, Form, Input, Select, Typography, Drawer, Grid, Popover } from 'antd';
 import {
   PlusOutlined,
   UploadOutlined,
@@ -52,6 +52,16 @@ import { notifyActionSuccess, notifyActionFailed } from '@/utils/feedback';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { content, upload, type Doc, type Folder } from '../services';
 export function Documents({ visible = true }: { visible?: boolean }) {
+  const mobile = Grid.useBreakpoint().lg === false;
+  const [treeOpen, setTreeOpen] = useState(false),
+    [infoOpen, setInfoOpen] = useState(false),
+    [moreOpen, setMoreOpen] = useState(false);
+  useEffect(() => {
+    if (!mobile) {
+      setTreeOpen(false);
+      setMoreOpen(false);
+    }
+  }, [mobile]);
   const theme = useThemeStore((state) => state.mode);
   const [docs, setDocs] = useState<Doc[]>([]),
     [folders, setFolders] = useState<Folder[]>([]),
@@ -155,6 +165,7 @@ export function Documents({ visible = true }: { visible?: boolean }) {
       draft.current = next;
       dirty.current = false;
       setActive(next);
+      setTreeOpen(false);
       setStatus('已保存');
       setError('');
     } catch (e) {
@@ -220,30 +231,110 @@ export function Documents({ visible = true }: { visible?: boolean }) {
             .map((x) => ({ key: x.id, label: `${x.title} · ${x.locale}` })),
         ],
       }));
+  const documentTree = (
+    <aside className="document-tree" aria-label="文档目录">
+      <Button icon={<PlusOutlined aria-hidden />} onClick={() => setCreating(true)}>
+        新建文档
+      </Button>
+      <ScrollRegion label="文档目录列表" axis="y" className="document-tree-scroll">
+        <SidebarMenu
+          selectedKeys={active ? [active.id] : []}
+          onClick={({ key }) => {
+            if (!key.startsWith('folder:')) void select(key);
+          }}
+          items={[
+            ...folderItems(null),
+            ...docs
+              .filter((x) => !x.folder)
+              .map((x) => ({ key: x.id, label: `${x.title} · ${x.locale}` })),
+          ]}
+        />
+      </ScrollRegion>
+    </aside>
+  );
+  const secondaryActions = active ? (
+    <>
+      <Button
+        onClick={async () => {
+          try {
+            await flush();
+            setHistory(await content(`/documents/${active.id}/revisions`));
+            setMoreOpen(false);
+          } catch (e) {
+            setError((e as Error).message);
+          }
+        }}
+      >
+        历史版本
+      </Button>
+      <Button
+        icon={mobile ? undefined : <UploadOutlined aria-hidden />}
+        onClick={() => {
+          document.getElementById('document-attachment')?.click();
+          setMoreOpen(false);
+        }}
+      >
+        插入附件
+      </Button>
+      <Popconfirm
+        title="撤下此文档？读者端将不再显示。"
+        onConfirm={async () => {
+          await flush();
+          await content(`/documents/${active.id}/unpublish`, 'POST', {});
+          await load();
+          setMoreOpen(false);
+          notifyActionSuccess('update');
+        }}
+      >
+        <Button>撤下</Button>
+      </Popconfirm>
+      <Popconfirm
+        title="删除文档及其历史版本？"
+        onConfirm={async () => {
+          await flush();
+          await content(`/documents/${active.id}`, 'DELETE', {});
+          draft.current = null;
+          setActive(null);
+          await load();
+          setMoreOpen(false);
+          notifyActionSuccess('delete');
+        }}
+      >
+        <Button danger icon={mobile ? undefined : <DeleteOutlined aria-hidden />}>
+          删除
+        </Button>
+      </Popconfirm>
+    </>
+  ) : null;
   return (
     <div className="documents">
-      <aside aria-label="文档目录">
-        <Button icon={<PlusOutlined aria-hidden />} onClick={() => setCreating(true)}>
-          新建文档
-        </Button>
-        <ScrollRegion label="文档目录列表" axis="y" className="document-tree-scroll">
-          <SidebarMenu
-            selectedKeys={active ? [active.id] : []}
-            onClick={({ key }) => {
-              if (!key.startsWith('folder:')) void select(key);
-            }}
-            items={[
-              ...folderItems(null),
-              ...docs
-                .filter((x) => !x.folder)
-                .map((x) => ({ key: x.id, label: `${x.title} · ${x.locale}` })),
-            ]}
-          />
-        </ScrollRegion>
-      </aside>
-      <section className="editor-pane">
+      {!mobile && documentTree}
+      <Drawer
+        title="文档列表"
+        placement="left"
+        open={mobile && treeOpen}
+        onClose={() => setTreeOpen(false)}
+        size={360}
+        styles={{
+          wrapper: { maxWidth: 'calc(100vw - 32px)' },
+          body: { padding: 0, overflow: 'hidden' },
+        }}
+      >
+        {mobile && documentTree}
+      </Drawer>
+      <section className={`editor-pane${mobile && infoOpen ? ' editor-pane--info' : ''}`}>
         <PageStack>
-          <Typography.Title level={1}>文档编辑</Typography.Title>
+          <div className="document-heading">
+            <Typography.Title level={1}>文档编辑</Typography.Title>
+            <div className="mobile-document-tools">
+              <Button onClick={() => setTreeOpen(true)}>文档列表</Button>
+              {active && (
+                <Button aria-expanded={infoOpen} onClick={() => setInfoOpen(!infoOpen)}>
+                  文档信息
+                </Button>
+              )}
+            </div>
+          </div>
           {error && (
             <Alert
               title={error}
@@ -273,62 +364,33 @@ export function Documents({ visible = true }: { visible?: boolean }) {
           )}
           {active ? (
             <>
-              <Stack direction="row" gap="control" wrap align="center">
-                <span role="status">{status}</span>
-                <Button
-                  icon={<SendOutlined aria-hidden />}
-                  type="primary"
-                  loading={busy}
-                  onClick={() => void publish()}
-                >
-                  发布
-                </Button>
-                <Button
-                  onClick={async () => {
-                    try {
-                      await flush();
-                      setHistory(await content(`/documents/${active.id}/revisions`));
-                    } catch (e) {
-                      setError((e as Error).message);
-                    }
-                  }}
-                >
-                  历史版本
-                </Button>
-                <Button
-                  icon={<UploadOutlined aria-hidden />}
-                  onClick={() => document.getElementById('document-attachment')?.click()}
-                >
-                  插入附件
-                </Button>
-                <Popconfirm
-                  title="撤下此文档？读者端将不再显示。"
-                  onConfirm={async () => {
-                    await flush();
-                    await content(`/documents/${active.id}/unpublish`, 'POST', {});
-                    await load();
-                    notifyActionSuccess('update');
-                  }}
-                >
-                  <Button>撤下</Button>
-                </Popconfirm>
-                <Popconfirm
-                  title="删除文档及其历史版本？"
-                  onConfirm={async () => {
-                    await flush();
-                    await content(`/documents/${active.id}`, 'DELETE', {});
-                    draft.current = null;
-                    setActive(null);
-                    await load();
-                    notifyActionSuccess('delete');
-                  }}
-                >
-                  <Button danger icon={<DeleteOutlined aria-hidden />}>
-                    删除
+              <ScrollRegion label="文档操作" axis="x" className="document-actions">
+                <Stack direction="row" gap="control" align="center">
+                  <span role="status">{status}</span>
+                  <Button
+                    icon={mobile ? undefined : <SendOutlined aria-hidden />}
+                    type="primary"
+                    loading={busy}
+                    onClick={() => void publish()}
+                  >
+                    发布
                   </Button>
-                </Popconfirm>
-              </Stack>
-              <Form layout="vertical" className="document-metadata">
+                  {mobile ? (
+                    <Popover
+                      placement="bottomRight"
+                      trigger="click"
+                      open={moreOpen}
+                      onOpenChange={setMoreOpen}
+                      content={<Stack gap="control">{secondaryActions}</Stack>}
+                    >
+                      <Button>更多操作</Button>
+                    </Popover>
+                  ) : (
+                    secondaryActions
+                  )}
+                </Stack>
+              </ScrollRegion>
+              <Form layout="vertical" className="document-metadata" hidden={mobile && !infoOpen}>
                 <Form.Item label="标题">
                   <Input
                     aria-label="标题"
@@ -404,6 +466,7 @@ export function Documents({ visible = true }: { visible?: boolean }) {
                       directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] }),
                       diffSourcePlugin(),
                       toolbarPlugin({
+                        toolbarClassName: 'document-toolbar',
                         toolbarContents: () => (
                           <DiffSourceToggleWrapper>
                             <UndoRedo />
