@@ -12,7 +12,8 @@ const artifacts = path.resolve(
 await mkdir(artifacts, { recursive: true, mode: 0o700 });
 const env = {
   ...process.env,
-  DSDOCS_DATA_DIR: path.join(root, 'content'),
+  DSDOCS_STARTER: 'none',
+    DSDOCS_DATA_DIR: path.join(root, 'content'),
   DSDOCS_AUTH_DATA_DIR: path.join(root, 'accounts'),
   DSDOCS_PORT: '15382',
   DSDOCS_URL: 'http://127.0.0.1:15382',

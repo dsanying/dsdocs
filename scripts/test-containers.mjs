@@ -55,6 +55,19 @@ try {
   });
   assert.equal(login.status, 200);
   report.checks.push('Linux 容器初始化账号与登录');
+  assert.match(await (await fetch('http://127.0.0.1:15500/docs/zh')).text(), /欢迎使用 DSdocs/);
+  const sample = JSON.parse(
+    run(
+      ['exec', '-i', `${project}-management-1`, 'node', '--input-type=module', '-'],
+      `import {openContent} from '/app/packages/content/store.mjs';const store=openContent(undefined,true);console.log(JSON.stringify({count:store.published().length,image:store.db.prepare("SELECT id FROM assets WHERE mime='image/png'").get().id}));store.close();`
+    )
+  );
+  assert.equal(sample.count, 8);
+  const picture = await fetch(`http://127.0.0.1:15500/docs/assets/${sample.image}`);
+  assert.equal(picture.status, 200);
+  assert.equal(picture.headers.get('content-type'), 'image/png');
+  assert.ok((await picture.arrayBuffer()).byteLength > 1000);
+  report.checks.push('全新镜像自带八篇教程与可读图片附件');
   const id = run(
     ['exec', '-i', `${project}-management-1`, 'node', '--input-type=module', '-'],
     `import {openContent} from '/app/packages/content/store.mjs';const store=openContent();let doc=store.create({title:'容器验证',slug:'container-check',locale:'zh'});doc=store.save(doc.id,{...doc,body:'## 只读验证\\n\\nReadonly mount works',version:doc.version});console.log(doc.id);store.close();`

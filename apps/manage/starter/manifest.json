@@ -1,0 +1,65 @@
+{
+  "folders": [
+    { "key": "guide", "title": "使用指南", "titleEn": "Guide" },
+    { "key": "reference", "title": "格式与部署", "titleEn": "Reference" }
+  ],
+  "assets": [
+    {
+      "key": "workflow",
+      "file": "workflow.png",
+      "name": "dsdocs-workflow.png",
+      "mime": "image/png"
+    },
+    { "key": "example", "file": "example.txt", "name": "dsdocs-example.txt", "mime": "text/plain" }
+  ],
+  "pages": [
+    {
+      "slug": "getting-started",
+      "folder": "guide",
+      "zh": {
+        "title": "欢迎使用 DSdocs",
+        "description": "从第一篇文档开始，体验编辑、保存与发布。"
+      },
+      "en": {
+        "title": "Welcome to DSdocs",
+        "description": "Create your first document and try the publishing workflow."
+      }
+    },
+    {
+      "slug": "editor-guide",
+      "folder": "guide",
+      "zh": {
+        "title": "编写与发布",
+        "description": "管理目录、编辑内容、添加附件，并维护中英文版本。"
+      },
+      "en": {
+        "title": "Writing and publishing",
+        "description": "Organize documents, edit content, add attachments and manage translations."
+      }
+    },
+    {
+      "slug": "markdown",
+      "folder": "reference",
+      "zh": {
+        "title": "Markdown 格式示例",
+        "description": "查看标题、列表、表格、提示框、代码、图片与附件的实际效果。"
+      },
+      "en": {
+        "title": "Markdown examples",
+        "description": "Explore headings, lists, tables, callouts, code, images and attachments."
+      }
+    },
+    {
+      "slug": "deployment",
+      "folder": "reference",
+      "zh": {
+        "title": "部署与备份",
+        "description": "运行独立的管理端和读者端，保存数据并准备备份。"
+      },
+      "en": {
+        "title": "Deployment and backup",
+        "description": "Run the management and reader services and keep your data safe."
+      }
+    }
+  ]
+}

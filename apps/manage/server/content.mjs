@@ -3,10 +3,23 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { openContent, problem } from '../../../packages/content/store.mjs';
 import { validateMarkdown } from './markdown.mjs';
-export async function createContentAPI(directory) {
+import { existsSync } from 'node:fs';
+import { initializeStarter } from './starter.mjs';
+export async function createContentAPI(directory, starter = 'guide') {
+  if (!['guide', 'none'].includes(starter))
+    throw new Error('DSDOCS_STARTER 只能为 guide 或 none。');
+  const fresh = !existsSync(path.join(directory, 'content.sqlite'));
   const store = openContent(directory),
     assets = path.join(directory, 'assets');
   await mkdir(assets, { recursive: true, mode: 0o700 });
+  if (fresh && starter === 'guide') {
+    try {
+      await initializeStarter(store, directory);
+    } catch (error) {
+      store.close();
+      throw error;
+    }
+  }
   const only = (value, keys) => {
     if (Object.keys(value).some((k) => !keys.includes(k))) throw problem(400, '存在不支持的字段。');
   };

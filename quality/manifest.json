@@ -25,7 +25,8 @@
         "tsconfig.json",
         "package.json",
         "../reader/src",
-        "../../packages"
+        "../../packages",
+        "starter"
       ]
     },
     {
@@ -52,6 +53,15 @@
         "node",
         "--test",
         "scripts/tests/licenses.test.mjs"
+      ]
+    },
+    {
+      "id": "starter-regression",
+      "rule": "docs/设计/初始内容.md",
+      "command": [
+        "node",
+        "--test",
+        "scripts/tests/starter.test.mjs"
       ]
     },
     {

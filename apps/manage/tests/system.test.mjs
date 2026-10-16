@@ -15,6 +15,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     DSDOCS_PORT: '15283',
     DSDOCS_URL: origin,
     DSDOCS_AUTH_DATA_DIR: path.join(root, 'accounts'),
+    DSDOCS_STARTER: 'none',
     DSDOCS_DATA_DIR: path.join(root, 'content'),
   });
   t.after(async () => {
@@ -477,6 +478,7 @@ test('可独立关闭账号模块，不创建账号数据库', async (t) => {
     DSDOCS_AUTH: 'none',
     DSDOCS_PORT: '15284',
     DSDOCS_URL: origin,
+    DSDOCS_STARTER: 'none',
     DSDOCS_DATA_DIR: directory,
   });
   t.after(async () => {

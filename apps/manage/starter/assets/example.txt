@@ -1,0 +1,4 @@
+DSdocs attachment example
+
+This file is bundled with the starter documentation.
+Replace this download link with your own attachment when writing your documentation.

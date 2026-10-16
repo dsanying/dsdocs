@@ -4,6 +4,7 @@ services:
       context: ..
       target: management
     environment:
+      DSDOCS_STARTER: ${DSDOCS_STARTER:-guide}
       DSDOCS_URL: ${DSDOCS_MANAGEMENT_URL:-http://127.0.0.1:5182}
     ports: ["127.0.0.1:5182:5182"]
     volumes: ["content:/data"]

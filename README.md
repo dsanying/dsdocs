@@ -16,7 +16,7 @@ pnpm manage
 
 管理入口为 `http://127.0.0.1:5182`。首次自动创建 admin/admin，必须修改用户名和密码后才能管理文档。超级管理员管理账号，普通管理员编辑文档并维护自己的账号。
 
-另开终端运行 `pnpm preview`，访问 `http://127.0.0.1:3200/docs`。首次没有已发布文档，从后台创建并发布即可。数据默认保存在用户目录 `.local/share/dsdocs`，可用 DSDOCS_DATA_DIR 调整，管理和读者必须指向同一内容目录。
+另开终端运行 `pnpm preview`，访问 `http://127.0.0.1:3200/docs`。全新部署会载入中英文使用教程与 Markdown 格式示例，可直接在后台修改或删除。数据默认保存在用户目录 `.local/share/dsdocs`，可用 DSDOCS_DATA_DIR 调整，管理和读者必须指向同一内容目录。
 
 ## 范围
 
@@ -29,6 +29,7 @@ pnpm manage
 - [维护手册](docs/维护手册.md)
 - [架构](ARCHITECTURE.md)
 - [部署](docs/部署.md)
+- [初始教程](docs/设计/初始内容.md)
 - [Markdown 范围](docs/设计/Markdown契约.md)
 - [接口契约](docs/设计/API契约.md)
 - [验收记录](docs/设计/验收记录.md)

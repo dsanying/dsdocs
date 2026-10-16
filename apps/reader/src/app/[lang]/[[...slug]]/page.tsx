@@ -15,7 +15,9 @@ export default async function Page({
   if (!['zh', 'en'].includes(lang)) notFound();
   const data = readPublished(),
     docs = data.documents.filter((x) => x.locale === lang),
-    page = slug?.length ? docs.find((x) => x.slug === slug.join('/')) : docs[0];
+    page = slug?.length
+      ? docs.find((x) => x.slug === slug.join('/'))
+      : (docs.find((x) => x.slug === 'getting-started') ?? docs[0]);
   if (slug?.length && !page) notFound();
   const translations = Object.fromEntries(
     data.documents

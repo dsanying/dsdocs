@@ -25,7 +25,10 @@ export async function startManagement(env = process.env) {
           origin,
         })
       : null;
-  const content = await createContentAPI(env.DSDOCS_DATA_DIR ?? dataDirectory());
+  const content = await createContentAPI(
+    env.DSDOCS_DATA_DIR ?? dataDirectory(),
+    env.DSDOCS_STARTER ?? 'guide'
+  );
   const development = env.DSDOCS_DEV === '1';
   const vite = development
     ? await (
