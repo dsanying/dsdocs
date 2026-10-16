@@ -1,5 +1,5 @@
 import './globals.css';
-export const metadata = { title: 'dsdocs' };
+export const metadata = { title: 'DSdocs' };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh" suppressHydrationWarning>

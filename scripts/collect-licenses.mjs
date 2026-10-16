@@ -15,7 +15,7 @@ export async function collectLicenses(application, output) {
     .sort((a, b) => a.name.localeCompare(b.name));
   const fallback = JSON.parse(await readFile(path.join(root, 'licenses/manifest.json'), 'utf8'));
   const sections = [
-    'dsdocs project license:\n' + (await readFile(path.join(root, 'LICENSE'), 'utf8')),
+    'DSdocs project license:\n' + (await readFile(path.join(root, 'LICENSE'), 'utf8')),
     'Third-party notices. Each dependency retains its original license.',
   ];
   const missing = [];

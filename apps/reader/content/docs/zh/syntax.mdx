@@ -1,30 +1,31 @@
 ---
-{"title": "语法与组件", "translationKey": "syntax", "group": "使用文档", "order": 1}
+title: 语法与组件
 ---
+
 ## 常用语法
 
-支持 **加粗**、*强调*、~~删除线~~、`行内代码`、表格和任务列表。
+支持 **加粗**、_强调_、~~删除线~~、`行内代码`、表格和任务列表。
 
-| 操作 | 读者看到的内容 |
-| --- | --- |
-| 保存 | 上次发布版本 |
-| 发布 | 新版本 |
+| 操作 | 读者看到的内容   |
+| ---- | ---------------- |
+| 保存 | 已部署版本       |
+| 发布 | 重新部署后的版本 |
 
-- [x] 保存草稿
+- [x] 保存文件
 - [ ] 核对预览
 
 ## 多行代码
 
 ```ts title="example.ts" {2}
-const title = 'dsdocs';
+const title = 'DSdocs';
 console.log(title);
 ```
 
 ## 原生组件
 
-<Tabs items={["中文", "English"]}>
-<Tab value="中文">使用左侧目录浏览文档。</Tab>
-<Tab value="English">Browse documents using the sidebar.</Tab>
+<Tabs items={['中文', 'English']}>
+  <Tab value="中文">使用左侧目录浏览文档。</Tab>
+  <Tab value="English">Browse documents using the sidebar.</Tab>
 </Tabs>
 
 <Steps>
@@ -39,18 +40,22 @@ console.log(title);
 
 ### 验证
 
-预览与读者端使用相同的编译器。
+构建并检查读者端的实际显示。
 
 </Step>
 </Steps>
 
 <Accordions type="single" collapsible>
-<Accordion title="支持任意 JavaScript 吗" value="execution">
-内容后台不执行任意 JavaScript。导入、事件处理器和动态表达式会返回明确诊断。
-</Accordion>
+  <Accordion title="支持任意 JavaScript 吗" value="execution">
+    文件内容由受信任的维护者管理。MDX 构建可以执行 JavaScript，不应接受匿名用户提交的源码。
+  </Accordion>
 </Accordions>
 
-<Files><Folder name="docs" defaultOpen><File name="index.mdx" /></Folder></Files>
+<Files>
+  <Folder name="docs" defaultOpen>
+    <File name="index.mdx" />
+  </Folder>
+</Files>
 
 ## 数学公式
 

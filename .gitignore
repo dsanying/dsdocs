@@ -11,9 +11,12 @@ playwright-report/
 *.sqlite
 *.sqlite-*
 .DS_Store
-apps/site/public/admin/
 
 .source/
 apps/reader/out/
 
 release-artifacts/
+
+apps/reader/public/assets/
+apps/studio/node_modules/
+apps/studio/THIRD_PARTY_NOTICES.txt

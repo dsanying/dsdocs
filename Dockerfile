@@ -3,18 +3,22 @@ FROM node:${NODE_VERSION}-bookworm-slim AS build
 WORKDIR /app
 RUN npm install --global pnpm@12.8.1
 COPY . .
-ARG DSDOCS_BASE_PATH=/docs
-ENV DSDOCS_BASE_PATH=${DSDOCS_BASE_PATH}
-RUN pnpm install:all && pnpm build
+RUN pnpm -C apps/reader install --frozen-lockfile && node scripts/sync-assets.mjs && pnpm -C apps/reader build && node scripts/reader-notices.mjs
 
-FROM node:${NODE_VERSION}-bookworm-slim AS backend
-WORKDIR /app/apps/site
-ARG DSDOCS_BASE_PATH=/docs
-ENV NODE_ENV=production DSDOCS_BASE_PATH=${DSDOCS_BASE_PATH} DSDOCS_DATABASE=/app/data/dsdocs.sqlite
-COPY --from=build --chown=node:node /app/apps/site ./
-COPY --from=build /app/LICENSE /app/THIRD_PARTY_NOTICES.md /app/
-COPY --from=build /app/licenses /app/licenses
-RUN mkdir -p /app/data && chown node:node /app/data && chmod 700 /app/data
+FROM caddy:2.11.7 AS reader
+COPY --from=build /app/apps/reader/out /srv/reader
+COPY deploy/Caddyfile /etc/caddy/Caddyfile
+
+FROM node:${NODE_VERSION}-bookworm-slim AS studio
+WORKDIR /app
+RUN npm install --global pnpm@12.8.1
+COPY --chown=node:node apps/studio ./apps/studio
+COPY LICENSE THIRD_PARTY_NOTICES.md ./
+COPY licenses ./licenses
+COPY scripts/collect-licenses.mjs scripts/studio-notices.mjs ./scripts/
+RUN pnpm -C apps/studio install --prod --frozen-lockfile && node scripts/studio-notices.mjs && chown -R node:node /app
+COPY --chown=node:node apps/reader/content/docs ./apps/reader/content/docs
 USER node
-EXPOSE 3200
-CMD ["node", "node_modules/next/dist/bin/next", "start", "--hostname", "0.0.0.0", "--port", "3200"]
+WORKDIR /app/apps/studio
+EXPOSE 5180
+CMD ["node", "node_modules/@fumadocs-editor/studio/dist/cli.js", "--host", "--no-open"]

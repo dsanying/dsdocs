@@ -5,19 +5,15 @@
   "type": "module",
   "packageManager": "pnpm@12.8.1",
   "scripts": {
-    "install:all": "pnpm -C apps/admin install --frozen-lockfile && pnpm -C apps/site install --frozen-lockfile && pnpm -C apps/reader install --frozen-lockfile",
-    "dev": "pnpm -C apps/site dev",
-    "dev:admin": "pnpm -C apps/admin dev",
-    "build": "pnpm -C apps/admin build && node scripts/bundle-admin.mjs && pnpm -C apps/site build",
-    "start": "pnpm -C apps/site start",
-    "check": "node scripts/check-contracts.mjs && pnpm -C apps/admin check && node scripts/bundle-admin.mjs && pnpm -C apps/site check && pnpm -C apps/reader check && pnpm test:integration && pnpm test:reader",
-    "db:init": "pnpm -C apps/site run init",
-    "test:integration": "node scripts/test-integration.mjs",
-    "reader:build": "pnpm -C apps/reader build",
-    "export:files": "pnpm -C apps/site export:files",
+    "install:all": "pnpm -C apps/reader install --frozen-lockfile && pnpm -C apps/studio install --frozen-lockfile",
+    "dev": "pnpm -C apps/reader dev",
+    "studio": "pnpm -C apps/studio start",
+    "build": "node scripts/sync-assets.mjs && pnpm -C apps/reader build && node scripts/reader-notices.mjs",
+    "check": "node --test scripts/tests/*.test.mjs && pnpm -C apps/studio check && pnpm -C apps/reader typecheck && pnpm build && node scripts/studio-notices.mjs",
     "test:reader": "node scripts/test-reader.mjs",
-    "release:prepare": "node scripts/prepare-release.mjs",
-    "test:chrome": "node scripts/test-chrome.mjs"
+    "test:studio": "node scripts/test-studio.mjs",
+    "preview": "node scripts/preview.mjs",
+    "test:deployment": "node scripts/test-deployment.mjs"
   },
   "license": "MIT",
   "repository": {

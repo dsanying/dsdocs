@@ -1,0 +1,12 @@
+# Public reader: domain subpath, independent of Studio.
+:3200 {
+  redir /docs /docs/ 308
+  handle_path /docs/* {
+    root * /srv/reader
+    file_server
+  }
+  handle {
+    respond 404
+  }
+}
+

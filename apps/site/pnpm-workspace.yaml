@@ -1,9 +1,0 @@
-savePrefix: ''
-minimumReleaseAge: 1440
-allowBuilds:
-  sharp: false
-  unrs-resolver: false
-  esbuild: false
-
-overrides:
-  katex: 0.18.2

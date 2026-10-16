@@ -13,6 +13,5 @@
 !**/.env.example
 **/*.sqlite*
 **/data
-apps/site/public/admin
 
 release-artifacts

@@ -1,64 +1,53 @@
-# dsdocs
+# DSdocs
 
-dsdocs 是面向 Fumadocs 的文档管理项目，包含文档前台和管理后台。后台提供本地账号、可视化 MDX 编辑、草稿、发布、历史恢复、附件和中英文文档关联。前台使用 [Fumadocs](https://www.fumadocs.dev/) 的原生布局、组件、主题和语言菜单。
+DSdocs 将 [Fumadocs](https://www.fumadocs.dev/) 的文档读者端与官方 Studio 组合成一个文件驱动的文档项目。页面使用原生布局、搜索、语言菜单和 MDX 组件；编辑端使用官方文件树和可视化编辑器，不维护另一套 CMS、数据库或编辑界面。
 
-内容保存为 MDX 原文。后台使用数据库维护草稿和发布记录，也能导出已发布 MDX 与引用附件。独立文件读者端可直接从这些文件构建静态站点，不需要运行后台或连接数据库。静态站点更新需要重新导出、构建和替换产物。
+文档保存在 `apps/reader/content/docs`。Studio 保存文件，Fumadocs 构建静态站点。读者端部署在 `/docs`，后台停止不会影响已部署内容。Studio 上游仍处于实验阶段，不支持的 MDX 语法需要源码编辑。
 
-当前为首版开发状态，尚未正式发布。可视化编辑使用 Fumadocs 官方编辑器，其上游仍处于实验阶段；不支持的语法保留源码编辑。具体语法范围见 [MDX 兼容矩阵](docs/设计/MDX兼容矩阵.md)。
+## 本地使用
 
-## 本地运行
-
-需要 Node.js 26 和 pnpm 12.8.1。
+需要 Node.js 26、pnpm 12.8.1。
 
 ```sh
 pnpm install:all
-export DSDOCS_ADMIN_USERNAME=maintainer
-# 在当前进程中设置 DSDOCS_ADMIN_PASSWORD，至少 12 个字符。
-pnpm db:init -- --demo
-pnpm build
-pnpm start
+pnpm studio
 ```
 
-浏览器访问 `http://localhost:3200/docs`，后台位于 `/docs/admin`。没有默认账号或默认密码。初始化仅允许执行一次，后续账号在后台管理。所有有效后台账号权限相同。
+在 `http://127.0.0.1:5180` 编辑文档。Studio 默认只监听本机，不需要账号；它不是可直接匿名开放到公网的后台。
 
-配置通过进程环境变量传入，参照 [.env.example](.env.example)。`DSDOCS_BASE_PATH` 默认 `/docs`，前后台构建使用相同值；`DSDOCS_ORIGIN` 为浏览器实际访问的 origin，例如 `https://example.org`。数据库默认位于内容服务的 `data/dsdocs.sqlite`。请将数据库和凭据放在源码目录之外。
-
-## 独立文件部署
-
-`apps/reader` 自带中英文示例，可以单独复制、安装和构建：
+另一个终端验证、构建和预览：
 
 ```sh
-cd apps/reader
-pnpm install --frozen-lockfile
-pnpm build
+pnpm check
+pnpm preview
 ```
 
-文件可使用普通 Fumadocs frontmatter；未填写翻译关联键时按页面路径匹配译文。暂时没有内容的语言仍保留语言切换入口。
+访问 `http://127.0.0.1:3200/docs`。保存文件不会自动发布；更新后重新构建，重新打开读者页面即可看到新内容。
 
-将 `out` 挂载在域名的 `/docs` 子路径即可，不需要 Node.js 服务。部署到其他子路径时，在构建前设置 `DSDOCS_BASE_PATH`。
+## 目录与语言
 
-后台的“导出”下载已发布文档与附件的 ZIP。将包中的 `content/docs` 和 `public/assets` 放入文件读者端，再构建。替换整站内容时应先清理旧内容，避免已下线文件残留。命令行导出使用：
+中文文档位于 `content/docs/zh`，英文位于 `content/docs/en`。对应译文使用相同的相对路径，语言菜单按路径关联。初始语言按浏览器判断，手动选择后保存在本地。Studio 分别编辑两份文件，不提供并排翻译面板。
 
-```sh
-pnpm export:files -- --output /absolute/path/to/new-export-directory
-```
+使用真实文件夹与 `meta.json` 组织目录、命名和排序。编辑器中的图片上传保存到 `content/docs/assets`；构建时将图片复制到静态资源目录。删除正文中的图片不会自动删除磁盘附件，未使用的文件需维护者清理。
 
-导出目录必须不存在，命令不会覆盖已有内容。导出不包含草稿、账号、口令、会话或历史记录，不能用作数据库备份。
+## 部署
+
+`apps/reader/out` 是完整的静态产物，挂载到域名 `/docs` 即可，不需要数据库或 Studio。其他子路径可通过构建变量 `DSDOCS_BASE_PATH` 设置，并调整静态服务器配置。
+
+仓库附带 Docker Compose 示例：一个静态读者服务、一个官方 Studio、一个 Caddy 访问入口。读者入口为 `127.0.0.1:3200/docs`，编辑入口为 `127.0.0.1:5180`，编辑入口使用 Caddy 原生 HTTP Basic Authentication。没有默认口令，配置方式见 [部署说明](docs/部署.md)。
+
+**Studio 当前协议端点固定在根路径，整套编辑端不能只靠官方配置完整放进 `/docs/admin`。** 因此采用独立的私有编辑入口，公开站点只占用 `/docs`，不修改上游协议。
 
 ## 项目结构
 
-| 目录               | 职责                                              |
-| ------------------ | ------------------------------------------------- |
-| `apps/admin`       | 管理界面和官方 MDX 编辑器接入                     |
-| `apps/site`        | 内容服务、账号、API、数据库、动态读者端与私有预览 |
-| `apps/reader`      | 使用官方文件内容源的独立静态读者端                |
-| `examples/content` | 中英文 MDX 示例                                   |
-| `docs`             | 架构、规范、部署与验证说明                        |
+| 目录          | 用途                                      |
+| ------------- | ----------------------------------------- |
+| `apps/reader` | 独立的原生 Fumadocs 静态读者端及 MDX 文件 |
+| `apps/studio` | 官方 Studio 的版本锁定和配置              |
+| `deploy`      | Caddy 配置                                |
+| `scripts`     | 附件复制、预览与验证工具                  |
+| `docs`        | 维护、部署、能力边界和发布说明            |
 
-前台不修改 Fumadocs 上游源码。后台适配负责元数据、目录、翻译关联、内容校验和发布状态。SQLite 存储当前支持单实例部署。
+MDX 是可信维护者提供的可执行构建输入。项目不提供匿名投稿、数据库草稿、审核流、账号管理面板或自动 Git 提交。版本与回滚使用 Git，发布使用构建与部署流程。
 
-## 开发与发布
-
-开发和验证从 [维护手册](docs/维护手册.md) 开始。项目的运行边界见 [架构说明](ARCHITECTURE.md)，安全约束见 [安全说明](SECURITY.md)。
-
-正式版本拟通过签名标签和 GitHub Release 发布，容器镜像与静态产物分别分发。当前只准备构建、验证和发布说明，不自动创建版本或上传镜像。详见 [发布说明](docs/发布.md)。
+当前尚未正式发布。开发从 [维护手册](docs/维护手册.md) 开始，发布方式见 [发布说明](docs/发布.md)。

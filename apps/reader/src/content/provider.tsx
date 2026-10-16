@@ -8,7 +8,7 @@ import StaticSearch from './search';
 import { chineseUI } from './ui-translations';
 const base = process.env.NEXT_PUBLIC_DSDOCS_BASE_PATH ?? '/docs';
 
-// CMS URLs include the public prefix; Next Link applies that prefix itself.
+// Next Link applies the configured base path itself.
 export const DocumentationLink: NonNullable<Framework['Link']> = ({ href = '', ...props }) => {
   const target =
     base &&
@@ -21,7 +21,7 @@ export const DocumentationLink: NonNullable<Framework['Link']> = ({ href = '', .
   return <Link href={target} {...props} />;
 };
 
-// CMS uploads use authenticated URLs during preview and have no build-time dimensions.
+// Studio stores root-relative workspace assets; static readers use the public copy.
 // Keep the native Fumadocs MDX image wrapper, with the provider's standard HTML image adapter.
 export const DocumentationImage: NonNullable<Framework['Image']> = ({
   src,
@@ -34,7 +34,7 @@ export const DocumentationImage: NonNullable<Framework['Image']> = ({
   return (
     <img
       {...props}
-      src={source}
+      src={source?.startsWith('./assets/') ? `${base}/${source.slice(2)}` : source}
       alt={alt ?? ''}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
@@ -95,7 +95,7 @@ export function LanguageEntry() {
   }, [router]);
   return (
     <main className="mx-auto max-w-xl p-12">
-      <h1 className="text-2xl font-semibold">dsdocs</h1>
+      <h1 className="text-2xl font-semibold">DSdocs</h1>
       <p>正在打开文档 / Opening documentation…</p>
     </main>
   );

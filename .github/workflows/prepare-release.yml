@@ -15,15 +15,11 @@ jobs:
         with:
           node-version: 26
       - run: pnpm install:all
-      - run: node scripts/check-contracts.mjs
       - run: pnpm check
-        working-directory: apps/admin
-      - run: node scripts/bundle-admin.mjs
-      - run: pnpm -C apps/site check
-      - run: pnpm -C apps/reader check
-      - run: node scripts/reader-notices.mjs
-      - name: Build local container without publishing
-        run: docker build --tag dsdocs:preflight .
+      - name: Build images without publishing
+        run: |
+          docker build --target reader --tag dsdocs-reader:preflight .
+          docker build --target studio --tag dsdocs-studio:preflight .
       - uses: actions/upload-artifact@v4
         with:
           name: dsdocs-example-static-reader

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { readFile, stat, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { chromium, firefox, expect } from '../apps/admin/node_modules/@playwright/test/index.mjs';
+import { chromium, firefox, expect } from '../apps/studio/node_modules/@playwright/test/index.mjs';
 const directory = path.resolve(process.env.DSDOCS_READER_OUT ?? 'apps/reader/out');
 const prefix = (process.env.DSDOCS_BASE_PATH ?? '/docs').replace(/\/$/, '');
 const artifacts = process.env.DSDOCS_ARTIFACTS;
@@ -39,7 +39,13 @@ try {
     ['chromium', chromium],
     ['firefox', firefox],
   ]) {
-    const browser = await engine.launch();
+    const browser = await engine.launch(
+      name === 'chromium' && process.env.DSDOCS_CHROME === '1'
+        ? { channel: 'chrome', headless: false }
+        : name === 'firefox' && process.env.DSDOCS_FIREFOX_EXECUTABLE
+          ? { executablePath: process.env.DSDOCS_FIREFOX_EXECUTABLE }
+          : {}
+    );
     try {
       const context = await browser.newContext({
           locale: 'zh-CN',
@@ -102,6 +108,20 @@ try {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(`${origin}${prefix}/zh/syntax/`);
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      if (process.env.DSDOCS_EXPECT_STUDIO_IMAGE === '1') {
+        await page.goto(`${origin}${prefix}/en/uploaded/`);
+        await expect
+          .poll(() =>
+            page
+              .getByAltText('Verification image')
+              .evaluate((image) => image.complete && image.naturalWidth > 0)
+          )
+          .toBe(true);
+        await expect(page.getByAltText('Verification image')).toHaveAttribute(
+          'src',
+          new RegExp(`^${prefix}/assets/`)
+        );
+      }
       assert.equal((await context.request.get(`${origin}${prefix}/admin`)).status(), 404);
       assert.deepEqual(forbidden, []);
       assert.deepEqual(errors, []);
