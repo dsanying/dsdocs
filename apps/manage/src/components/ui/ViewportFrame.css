@@ -35,3 +35,9 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+
+/* 根页面不是滚动所有者，不能为固定工作区反复执行锚定补偿。 */
+html:has(.ds-viewport-frame),
+body:has(.ds-viewport-frame) {
+  overflow-anchor: none;
+}
