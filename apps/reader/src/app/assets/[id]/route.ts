@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { openContent, dataDirectory } from '../../../../../../packages/content/store.mjs';
+import { settingsAssetIds } from '../../../../../../packages/content/settings.mjs';
 export const dynamic = 'force-dynamic';
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -8,7 +9,11 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const store = openContent(dataDirectory(), true);
   try {
     const item = store.db.prepare('SELECT * FROM assets WHERE id=?').get(id);
-    if (!item || !store.published().some((x) => x.body.includes(`/docs/assets/${id}`)))
+    if (
+      !item ||
+      (!settingsAssetIds(store.settings().data).includes(id) &&
+        !store.published().some((x) => x.body.includes(`/docs/assets/${id}`)))
+    )
       return new Response('Not found', { status: 404 });
     return new Response(await readFile(path.join(dataDirectory(), 'assets', id)), {
       headers: {

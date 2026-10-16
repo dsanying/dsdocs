@@ -4,6 +4,8 @@ import { randomUUID } from 'node:crypto';
 import { openContent, problem } from '../../../packages/content/store.mjs';
 import { validateMarkdown } from './markdown.mjs';
 import { existsSync } from 'node:fs';
+import { createFileWorkspace } from './files.mjs';
+import { settingsAssetIds } from '../../../packages/content/settings.mjs';
 import { initializeStarter } from './starter.mjs';
 export async function createContentAPI(directory, starter = 'guide') {
   if (!['guide', 'none'].includes(starter))
@@ -20,11 +22,51 @@ export async function createContentAPI(directory, starter = 'guide') {
       throw error;
     }
   }
+  let workspace;
+  try {
+    workspace = await createFileWorkspace(store, directory);
+  } catch (error) {
+    store.close();
+    throw error;
+  }
+  let pending = Promise.resolve();
+  const serial = (action) => {
+    const next = pending.then(action);
+    pending = next.catch(() => {});
+    return next;
+  };
+  let timer;
   const only = (value, keys) => {
     if (Object.keys(value).some((k) => !keys.includes(k))) throw problem(400, '存在不支持的字段。');
   };
   async function handle(req, res, pathname, json, body) {
     const method = req.method;
+    if (pathname === '/__dsdocs_content/settings') {
+      if (method === 'GET') return json(res, 200, store.settings());
+      if (method === 'PATCH') {
+        const data = await body(req);
+        only(data, ['version', 'data']);
+        return json(res, 200, store.saveSettings(data.version, data.data));
+      }
+    }
+    if (pathname === '/__dsdocs_content/files' && method === 'GET')
+      return json(res, 200, workspace.status());
+    if (pathname === '/__dsdocs_content/files/compare' && method === 'POST') {
+      const data = await body(req);
+      only(data, ['key']);
+      return json(res, 200, await workspace.compare(data.key));
+    }
+    if (pathname === '/__dsdocs_content/files/resolve' && method === 'POST') {
+      const data = await body(req);
+      only(data, ['key', 'source', 'fileHash', 'version']);
+      return json(res, 200, await workspace.resolve(data));
+    }
+    if (pathname === '/__dsdocs_content/runtime' && method === 'GET')
+      return json(res, 200, {
+        node: process.version,
+        database: 'SQLite · 单写实例',
+        workspace: workspace.root,
+      });
     if (pathname === '/__dsdocs_content' && method === 'GET')
       return json(res, 200, { documents: store.list(), folders: store.folders() });
     if (pathname === '/__dsdocs_content/documents' && method === 'POST') {
@@ -37,8 +79,8 @@ export async function createContentAPI(directory, starter = 'guide') {
     );
     if (doc) {
       const id = doc[1],
-        action = doc[2],
-        current = store.get(id);
+        action = doc[2];
+      store.get(id);
       if (!action && method === 'PATCH') {
         const data = await body(req);
         only(data, ['version', 'title', 'description', 'slug', 'locale', 'folder', 'body']);
@@ -52,8 +94,9 @@ export async function createContentAPI(directory, starter = 'guide') {
       if (action === '/publish' && method === 'POST') {
         const data = await body(req);
         only(data, ['version']);
-        validateMarkdown(current.body);
-        for (const match of current.body.matchAll(/\/docs\/assets\/([a-f0-9-]+)/g))
+        const latest = store.get(id);
+        validateMarkdown(latest.body);
+        for (const match of latest.body.matchAll(/\/docs\/assets\/([a-f0-9-]+)/g))
           if (!store.db.prepare('SELECT id FROM assets WHERE id=?').get(match[1]))
             throw problem(422, '正文引用的附件已不存在。');
         return json(res, 200, store.publish(id, data.version));
@@ -80,7 +123,7 @@ export async function createContentAPI(directory, starter = 'guide') {
         return json(
           res,
           200,
-          store.save(id, { ...snap, folder: current.folder, version: data.version })
+          store.save(id, { ...snap, folder: store.get(id).folder, version: data.version })
         );
       }
     }
@@ -88,7 +131,7 @@ export async function createContentAPI(directory, starter = 'guide') {
     if (folder) {
       if ((!folder[1] && method === 'POST') || (folder[1] && method === 'PATCH')) {
         const data = await body(req);
-        only(data, ['title', 'titleEn', 'parent']);
+        only(data, ['title', 'titleEn', 'parent', 'version']);
         return json(res, 200, store.folderSave(folder[1], data));
       }
       if (folder[1] && method === 'DELETE') {
@@ -158,8 +201,11 @@ export async function createContentAPI(directory, starter = 'guide') {
       if (method === 'DELETE') {
         await body(req);
         const url = `/docs/assets/${item.id}`;
-        if (store.list().some((x) => x.body.includes(url) || x.published?.includes(url)))
-          throw problem(409, '附件仍被草稿或已发布文档引用，请先移除引用并发布。');
+        if (
+          settingsAssetIds(store.settings().data).includes(item.id) ||
+          store.list().some((x) => x.body.includes(url) || x.published?.includes(url))
+        )
+          throw problem(409, '附件仍被文档或网站设置引用，请先解除引用。');
         await unlink(path.join(assets, item.id));
         store.db.prepare('DELETE FROM assets WHERE id=?').run(item.id);
         return json(res, 200, { saved: true });
@@ -177,5 +223,51 @@ export async function createContentAPI(directory, starter = 'guide') {
     }
     throw problem(404, '内容接口不存在。');
   }
-  return { store, handle };
+  async function dispatch(req, res, pathname, json, body) {
+    await workspace.sync();
+    const match = pathname.match(/^\/__dsdocs_content\/(documents|folders)\/([a-f0-9-]+)/);
+    const key =
+      pathname === '/__dsdocs_content/settings'
+        ? 'site'
+        : match
+          ? `${match[1] === 'documents' ? 'document' : 'folder'}:${match[2]}`
+          : null;
+    let response;
+    const guardedBody = async (request) => {
+      const data = await body(request);
+      await workspace.sync();
+      if (key) workspace.assertWritable(key);
+      return data;
+    };
+    await handle(
+      req,
+      res,
+      pathname,
+      (_res, status, data) => {
+        response = { status, data };
+      },
+      guardedBody
+    );
+    await workspace.push();
+    if (response) {
+      if (key && !['GET', 'HEAD'].includes(req.method)) workspace.assertWritable(key);
+      json(res, response.status, response.data);
+    }
+  }
+  return {
+    store,
+    workspace,
+    handle: (...args) => serial(() => dispatch(...args)),
+    startFileSync() {
+      timer = setInterval(() => {
+        void serial(() => workspace.sync()).catch(() => {});
+      }, 1500);
+      timer.unref();
+    },
+    async close() {
+      clearInterval(timer);
+      await pending;
+      store.close();
+    },
+  };
 }

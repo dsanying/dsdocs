@@ -11,6 +11,11 @@
 | /__dsdocs_accounts/:id | PATCH/DELETE | 仅超管管理普通管理员 | system.test.mjs 会话撤销 |
 | /__dsdocs_accounts/logout | POST | 注销当前会话 | 账号功能回归 |
 | /__dsdocs_content | GET | 完整管理工作区（包括草稿），不公开 | system.test.mjs 草稿隔离 |
+| /__dsdocs_content/settings | GET/PATCH | 非敏感网站设置，version 乐观锁，引用图片保护 | files.test.mjs |
+| /__dsdocs_content/runtime | GET | 仅运行信息允许清单，不含密钥 | files.test.mjs |
+| /__dsdocs_content/files | GET | 文件同步状态与异常 | files.test.mjs |
+| /__dsdocs_content/files/compare | POST | 比较文件和面板正文，不执行内容 | files.test.mjs |
+| /__dsdocs_content/files/resolve | POST | key/source/fileHash/version 校验后采用明确版本 | files.test.mjs |
 | /__dsdocs_content/documents | POST | 新建文档；可指定已有 translationId 关联翻译 | system.test.mjs 翻译关联 |
 | /__dsdocs_content/documents/:id | PATCH/DELETE | 版本号保存草稿／删除文档和历史 | system.test.mjs 版本冲突 |
 | /__dsdocs_content/documents/:id/publish | POST | 校验 version、语法、附件后原子发布 | system.test.mjs 发布及非法正文 |
@@ -22,6 +27,6 @@
 | /__dsdocs_content/assets/:id | GET/DELETE | 登录预览／引用保护删除 | system.test.mjs 附件保护 |
 | /docs/version | GET | 公开已发布内容指纹，不包含草稿正文 | 浏览器发布更新 |
 | /docs/search-index.json | GET | 公开搜索，仅已发布文档，locale 区分中英 | system-browser 搜索 |
-| /docs/assets/:id | GET | 仅被已发布正文引用的附件可读 | 读者回归 |
+| /docs/assets/:id | GET | 仅已发布正文或网站标识设置引用的附件可读 | 读者回归 |
 
 读者页为 `/docs/{zh|en}/{slug}`，与管理 API 不共用权限模型。默认本地管理入口为独立端口；统一域名部署使用部署文件中的代理配置，不将未保护端口直接暴露。

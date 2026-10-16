@@ -26,7 +26,13 @@ export type Doc = {
   published: string | null;
   updatedAt: string;
 };
-export type Folder = { id: string; title: string; titleEn: string; parent: string | null };
+export type Folder = {
+  version: string;
+  id: string;
+  title: string;
+  titleEn: string;
+  parent: string | null;
+};
 export type Account = { id: string; username: string; role: 'admin' | 'superadmin' };
 export async function upload(file: File) {
   const response = await fetch('/__dsdocs_content/assets', {

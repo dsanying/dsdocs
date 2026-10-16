@@ -53,3 +53,11 @@ The two versions have independent drafts and publication states. DSdocs does not
 The super administrator creates and manages ordinary administrators. The super administrator account cannot be deleted or downgraded. Administrators can see only their own account and must verify their current password before changing their username or password.
 
 Both roles have the same document editing permissions. Account changes revoke sessions and require signing in again. Passwords are stored as hashes and cannot be viewed; the super administrator can reset an ordinary administrator's password.
+
+## Files and website settings
+
+Use Website settings to change the name, images, typography, colors, navigation, language and footer. Save applies changes; Cancel keeps the saved version. Deployment ports and secrets are outside these settings.
+
+The same settings are editable in `workspace/site.json` under the data directory. Markdown files in `workspace/documents` are another editing entry point. File changes become drafts and require publishing in the admin panel. Panel saves also update these files. Directory names and hierarchy are stored as JSON in `workspace/folders`.
+
+Keep existing IDs, language and translation associations. Front matter uses a JSON object. Renaming a file preserves identity; removing a file does not delete the document. If both entries change, compare versions in File sync before choosing one.

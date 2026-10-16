@@ -1,7 +1,7 @@
 import '../../../packages/content/prose.css';
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter, useSearchParams } from 'react-router';
 import { Button, ConfigProvider, App as AntApp, Layout, Alert } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import {
@@ -11,6 +11,8 @@ import {
   UserOutlined,
   MoonOutlined,
   SunOutlined,
+  SettingOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import i18n from '@/i18n';
 import '@/design/tokens.css';
@@ -27,9 +29,10 @@ import {
   AccountMenu,
 } from '@/components/ui';
 import { setStaticInstances } from '@/utils/antdStatic';
+import { Settings, FileSync } from './features/Settings';
 import { Documents } from './features/Documents';
 import { Accounts, Folders, Assets } from './features/Resources';
-import { request, type Account } from './services';
+import { content, request, type Account } from './services';
 function Bridge() {
   const { notification } = AntApp.useApp();
   useEffect(() => {
@@ -41,7 +44,14 @@ function Shell() {
   const [current, setCurrent] = useState<Account | null>(null),
     [ready, setReady] = useState(false),
     [error, setError] = useState(''),
-    [page, setPage] = useState('documents');
+    [siteName, setSiteName] = useState('DSdocs');
+  const [params, setParams] = useSearchParams();
+  const page = ['folders', 'assets', 'accounts', 'settings', 'files'].includes(
+    params.get('page') ?? ''
+  )
+    ? params.get('page')!
+    : 'documents';
+  const setPage = (next: string) => setParams(next === 'documents' ? {} : { page: next });
   const mode = useThemeStore((x) => x.mode),
     setPreference = useThemeStore((x) => x.setPreference);
   useEffect(() => {
@@ -49,13 +59,16 @@ function Shell() {
       .then((value) => {
         setCurrent(value.user);
         setReady(true);
+        void content('/settings')
+          .then((value) => setSiteName(value.data.siteName))
+          .catch(() => {});
       })
       .catch((e) => setError(e.message));
   }, []);
   return (
     <Layout className="management-shell">
       <Layout.Sider breakpoint="md" collapsedWidth={0} theme="light">
-        <div className="brand">DSdocs</div>
+        <div className="brand">{siteName}</div>
         <SidebarMenu
           selectedKeys={[page]}
           onClick={({ key }) => setPage(key)}
@@ -63,6 +76,8 @@ function Shell() {
             { key: 'documents', icon: <FileTextOutlined aria-hidden />, label: '文档' },
             { key: 'folders', icon: <FolderOutlined aria-hidden />, label: '目录' },
             { key: 'assets', icon: <PaperClipOutlined aria-hidden />, label: '附件' },
+            { key: 'settings', icon: <SettingOutlined aria-hidden />, label: '网站设置' },
+            { key: 'files', icon: <SyncOutlined aria-hidden />, label: '文件同步' },
             ...(current
               ? [
                   {
@@ -104,6 +119,19 @@ function Shell() {
             <div hidden={page !== 'documents'}>
               <Documents visible={page === 'documents'} />
             </div>
+            <div hidden={page !== 'settings'}>
+              <Settings
+                onSaved={(value) => {
+                  setSiteName(value.siteName);
+                  document.title = value.siteName + ' · 管理';
+                }}
+              />
+            </div>
+            {page === 'files' && (
+              <div className="resource-page">
+                <FileSync />
+              </div>
+            )}
             {page === 'folders' && (
               <div className="resource-page">
                 <Folders />

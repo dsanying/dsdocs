@@ -6,6 +6,7 @@ let previous = '',
 export async function GET(request: Request) {
   const data = readPublished(),
     key = JSON.stringify(data);
+  if (!data.settings.searchEnabled) return new Response('Not found', { status: 404 });
   if (key !== previous || !api) {
     api = flexsearchI18n({
       i18n: { languages: ['zh', 'en'], defaultLanguage: 'zh' },

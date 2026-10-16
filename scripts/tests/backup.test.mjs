@@ -22,7 +22,7 @@ test('Git 内容导出与身份数据分离，并拒绝目录符号链接', asyn
       await readFile(path.join(repo, 'dsdocs-backup/content.json'), 'utf8')
     );
     assert.equal(snapshot.documents[0].title, '备份文档');
-    assert.deepEqual(Object.keys(snapshot).sort(), ['assets', 'documents', 'folders', 'format']);
+    assert.deepEqual(Object.keys(snapshot).sort(), ['assets', 'documents', 'folders', 'format', 'settings']);
     await rm(path.join(repo, 'dsdocs-backup'), { recursive: true });
     await symlink(directory, path.join(repo, 'dsdocs-backup'));
     await assert.rejects(() => exportBackup(repo), /符号链接/);

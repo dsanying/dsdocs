@@ -237,7 +237,7 @@ export function Folders() {
             await content(
               `/folders${editing?.id ? `/${editing.id}` : ''}`,
               editing?.id ? 'PATCH' : 'POST',
-              values
+              { ...values, ...(editing?.id ? { version: editing.version } : {}) }
             );
             await load();
             notifyActionSuccess('save');

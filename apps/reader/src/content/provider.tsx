@@ -3,7 +3,9 @@ import { RootProvider } from 'fumadocs-ui/provider/next';
 import type { Framework } from 'fumadocs-core/framework';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import type { SiteSettings } from '../../../../packages/content/settings.mjs';
+import { PageFooter, type FooterProps } from 'fumadocs-ui/layouts/docs/page';
+import { createContext, useContext, useEffect } from 'react';
 import DocumentSearch from './search';
 import { chineseUI } from './ui-translations';
 const base = process.env.NEXT_PUBLIC_DSDOCS_BASE_PATH ?? '/docs';
@@ -43,9 +45,11 @@ export const DocumentationImage: NonNullable<Framework['Image']> = ({
 
 export function DocumentationProvider({
   locale,
+  settings,
   translations,
   children,
 }: {
+  settings: SiteSettings;
   locale: string;
   translations: Record<string, string>;
   children: React.ReactNode;
@@ -55,30 +59,54 @@ export function DocumentationProvider({
     document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
   }, [locale]);
   return (
-    <RootProvider
-      components={{ Link: DocumentationLink, Image: DocumentationImage }}
-      i18n={{
-        locale,
-        locales: [
-          { locale: 'zh', name: '简体中文' },
-          { locale: 'en', name: 'English' },
-        ],
-        onLocaleChange(next) {
-          try {
-            localStorage.setItem('dsdocs-language', next);
-          } catch {}
-          router.push(translations[next] ?? `/${next}`);
-        },
-        translations: locale === 'zh' ? chineseUI : {},
-      }}
-      search={{ SearchDialog: DocumentSearch }}
-    >
-      {children}
-    </RootProvider>
+    <SettingsContext.Provider value={settings}>
+      <RootProvider
+        components={{ Link: DocumentationLink, Image: DocumentationImage }}
+        i18n={{
+          locale,
+          locales: [
+            { locale: 'zh', name: '简体中文' },
+            { locale: 'en', name: 'English' },
+          ],
+          onLocaleChange(next) {
+            try {
+              localStorage.setItem('dsdocs-language', next);
+            } catch {}
+            router.push(translations[next] ?? `/${next}`);
+          },
+          translations: locale === 'zh' ? chineseUI : {},
+        }}
+        theme={{ defaultTheme: settings.theme }}
+        search={{ enabled: settings.searchEnabled, SearchDialog: DocumentSearch }}
+      >
+        {children}
+      </RootProvider>
+    </SettingsContext.Provider>
   );
 }
 
-export function LanguageEntry() {
+const SettingsContext = createContext<SiteSettings | null>(null);
+export function DocumentationFooter(props: FooterProps) {
+  const value = useContext(SettingsContext)!;
+  return (
+    <>
+      <div>{value.showPreviousNext && <PageFooter {...props} />}</div>
+      {(value.footerText || value.footerLinks.length > 0) && (
+        <footer className="mt-8 border-t pt-4 text-sm text-fd-muted-foreground">
+          <p>{value.footerText}</p>
+          <nav className="flex flex-wrap gap-4">
+            {value.footerLinks.map((link) => (
+              <DocumentationLink key={link.url + link.label} href={link.url}>
+                {link.label}
+              </DocumentationLink>
+            ))}
+          </nav>
+        </footer>
+      )}
+    </>
+  );
+}
+export function LanguageEntry({ settings }: { settings: SiteSettings }) {
   const router = useRouter();
   useEffect(() => {
     let language: string | null = null;
@@ -86,15 +114,17 @@ export function LanguageEntry() {
       language = localStorage.getItem('dsdocs-language');
     } catch {}
     const browserLanguage = navigator.languages?.[0] ?? navigator.language;
+    if (language !== 'zh' && language !== 'en' && settings.defaultLanguage !== 'auto')
+      language = settings.defaultLanguage;
     const target =
       language === 'zh' || (language !== 'en' && browserLanguage.toLowerCase().startsWith('zh'))
         ? 'zh'
         : 'en';
     router.replace(`/${target}`);
-  }, [router]);
+  }, [router, settings.defaultLanguage]);
   return (
     <main className="mx-auto max-w-xl p-12">
-      <h1 className="text-2xl font-semibold">DSdocs</h1>
+      <h1 className="text-2xl font-semibold">{settings.siteName}</h1>
       <p>正在打开文档 / Opening documentation…</p>
     </main>
   );

@@ -46,6 +46,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     assert.equal((await call('/')).status, 302);
     assert.equal((await call('/__dsdocs_auth/sign-up/email', 'POST', {})).status, 404);
     assert.equal((await call('/__dsdocs_content')).status, 401);
+    assert.equal((await call('/__dsdocs_content/settings')).status, 401);
     assert.equal(
       (
         await call('/__dsdocs_content/documents', 'POST', {}, '', {
@@ -62,6 +63,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     assert.equal((await call('/')).status, 200);
     assert.equal((await call('/login')).status, 302);
     assert.equal((await call('/__dsdocs_content')).status, 403);
+    assert.equal((await call('/__dsdocs_content/files')).status, 403);
     assert.equal(
       (
         await call('/__dsdocs_accounts/me', 'PATCH', {
@@ -94,6 +96,10 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     const login = await signIn('writer', 'member-pass-123');
     assert.equal(login.status, 200);
     memberCookie = login.cookie;
+    assert.equal(
+      (await call('/__dsdocs_content/settings', 'GET', undefined, memberCookie)).status,
+      200
+    );
     const visible = await call('/__dsdocs_accounts', 'GET', undefined, memberCookie);
     assert.equal(visible.data.length, 1);
     assert.equal(visible.data[0].username, 'writer');

@@ -1,3 +1,4 @@
+import { defaultSettings, type SiteSettings } from '../../../../packages/content/settings.mjs';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -16,16 +17,23 @@ export type PublishedDocument = {
 };
 export const base = process.env.NEXT_PUBLIC_DSDOCS_BASE_PATH ?? '/docs';
 export function readPublished(): {
+  settings: SiteSettings;
   revision: string;
   documents: PublishedDocument[];
   folders: { id: string; title: string; titleEn: string; parent: string | null }[];
 } {
   if (!existsSync(path.join(dataDirectory(), 'content.sqlite')))
-    return { documents: [], folders: [], revision: 'empty' };
+    return {
+      documents: [],
+      folders: [],
+      revision: 'empty',
+      settings: structuredClone(defaultSettings),
+    };
   const store = openContent(dataDirectory(), true);
   try {
     store.db.exec('BEGIN');
     const result = {
+      settings: store.settings().data,
       revision: createHash('sha256').update(store.revision()).digest('hex'),
       documents: store.published(),
       folders: store.folders() as {
@@ -55,7 +63,7 @@ export function pageTree(locale: string, data = readPublished()): Root {
       }))
       .filter((x) => x.children.length > 0);
   return {
-    name: 'DSdocs',
+    name: data.settings.siteName,
     children: [...folders(null), ...docs.filter((x) => !x.folder).map(page)],
   };
 }

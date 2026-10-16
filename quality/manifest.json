@@ -74,6 +74,15 @@
       ]
     },
     {
+      "id": "files-settings-regression",
+      "rule": "docs/设计/文件与站点设置.md",
+      "command": [
+        "node",
+        "--test",
+        "apps/manage/tests/files.test.mjs"
+      ]
+    },
+    {
       "id": "management-types",
       "rule": "docs/规范/前端.md",
       "command": [

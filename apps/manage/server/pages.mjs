@@ -1,7 +1,11 @@
-export function accountPage(setup = false) {
-  return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DSdocs · ${setup ? '首次设置' : '登录'}</title>
+export function accountPage(setup = false, siteName = 'DSdocs') {
+  const brand = siteName.replace(
+    /[&<>"']/g,
+    (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]
+  );
+  return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${brand} · ${setup ? '首次设置' : '登录'}</title>
 <style>:root{color-scheme:light dark;font:14px system-ui;background:light-dark(#f7f7f7,#111);color:light-dark(#171717,#eee)}body{margin:0;min-height:100dvh;display:grid;place-items:center}main{width:min(360px,calc(100vw - 64px));padding:28px;background:light-dark(white,#1b1b1b);border:1px solid light-dark(#ddd,#333);border-radius:12px}h1{font-size:24px;margin:0 0 12px}p{line-height:1.7}form,label{display:grid;gap:8px}form{gap:20px}input,button{box-sizing:border-box;width:100%;font:inherit;min-height:38px;border:1px solid light-dark(#ddd,#444);border-radius:6px;padding:8px;background:light-dark(white,#222);color:inherit}button{background:#1677ff;color:white;border:0;cursor:pointer}button:disabled{opacity:.5}input:focus-visible,button:focus-visible{outline:2px solid #1677ff;outline-offset:2px}[role=alert]{color:light-dark(#b42318,#ff9999);min-height:20px}</style>
-<main><h1>DSdocs</h1><p>${setup ? '首次使用，请修改默认用户名和密码，完成后才能进入编辑后台。' : '登录文档管理后台'}</p><form>
+<main><h1>${brand}</h1><p>${setup ? '首次使用，请修改默认用户名和密码，完成后才能进入编辑后台。' : '登录文档管理后台'}</p><form>
 <label>${setup ? '新用户名' : '用户名'}<input name="username" autocomplete="username" required pattern="[A-Za-z0-9._\\-]{3,64}" minlength="3" maxlength="64"></label>
 <label>${setup ? '新密码' : '密码'}<input name="password" type="password" autocomplete="${setup ? 'new-password' : 'current-password'}" required minlength="${setup ? 8 : 1}" maxlength="128"></label>
 ${setup ? '<label>确认新密码<input name="confirm" type="password" autocomplete="new-password" required minlength="8" maxlength="128"></label>' : ''}

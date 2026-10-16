@@ -24,7 +24,8 @@ export async function exportBackup(target) {
     // A single read transaction captures drafts, snapshots, folders and asset metadata together.
     store.db.exec('BEGIN');
     const snapshot = {
-      format: 1,
+      format: 2,
+      settings: store.settings().data,
       documents: store.list(),
       folders: store.folders(),
       assets: store.db.prepare('SELECT id,name,mime,size,createdAt FROM assets ORDER BY id').all(),

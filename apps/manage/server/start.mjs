@@ -29,6 +29,7 @@ export async function startManagement(env = process.env) {
     env.DSDOCS_DATA_DIR ?? dataDirectory(),
     env.DSDOCS_STARTER ?? 'guide'
   );
+  content.startFileSync();
   const development = env.DSDOCS_DEV === '1';
   const vite = development
     ? await (
@@ -157,7 +158,7 @@ export async function startManagement(env = process.env) {
           'Content-Type': 'text/html; charset=utf-8',
           'Cache-Control': 'no-store',
         });
-        res.end(accountPage());
+        res.end(accountPage(false, content.store.settings().data.siteName));
         return;
       }
       if (accounts && !state) {
@@ -233,7 +234,7 @@ export async function startManagement(env = process.env) {
             'Content-Type': 'text/html; charset=utf-8',
             'Cache-Control': 'no-store',
           });
-          res.end(accountPage(true));
+          res.end(accountPage(true, content.store.settings().data.siteName));
           return;
         }
         throw fail(403, '请先修改默认用户名和密码。');
@@ -412,7 +413,7 @@ export async function startManagement(env = process.env) {
     await new Promise((resolve) => server.close(resolve));
     await vite?.close();
     accounts?.close();
-    content.store.close();
+    await content.close();
   }
   return { server, accounts, close };
 }

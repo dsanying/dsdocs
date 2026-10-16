@@ -1,3 +1,5 @@
+import { defaultSettings, validateSettings, settingsAssetIds } from './settings.mjs';
+import { createHash } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync, chmodSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
@@ -14,6 +16,8 @@ export function openContent(directory = dataDirectory(), readonly = false) {
   if (!readonly) {
     chmodSync(filename, 0o600);
     db.exec(`PRAGMA journal_mode=DELETE;
+      CREATE TABLE IF NOT EXISTS site_settings (id INTEGER PRIMARY KEY CHECK(id=1), version INTEGER NOT NULL, data TEXT NOT NULL, updatedAt TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS file_state (key TEXT PRIMARY KEY, path TEXT NOT NULL, hash TEXT NOT NULL, version TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS folders (id TEXT PRIMARY KEY, title TEXT NOT NULL, titleEn TEXT NOT NULL, parent TEXT REFERENCES folders(id), position INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS documents (id TEXT PRIMARY KEY, translationId TEXT NOT NULL, locale TEXT NOT NULL CHECK(locale IN ('zh','en')), slug TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL DEFAULT '', folder TEXT REFERENCES folders(id), body TEXT NOT NULL DEFAULT '', version INTEGER NOT NULL DEFAULT 1, published TEXT, updatedAt TEXT NOT NULL, UNIQUE(locale,slug), UNIQUE(translationId,locale));
       CREATE TABLE IF NOT EXISTS revisions (id INTEGER PRIMARY KEY, documentId TEXT NOT NULL REFERENCES documents(id) ON DELETE CASCADE, snapshot TEXT NOT NULL, createdAt TEXT NOT NULL);
@@ -37,15 +41,55 @@ export function openContent(directory = dataDirectory(), readonly = false) {
     return row;
   };
   const list = () => db.prepare('SELECT * FROM documents ORDER BY title COLLATE NOCASE,id').all();
-  const folders = () => db.prepare('SELECT * FROM folders ORDER BY position,title,id').all();
+  /** @returns {{id:string,title:string,titleEn:string,parent:string|null,position:number,version:string}[]} */
+  const folders = () =>
+    db
+      .prepare('SELECT * FROM folders ORDER BY position,title,id')
+      .all()
+      .map((row) => ({
+        ...row,
+        version: createHash('sha256').update(JSON.stringify(row)).digest('hex'),
+      }));
   const published = () =>
     db
       .prepare('SELECT published FROM documents WHERE published IS NOT NULL ORDER BY id')
       .all()
       .map((row) => JSON.parse(row.published))
       .sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id));
+  const settings = () => {
+    const exists = db
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='site_settings'")
+      .get();
+    const row = exists ? db.prepare('SELECT * FROM site_settings WHERE id=1').get() : null;
+    return {
+      version: row?.version ?? 0,
+      data: row ? validateSettings(JSON.parse(row.data)) : structuredClone(defaultSettings),
+      updatedAt: row?.updatedAt ?? null,
+    };
+  };
+  const saveSettings = (version, input) =>
+    transaction(() => {
+      if (version !== settings().version)
+        throw problem(409, '设置已被其他入口修改，请重新加载后编辑。');
+      const value = validateSettings(input);
+      for (const id of settingsAssetIds(value)) {
+        const asset = db.prepare('SELECT mime FROM assets WHERE id=?').get(id);
+        if (!asset || !['image/png', 'image/jpeg', 'image/webp'].includes(asset.mime))
+          throw problem(400, '站点标识必须使用已上传的 PNG、JPEG 或 WebP 图片。');
+      }
+      if (
+        value.homeTranslationId &&
+        !published().some((doc) => doc.translationId === value.homeTranslationId)
+      )
+        throw problem(400, '首页需要选择已发布的文档。');
+      db.prepare(
+        'INSERT INTO site_settings(id,version,data,updatedAt) VALUES(1,?,?,?) ON CONFLICT(id) DO UPDATE SET version=excluded.version,data=excluded.data,updatedAt=excluded.updatedAt'
+      ).run(version + 1, JSON.stringify(value), new Date().toISOString());
+      return settings();
+    });
   const revision = () =>
     JSON.stringify({
+      settings: settings().version,
       latest: db.prepare('SELECT max(id) AS id FROM revisions').get().id,
       pages: db.prepare('SELECT id FROM documents WHERE published IS NOT NULL ORDER BY id').all(),
       folders: folders(),
@@ -159,6 +203,12 @@ export function openContent(directory = dataDirectory(), readonly = false) {
     if (parent && (typeof parent !== 'string' || !/^[a-f0-9-]{36}$/.test(parent)))
       throw problem(400, '父目录标识无效。');
     const all = folders();
+    if (
+      id &&
+      input.version !== undefined &&
+      input.version !== all.find((item) => item.id === id)?.version
+    )
+      throw problem(409, '目录已被其他入口修改，请重新加载。');
     if (parent && !all.some((x) => x.id === parent)) throw problem(400, '父目录不存在。');
     let cursor = parent;
     while (cursor) {
@@ -189,6 +239,8 @@ export function openContent(directory = dataDirectory(), readonly = false) {
     folders,
     published,
     revision,
+    settings,
+    saveSettings,
     create,
     save,
     publish,

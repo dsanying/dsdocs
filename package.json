@@ -10,15 +10,16 @@
     "manage": "pnpm -C apps/manage start",
     "build": "pnpm -C apps/manage build && pnpm -C apps/reader build && node scripts/manage-notices.mjs && node scripts/reader-notices.mjs",
     "check": "node scripts/check.mjs",
-    "test:system": "node --test apps/manage/tests/system.test.mjs",
+    "test:system": "node --test apps/manage/tests/system.test.mjs apps/manage/tests/files.test.mjs",
     "test:browser": "node scripts/test-system-browser.mjs",
     "preview": "pnpm -C apps/reader start",
     "audit:all": "pnpm -C apps/manage audit && pnpm -C apps/reader audit",
     "backup:git": "node --env-file-if-exists=.env scripts/backup-git.mjs",
     "test:containers": "node scripts/test-containers.mjs",
-    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='apps/manage/server/**' --test-coverage-include='packages/content/**' apps/manage/tests/system.test.mjs scripts/tests/starter.test.mjs",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='apps/manage/server/**' --test-coverage-include='packages/content/**' apps/manage/tests/system.test.mjs scripts/tests/starter.test.mjs apps/manage/tests/files.test.mjs",
     "content:init": "node --env-file-if-exists=.env scripts/initialize-content.mjs",
-    "test:starter:browser": "node scripts/test-starter-browser.mjs"
+    "test:starter:browser": "node scripts/test-starter-browser.mjs",
+    "test:settings:browser": "node scripts/test-settings-browser.mjs"
   },
   "license": "MIT",
   "repository": {

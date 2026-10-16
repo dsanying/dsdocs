@@ -33,6 +33,10 @@ const run = (args, input) => {
 const compose = (...args) => run(['compose', '-p', project, '-f', file, ...args]);
 const report = { checks: [], images: {} };
 try {
+  for (const target of ['management', 'reader']) {
+    console.log(`[container] 构建 ${target} 当前源码镜像`);
+    run(['build', '--target', target, '--tag', `dsdocs-${target}:local`, '.']);
+  }
   compose('up', '-d');
   const end = Date.now() + 30000;
   while (true) {
@@ -81,6 +85,16 @@ try {
   const url = 'http://127.0.0.1:15500/docs/zh/container-check';
   assert.match(await (await fetch(url)).text(), /Readonly mount works/);
   report.checks.push('只读挂载读者的草稿隔离与动态发布');
+  run(
+    ['exec', '-i', `${project}-management-1`, 'node', '--input-type=module', '-'],
+    `import {readFileSync,writeFileSync} from 'node:fs';const file='/data/workspace/site.json';const value=JSON.parse(readFileSync(file,'utf8'));writeFileSync(file,JSON.stringify({...value,siteName:'容器文件设置验证'}));`
+  );
+  const settingDeadline = Date.now() + 15000;
+  while (!(await (await fetch(url)).text()).includes('容器文件设置验证')) {
+    if (Date.now() > settingDeadline) throw new Error('容器文件设置未同步');
+    await new Promise((resolve) => setTimeout(resolve, 200));
+  }
+  report.checks.push('容器可编辑设置文件导入数据库并由只读读者即时显示');
   compose('stop', 'management');
   assert.equal((await fetch(url)).status, 200);
   assert.match(await (await fetch(url)).text(), /Readonly mount works/);

@@ -2,7 +2,7 @@
 
 开始任务前完整阅读 `docs/维护手册.md`，按任务读取架构、前后端及安全规范。保留无关改动，只提交本次文件。作者使用 dsanying，通过本地 `git commit -S` 使用现有密钥签名。
 
-展示品牌使用 DSdocs；包名、命令、路径、镜像和仓库标识使用 dsdocs。管理端采用 Ant Design 和 MDXEditor；读者端采用原生 Fumadocs UI/Core。通过公开接口组合依赖，不修改上游包。
+项目默认展示品牌使用 DSdocs，部署者可在网站设置修改站点名称；包名、命令、路径、镜像和仓库标识使用 dsdocs。管理端采用 Ant Design 和 MDXEditor；读者端采用原生 Fumadocs UI/Core。通过公开接口组合依赖，不修改上游包。
 
 数据库是内容权威来源。保存草稿不等于发布；读者仅读取已发布版本，管理服务停止不影响独立读者进程。正文是受限 Markdown，不执行 MDX、HTML 或 JavaScript。不得提交凭据、数据库和用户附件。
 
