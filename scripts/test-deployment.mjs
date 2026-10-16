@@ -25,9 +25,22 @@ const password = randomBytes(32).toString('hex');
 const hash = docker(['run', '--rm', '-i', 'caddy:2.11.7', 'caddy', 'hash-password'], {
   input: password + '\n',
 });
-docker(['compose', '--project-directory', root, 'config', '--quiet'], {
-  env: { ...process.env, DSDOCS_EDITOR_USER: 'verification', DSDOCS_EDITOR_PASSWORD_HASH: hash },
-});
+docker(
+  [
+    'compose',
+    '--project-directory',
+    root,
+    '-f',
+    'compose.yaml',
+    '-f',
+    'deploy/compose.basic.yaml',
+    'config',
+    '--quiet',
+  ],
+  {
+    env: { ...process.env, DSDOCS_EDITOR_USER: 'verification', DSDOCS_EDITOR_PASSWORD_HASH: hash },
+  }
+);
 const envFile = artifact + '/container.env';
 await writeFile(envFile, `DSDOCS_EDITOR_USER=verification\nDSDOCS_EDITOR_PASSWORD_HASH=${hash}\n`, {
   mode: 0o600,

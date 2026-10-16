@@ -22,3 +22,20 @@ USER node
 WORKDIR /app/apps/studio
 EXPOSE 5180
 CMD ["node", "node_modules/@fumadocs-editor/studio/dist/cli.js", "--host", "--no-open"]
+
+# Optional DSdocs shell; the official Studio target remains independently usable.
+FROM node:${NODE_VERSION}-bookworm-slim AS management
+WORKDIR /app
+RUN npm install --global pnpm@12.8.1
+COPY --chown=node:node apps/manage/package.json apps/manage/pnpm-lock.yaml apps/manage/pnpm-workspace.yaml ./apps/manage/
+RUN pnpm -C apps/manage install --prod --frozen-lockfile
+COPY --chown=node:node apps/manage ./apps/manage
+COPY LICENSE THIRD_PARTY_NOTICES.md ./
+COPY licenses ./licenses
+COPY scripts/collect-licenses.mjs scripts/manage-notices.mjs ./scripts/
+RUN node scripts/manage-notices.mjs && chown -R node:node /app
+COPY --chown=node:node apps/reader/content/docs ./apps/reader/content/docs
+USER node
+WORKDIR /app/apps/manage
+EXPOSE 5182
+CMD ["node", "node_modules/vite/bin/vite.js", "--host", "0.0.0.0", "--port", "5182"]

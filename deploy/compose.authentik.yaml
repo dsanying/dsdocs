@@ -1,0 +1,76 @@
+# Optional identity module. Derived from authentik's official 2026.8.4 Compose.
+x-authentik-environment: &authentik-environment
+  AUTHENTIK_POSTGRESQL__HOST: identity-db
+  AUTHENTIK_POSTGRESQL__NAME: authentik
+  AUTHENTIK_POSTGRESQL__USER: authentik
+  AUTHENTIK_POSTGRESQL__PASSWORD: ${DSDOCS_IDENTITY_DB_PASSWORD:?Set identity database password}
+  AUTHENTIK_SECRET_KEY: ${DSDOCS_IDENTITY_SECRET_KEY:?Set identity secret key}
+  DSDOCS_EDITOR_URL: ${DSDOCS_EDITOR_URL:-http://editor.localhost:5181}
+  DSDOCS_IDENTITY_URL: ${DSDOCS_IDENTITY_URL:-http://auth.localhost:9000}
+services:
+  management:
+    build:
+      context: .
+      target: management
+    environment:
+      DSDOCS_IDENTITY_API_URL: ${DSDOCS_IDENTITY_API_URL:-http://identity-server:9000}
+      DSDOCS_IDENTITY_API_TOKEN: ${DSDOCS_IDENTITY_API_TOKEN:?Set management API token}
+      DSDOCS_MANAGEMENT_ORIGIN: ${DSDOCS_EDITOR_URL:-http://editor.localhost:5181}
+    volumes:
+      - ./apps/reader/content/docs:/app/apps/reader/content/docs
+    restart: unless-stopped
+  gateway:
+    image: caddy:2.11.7
+    volumes:
+      - ./deploy/authentik/Caddyfile:/etc/caddy/Caddyfile:ro
+    ports:
+      - '127.0.0.1:${DSDOCS_EDITOR_PORT:-5181}:5180'
+    depends_on:
+      - management
+      - identity-server
+    restart: unless-stopped
+  identity-db:
+    image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+    environment:
+      POSTGRES_DB: authentik
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: ${DSDOCS_IDENTITY_DB_PASSWORD:?Set identity database password}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d "$${POSTGRES_DB}" -U "$${POSTGRES_USER}"']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    volumes:
+      - identity-database:/var/lib/postgresql/data
+    restart: unless-stopped
+  identity-server:
+    image: ghcr.io/goauthentik/server:2026.8.4
+    command: server
+    environment: *authentik-environment
+    depends_on:
+      identity-db:
+        condition: service_healthy
+    ports:
+      - '127.0.0.1:${DSDOCS_IDENTITY_PORT:-9000}:9000'
+    volumes:
+      - identity-data:/data
+    shm_size: 512mb
+    restart: unless-stopped
+  identity-worker:
+    image: ghcr.io/goauthentik/server:2026.8.4
+    command: worker
+    environment:
+      <<: *authentik-environment
+      DSDOCS_IDENTITY_API_TOKEN: ${DSDOCS_IDENTITY_API_TOKEN:?Set management API token}
+      AUTHENTIK_BOOTSTRAP_PASSWORD_HASH: ${DSDOCS_IDENTITY_ADMIN_PASSWORD_HASH:-}
+    depends_on:
+      identity-db:
+        condition: service_healthy
+    volumes:
+      - identity-data:/data
+      - ./deploy/authentik/blueprints:/blueprints/custom:ro
+    shm_size: 512mb
+    restart: unless-stopped
+volumes:
+  identity-database:
+  identity-data:

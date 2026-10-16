@@ -1,0 +1,16 @@
+# Based on authentik's official Caddy forward-auth integration.
+:5180 {
+  route {
+    request_header -X-Authentik-Username
+    reverse_proxy /outpost.goauthentik.io/* {$DSDOCS_IDENTITY_UPSTREAM:identity-server:9000}
+    forward_auth {$DSDOCS_IDENTITY_UPSTREAM:identity-server:9000} {
+      uri /outpost.goauthentik.io/auth/caddy
+      copy_headers X-Authentik-Username
+    }
+    reverse_proxy management:5182 {
+      # Reconnect long-lived editor sockets so admission is checked again.
+      # This does not itself invalidate authentik sessions or token caches.
+      stream_timeout 30s
+    }
+  }
+}

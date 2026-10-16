@@ -6,22 +6,3 @@ services:
     ports:
       - '127.0.0.1:${DSDOCS_READER_PORT:-3200}:3200'
     restart: unless-stopped
-  gateway:
-    image: caddy:2.11.7
-    environment:
-      DSDOCS_EDITOR_USER: ${DSDOCS_EDITOR_USER:?Set editor username}
-      DSDOCS_EDITOR_PASSWORD_HASH: ${DSDOCS_EDITOR_PASSWORD_HASH:?Set bcrypt hash}
-    volumes:
-      - ./deploy/editor.Caddyfile:/etc/caddy/Caddyfile:ro
-    ports:
-      - '127.0.0.1:${DSDOCS_EDITOR_PORT:-5180}:5180'
-    depends_on:
-      - studio
-    restart: unless-stopped
-  studio:
-    build:
-      context: .
-      target: studio
-    volumes:
-      - ./apps/reader/content/docs:/app/apps/reader/content/docs
-    restart: unless-stopped

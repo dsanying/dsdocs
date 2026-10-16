@@ -1,0 +1,24 @@
+# Reuse an existing authentik deployment; does not start a database or identity server.
+services:
+  management:
+    build:
+      context: .
+      target: management
+    environment:
+      DSDOCS_IDENTITY_API_URL: ${DSDOCS_IDENTITY_API_URL:?Set reachable authentik API URL}
+      DSDOCS_IDENTITY_API_TOKEN: ${DSDOCS_IDENTITY_API_TOKEN:?Set management API token}
+      DSDOCS_MANAGEMENT_ORIGIN: ${DSDOCS_EDITOR_URL:-http://editor.localhost:5181}
+    volumes:
+      - ./apps/reader/content/docs:/app/apps/reader/content/docs
+    restart: unless-stopped
+  gateway:
+    image: caddy:2.11.7
+    environment:
+      DSDOCS_IDENTITY_UPSTREAM: ${DSDOCS_IDENTITY_UPSTREAM:?Set reachable authentik upstream}
+    volumes:
+      - ./deploy/authentik/Caddyfile:/etc/caddy/Caddyfile:ro
+    ports:
+      - '127.0.0.1:${DSDOCS_EDITOR_PORT:-5181}:5180'
+    depends_on:
+      - management
+    restart: unless-stopped

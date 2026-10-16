@@ -20,6 +20,7 @@ jobs:
           node-version: 26
           cache: pnpm
           cache-dependency-path: |
+            apps/manage/pnpm-lock.yaml
             apps/studio/pnpm-lock.yaml
             apps/reader/pnpm-lock.yaml
       - run: pnpm install:all
@@ -27,3 +28,4 @@ jobs:
       - run: pnpm -C apps/studio exec playwright install --with-deps chromium firefox
       - run: pnpm test:reader
       - run: DSDOCS_CHROME_CHANNEL=chromium DSDOCS_HEADLESS=1 pnpm test:studio
+      - run: DSDOCS_CHROME_CHANNEL=chromium DSDOCS_HEADLESS=1 pnpm test:management
