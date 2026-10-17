@@ -10,7 +10,7 @@
   max-width: 100%;
 }
 
-.ds-responsive-actions[data-justify='start'] {
+.ds-responsive-actions[data-justify="start"] {
   flex: 0 1 auto;
   justify-content: flex-start;
 }

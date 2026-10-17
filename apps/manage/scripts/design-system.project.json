@@ -1,0 +1,27 @@
+{
+  "$comment": "所有项目差异集中在这里；不要把页面名、接口名或领域指标写进通用门禁引擎。 实体筛选与关联列在接入业务后逐字段登记 entityFilterFields / entityReferenceColumns。",
+  "servicesModule": "@/services",
+  "statisticExemptions": [],
+  "largeCandidateApis": {
+    "module": "@/services/api",
+    "names": []
+  },
+  "infoArch": {
+    "applicability": "none",
+    "reason": "DSdocs 提供文档编辑工作台、目录、附件、账号及站点设置，没有指标总览或深度分析页。"
+  },
+  "navigation": {
+    "businessRoutes": []
+  },
+  "transportModules": [],
+  "thirdPartyCssBridges": [
+    {
+      "component": "MarkdownEditor",
+      "source": "src/components/MarkdownEditor/style.css",
+      "mechanism": "MDXEditor 公开主题变量、toolbarClassName、contentEditableClassName 与 CodeMirror 公开滚动类；受浏览器源码往返与双主题门禁验证。"
+    }
+  ],
+  "entityFilterFields": [],
+  "entityReferenceColumns": [],
+  "externalFixedOrderTables": []
+}

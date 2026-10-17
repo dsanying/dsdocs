@@ -19,15 +19,20 @@ export type UnknownTagFix = {
 /**
  * 已选标签与 Ant 默认结构同构，值不在候选集中时附加标红类（粘贴误入或候选后来被删）。
  * 提供 fix 上下文时红标签可点：按近似度列出候选，点击即替换为候选真实值；不再匹配的红标自动消失。
+ * `allowEmptyKnown`：候选由远端核验时"已加载且为空"也要标红——空集即无命中，不等于尚未加载。
  */
 export function selectionTagRender(
   tag: TagRenderProps,
   knownValues: ReadonlySet<string>,
   loading?: boolean,
-  fix?: UnknownTagFix
+  fix?: UnknownTagFix,
+  allowEmptyKnown = false
 ) {
   const unknown =
-    !loading && !tag.isMaxTag && knownValues.size > 0 && !knownValues.has(String(tag.value));
+    !loading &&
+    !tag.isMaxTag &&
+    !knownValues.has(String(tag.value)) &&
+    (knownValues.size > 0 || allowEmptyKnown);
   const fixable = unknown && fix && (fix.options.length > 0 || fix.probe != null);
   const content = (
     <span

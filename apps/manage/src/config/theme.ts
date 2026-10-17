@@ -44,7 +44,7 @@ function readCssPalette() {
 
 /**
  * Ant 算法会从主色与状态色种子各派生一整套色阶；品牌种子派生档位和稳定状态色
- * 会被改写成带灰阶或偏暗的派生色在算法之后把语义色还原为 token。
+ * 会被改写成带灰阶或偏暗的派生色，在算法之后把语义色还原为 token。
  */
 function createPreserveSemanticColors(token: {
   color: {
@@ -274,7 +274,7 @@ export function buildThemeConfig(mode: ThemeMode): ThemeConfig {
         rowSelectedBg: token.color.primarySurface,
         rowSelectedHoverBg: token.color.primarySurface,
         cellPaddingBlock: token.space.md,
-        cellPaddingInline: token.space.lg,
+        cellPaddingInline: token.space.sm,
         headerSplitColor: 'transparent',
         footerBg: 'transparent',
       },

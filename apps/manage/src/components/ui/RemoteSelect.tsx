@@ -27,7 +27,7 @@ export type RemoteSelectProps = Omit<
 };
 
 /**
- * 表单里的大候选集单选：主体、UPN、邮箱这类以万计的枚举不全量加载，
+ * 表单里的大候选集单选：主体、账号、邮箱这类以万计的枚举不全量加载，
  * 默认占满所属字段的可用宽度，独立使用时也可操作；输入关键词后向后端取前 N 条，已选值始终保留为选项。多选请用 FilterSelect（查询区）或 MultiSelect（表单）。
  */
 export function RemoteSelect({

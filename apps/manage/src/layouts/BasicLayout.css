@@ -1,0 +1,136 @@
+.ds-brand-header {
+  display: inline-flex;
+  /* 可配置站点名在自己的文字槽内滚动，保留导航与折叠入口。 */
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  gap: var(--ds-space-8);
+  padding-inline: var(--ds-space-4);
+  color: var(--ds-color-text);
+  text-decoration: none;
+}
+
+.ds-brand-header__icon {
+  display: inline-flex;
+  width: var(--ds-space-24);
+  height: var(--ds-space-24);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ds-radius-md);
+  border: 1px solid var(--ds-color-border-strong);
+  background: var(--ds-color-surface-muted);
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-xs);
+  font-weight: 700;
+}
+
+.ds-brand-header__title {
+  min-width: 0;
+  flex: 1 1 0;
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-body);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 应用壳：整屏高度，侧栏固定，内容区独立滚动 */
+.ds-basic-layout {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ds-color-canvas);
+}
+
+.ds-basic-layout__sider {
+  height: 100%;
+  min-height: 0;
+  border-right: 1px solid var(--ds-color-border);
+}
+
+.ds-basic-layout__sider-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ds-basic-layout__sider-header {
+  display: flex;
+  height: var(--ds-layout-header-height);
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding-inline: var(--ds-space-16) var(--ds-space-12);
+  border-bottom: 1px solid var(--ds-color-border);
+}
+
+/* 折叠后侧栏只剩图标宽：顶部只有居中的品牌图标（即展开按钮） */
+.ds-basic-layout__sider-header[data-collapsed="true"] {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.ds-basic-layout__expand-icon {
+  display: inline-grid;
+  place-items: center;
+}
+
+/* 品牌图标与展开图标叠在同一格：平时显示品牌，悬停 / 键盘聚焦时换成展开图标，提示这里能展开 */
+.ds-basic-layout__expand-icon > * {
+  grid-area: 1 / 1;
+}
+
+.ds-basic-layout__expand-unfold {
+  visibility: hidden;
+}
+
+.ds-basic-layout__expand:hover .ds-brand-header__icon,
+.ds-basic-layout__expand:focus-visible .ds-brand-header__icon {
+  visibility: hidden;
+}
+
+.ds-basic-layout__expand:hover .ds-basic-layout__expand-unfold,
+.ds-basic-layout__expand:focus-visible .ds-basic-layout__expand-unfold {
+  visibility: visible;
+}
+
+.ds-basic-layout__nav {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-block: var(--ds-space-8);
+  overflow-y: auto;
+}
+
+.ds-basic-layout__sider-footer {
+  flex: 0 0 auto;
+  min-width: 0;
+  padding-block: var(--ds-space-8);
+  border-top: 1px solid var(--ds-color-border);
+}
+
+.ds-basic-layout__main {
+  min-height: 0;
+  overflow: hidden;
+  min-width: 0;
+  background: var(--ds-color-canvas);
+}
+
+.ds-basic-layout__content {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  min-width: 0;
+}
+
+/* 窄屏顶栏：菜单键 + 品牌 */
+.ds-basic-layout__topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-8);
+  height: var(--ds-layout-header-height);
+  padding-inline: var(--ds-space-8);
+  border-bottom: 1px solid var(--ds-color-border);
+  background: var(--ds-color-surface);
+}

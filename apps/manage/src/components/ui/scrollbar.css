@@ -4,12 +4,18 @@
   --rc-virtual-list-scrollbar-bg: var(--ds-color-border-strong);
 }
 
-/* 标准浏览器使用最细原生档；WebKit 兼容路径使用共享细线标度。 */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--ds-color-border-strong) transparent;
+/* Gecko（Firefox）没有伪元素路径，用标准最细档 thin 与主题色滑块。
+   引擎判定用 Gecko 专属 ::-moz-selection：Firefox 也能解析 ::-webkit-scrollbar
+   兼容别名（忽略其中尺寸声明），不能用它区分 Blink/WebKit 与 Firefox。 */
+@supports selector(::-moz-selection) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-color-border-strong) transparent;
+  }
 }
 
+/* Blink/WebKit 用伪元素实现 2px：scrollbar-width 保持初值 auto，
+   声明成非初值（含 thin）会让 Chromium 忽略整套伪元素样式。 */
 *::-webkit-scrollbar {
   width: var(--ds-space-2);
   height: var(--ds-space-2);
@@ -22,12 +28,4 @@
 *::-webkit-scrollbar-thumb {
   background: var(--ds-color-border-strong);
   border-radius: var(--ds-radius-xs);
-}
-
-/* Chromium 的标准 thin 会覆盖伪元素尺寸；支持此路径时用 2px 实现。 */
-@supports selector(::-webkit-scrollbar) {
-  * {
-    scrollbar-width: auto;
-    scrollbar-color: auto;
-  }
 }

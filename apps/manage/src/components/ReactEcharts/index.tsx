@@ -48,8 +48,8 @@ interface ReactEChartsProps {
   option: EChartsOption;
   style?: React.CSSProperties;
   className?: string;
-  /** 内容决定高度的图（如正方形格热力图）：画布高度随内容而不是统一的 CHART_HEIGHT。 */
-  'data-chart-fit'?: 'content';
+  /** 内容决定高度的图（如正方形格热力图）为 content；视口随所在行高伸展的图（如继承图与操作面板并排）为 fill，可见高度不低于 CHART_HEIGHT。 */
+  'data-chart-fit'?: 'content' | 'fill';
   notMerge?: boolean;
   lazyUpdate?: boolean;
   onChartReady?: (chart: ECharts) => void;

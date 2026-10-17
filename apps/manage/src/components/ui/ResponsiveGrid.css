@@ -21,63 +21,63 @@
 
 /* cards：指标卡，最小项宽 280px（金额大数字 + 趋势行单行放下） */
 @container (min-width: 576px) {
-  .ds-responsive-grid__track[data-layout='cards'][data-count='2'],
-  .ds-responsive-grid__track[data-layout='cards'][data-count='4'] {
+  .ds-responsive-grid__track[data-layout="cards"][data-count="2"],
+  .ds-responsive-grid__track[data-layout="cards"][data-count="4"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @container (min-width: 872px) {
-  .ds-responsive-grid__track[data-layout='cards'][data-count='3'] {
+  .ds-responsive-grid__track[data-layout="cards"][data-count="3"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @container (min-width: 1168px) {
-  .ds-responsive-grid__track[data-layout='cards'][data-count='4'] {
+  .ds-responsive-grid__track[data-layout="cards"][data-count="4"] {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 /* charts：清单/环形等图表，最小项宽 400px（类目标签列 + 条末数值 + 可读条长） */
 @container (min-width: 816px) {
-  .ds-responsive-grid__track[data-layout='charts'][data-count='2'],
-  .ds-responsive-grid__track[data-layout='charts'][data-count='4'] {
+  .ds-responsive-grid__track[data-layout="charts"][data-count="2"],
+  .ds-responsive-grid__track[data-layout="charts"][data-count="4"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @container (min-width: 1232px) {
-  .ds-responsive-grid__track[data-layout='charts'][data-count='3'] {
+  .ds-responsive-grid__track[data-layout="charts"][data-count="3"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @container (min-width: 1648px) {
-  .ds-responsive-grid__track[data-layout='charts'][data-count='4'] {
+  .ds-responsive-grid__track[data-layout="charts"][data-count="4"] {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 /* wide-narrow / narrow-wide：两项 2:1（趋势 + 占比），窄项至少 320px → 320 × 3 + 16 */
 @container (min-width: 976px) {
-  .ds-responsive-grid__track[data-layout='wide-narrow'][data-count='2'] {
+  .ds-responsive-grid__track[data-layout="wide-narrow"][data-count="2"] {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 
-  .ds-responsive-grid__track[data-layout='narrow-wide'][data-count='2'] {
+  .ds-responsive-grid__track[data-layout="narrow-wide"][data-count="2"] {
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   }
 }
 
 /* split：两栏等宽（表单 + 实时预览、树 + 明细），每栏至少 420px → 420 × 2 + 16；
  * 顶端对齐，便于其中一栏 sticky 跟随滚动 */
-.ds-responsive-grid__track[data-layout='split'] {
+.ds-responsive-grid__track[data-layout="split"] {
   align-items: start;
 }
 
 @container (min-width: 856px) {
-  .ds-responsive-grid__track[data-layout='split'][data-count='2'] {
+  .ds-responsive-grid__track[data-layout="split"][data-count="2"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

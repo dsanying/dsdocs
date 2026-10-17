@@ -9,6 +9,22 @@
       ]
     },
     {
+      "id": "management-complete",
+      "rule": "docs/规范/前端/08-门禁.md",
+      "command": [
+        "node",
+        "scripts/check-management.mjs"
+      ]
+    },
+    {
+      "id": "reader-component-contract",
+      "rule": "docs/规范/读者端.md",
+      "command": [
+        "node",
+        "scripts/check-reader-contract.mjs"
+      ]
+    },
+    {
       "id": "format",
       "rule": "docs/规范/前端.md",
       "command": [
@@ -27,14 +43,6 @@
         "../reader/src",
         "../../packages",
         "starter"
-      ]
-    },
-    {
-      "id": "shared-regression",
-      "rule": "docs/规范/前端.md",
-      "command": [
-        "node",
-        "scripts/test-shared.mjs"
       ]
     },
     {
@@ -83,18 +91,6 @@
       ]
     },
     {
-      "id": "management-types",
-      "rule": "docs/规范/前端.md",
-      "command": [
-        "pnpm",
-        "-C",
-        "apps/manage",
-        "exec",
-        "tsc",
-        "--noEmit"
-      ]
-    },
-    {
       "id": "reader-types",
       "rule": "docs/规范/前端.md",
       "command": [
@@ -102,16 +98,6 @@
         "-C",
         "apps/reader",
         "typecheck"
-      ]
-    },
-    {
-      "id": "management-build",
-      "rule": "docs/规范/前端.md",
-      "command": [
-        "pnpm",
-        "-C",
-        "apps/manage",
-        "build"
       ]
     },
     {
@@ -130,6 +116,15 @@
       "command": [
         "node",
         "scripts/notices.mjs"
+      ]
+    },
+    {
+      "id": "business-browser",
+      "localOnly": true,
+      "rule": "docs/设计/管理端接入.md",
+      "command": [
+        "node",
+        "scripts/check-business-browser.mjs"
       ]
     }
   ]

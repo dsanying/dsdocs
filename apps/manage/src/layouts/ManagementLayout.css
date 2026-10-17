@@ -1,0 +1,8 @@
+.ds-management-workspace {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+.ds-management-workspace[hidden] {
+  display: none;
+}

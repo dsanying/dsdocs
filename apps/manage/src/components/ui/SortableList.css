@@ -48,7 +48,7 @@
   cursor: not-allowed;
 }
 
-.ds-sortable-list[data-align='center'] > .ds-sortable-list__item {
+.ds-sortable-list[data-align="center"] > .ds-sortable-list__item {
   align-items: center;
 }
 
@@ -58,7 +58,7 @@
 }
 
 /* card：整项就是一块卡片；手柄是项首行里的小组件（由 renderItem 放置），不占独立一列 */
-.ds-sortable-list[data-variant='card'] > .ds-sortable-list__item {
+.ds-sortable-list[data-variant="card"] > .ds-sortable-list__item {
   display: block;
   padding: var(--ds-space-8) var(--ds-space-12);
   border: 1px solid var(--ds-color-border);
@@ -66,7 +66,7 @@
   background: var(--ds-color-surface);
 }
 
-.ds-sortable-list[data-variant='card'] > .ds-sortable-list__item[data-selected='true'] {
+.ds-sortable-list[data-variant="card"] > .ds-sortable-list__item[data-selected="true"] {
   border-color: var(--ds-color-border-strong);
   background: var(--ds-color-surface-muted);
 }

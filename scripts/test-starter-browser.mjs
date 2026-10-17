@@ -58,6 +58,12 @@ try {
       if (['error', 'warning'].includes(message.type())) report.diagnostics.push(message.text());
     });
   });
+  for (const language of ['zh', 'en']) {
+    const html = await (await fetch(reader + '/' + language + '/markdown')).text();
+    if (!new RegExp('<html[^>]*lang="' + language + '"').test(html))
+      throw new Error('服务端语言声明不匹配：' + language);
+  }
+  record('中文与英文原始 HTML 在客户端启动前已声明对应语言');
   const page = await context.newPage();
   await page.goto(reader + '/zh');
   await expect(page.getByRole('heading', { name: '欢迎使用 DSdocs', exact: true })).toBeVisible();

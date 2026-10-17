@@ -75,18 +75,29 @@ export function MultiSelect({
       (props.options ?? []).filter((option) => !(option as { unverified?: boolean }).unverified),
     [props.options]
   );
+  // 候选由远端按值核验时种子项带 unverified 标记：已加载但零命中的空候选集仍要标红幽灵值，
+  // 不能像静态候选一样把"集合为空"当成"尚未加载"
+  const remoteVerified = useMemo(
+    () => (props.options ?? []).some((option) => (option as { unverified?: boolean }).unverified),
+    [props.options]
+  );
   const knownValues = useMemo(
     () => new Set(candidateOptions.map((option) => String(option.value))),
     [candidateOptions]
   );
   // 粘贴的是一份列表（多于一个分隔符项）时直接切分落值，而不是变成一整条输入；
   // freeInput 全量收下，候选制先整串匹配（候选值本身可能含空格/逗号）再逐项，未命中项收进已选区标红
+  // 候选是否只是全集的一页取决于数据源：服务端检索（filterOption=false + onSearch）或接入远端核验时
+  // 本地候选不证明库中唯一，名称与折叠修正都不能按当前页改写
+  const partialOptions =
+    Boolean(onPasteUnknown) || (props.filterOption === false && Boolean(props.onSearch));
   const handlePaste = (event: ClipboardEvent<HTMLElement>) => {
     if (disabled || !onChange) return;
     const handled = applyPastedValues(event.clipboardData.getData('text/plain'), {
       values: selected,
       options: candidateOptions,
       freeInput,
+      deferFold: partialOptions,
       onChange,
       onUnknown: (ignored) => {
         if (onPasteUnknown) {
@@ -143,7 +154,7 @@ export function MultiSelect({
     value: selected,
     onChange,
     disabled,
-    tagRender: (tag) => selectionTagRender(tag, knownValues, props.loading, fix),
+    tagRender: (tag) => selectionTagRender(tag, knownValues, props.loading, fix, remoteVerified),
   };
   return (
     <>

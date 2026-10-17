@@ -4,9 +4,8 @@ savePrefix: ""
 # 传递依赖安全下限：mermaid、monaco-editor 锁定的 dompurify 存在 XSS 公告；esbuild（vite 可选 peer）存在开发服务器文件读取公告；统一抬到已修复版本
 overrides:
   '@dnd-kit/abstract': 0.5.0
-  '@dnd-kit/dom': 0.5.0
-  '@dnd-kit/state': 0.5.0
-  '@dnd-kit/geometry': 0.5.0
+  '@dnd-kit/collision': 0.5.0
+  '@dnd-kit/helpers': 0.5.0
   '@rc-component/drawer': 1.4.2
   '@rc-component/picker': 1.12.2
   '@rc-component/util': 1.13.0
@@ -21,5 +20,4 @@ patchedDependencies:
   playwright-core@1.63.0: patches/playwright-core@1.63.0.patch
 
 minimumReleaseAge: 1440
-allowBuilds:
-  esbuild: true
+allowBuilds: {}

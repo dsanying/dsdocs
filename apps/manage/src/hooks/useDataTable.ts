@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useRequest } from '@/hooks/useRequest';
 import { DEFAULT_PAGE_SIZE } from '@/components/ui';
+import { useRequest } from '@/hooks/useRequest';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type DataTableSortOrder = 'ascend' | 'descend';
 
@@ -114,10 +114,30 @@ export function useDataTable<TRow, TFilters>(
   }, [queryState, scope]);
   const query = controlledQuery ?? uncontrolledQuery;
 
-  const { data, loading, error, run } = useRequest(() => request(query), {
-    manual: !submitted,
-    refreshDeps: [query, submitted, submission],
-  });
+  // 返回值附带签发请求时的查询：页码校正只认"该响应属于当前生效查询"，
+  // 迟到的旧响应既不能写 data（useRequest 末次请求闸），也不会越过它去改查询状态。
+  const { data, loading, error, run } = useRequest(
+    async () => ({ result: await request(query), issuedQuery: query }),
+    { manual: !submitted, refreshDeps: [query, submitted, submission] }
+  );
+
+  // 总数收缩（如末页唯一记录被删）使签发页越界时的校正目标。迟到的旧响应写不进 data
+  // （useRequest 末次请求闸）；再比对签发查询与当前查询，防止校正已推进的查询状态。
+  const pageCorrection = (() => {
+    if (!data) return undefined;
+    const maxPage = Math.max(1, Math.ceil(data.result.total / data.issuedQuery.pageSize));
+    if (data.issuedQuery.current <= maxPage) return undefined;
+    return JSON.stringify(data.issuedQuery) === JSON.stringify(query) ? maxPage : undefined;
+  })();
+  // 非受控：render 阶段派生校正（同上方 scope 切换模式），校正后签发查询不再匹配当前查询，自然终止
+  if (pageCorrection !== undefined && !controlledQuery) {
+    setQueryState({ ...queryState, scope, current: pageCorrection });
+  }
+  // 受控：经 onQueryChange 通知，由 refreshDeps 触发重发
+  useEffect(() => {
+    if (pageCorrection === undefined || !controlledQuery) return;
+    onQueryChange?.({ ...controlledQuery, current: pageCorrection });
+  }, [pageCorrection, controlledQuery, onQueryChange]);
 
   const submitFilters = useCallback(
     (filters: TFilters) => {
@@ -168,10 +188,10 @@ export function useDataTable<TRow, TFilters>(
     [controlledQuery, onQueryChange, scope]
   );
 
-  const rows = useMemo(() => data?.data ?? [], [data]);
+  const rows = useMemo(() => data?.result.data ?? [], [data]);
   return {
     rows,
-    total: data?.total ?? 0,
+    total: data?.result.total ?? 0,
     loading: submitted && loading,
     error,
     hasData: rows.length > 0,
@@ -179,6 +199,6 @@ export function useDataTable<TRow, TFilters>(
     submitFilters,
     setPage,
     setSort,
-    reload: run,
+    reload: async () => (await run())?.result,
   };
 }

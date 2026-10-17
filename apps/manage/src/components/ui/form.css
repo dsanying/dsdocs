@@ -67,3 +67,13 @@
 .ant-picker-dropdown .ant-picker-datetime-panel {
   flex-wrap: wrap;
 }
+
+/*
+ * 相邻月份的日期仍可点选：非当月单元格不是禁用态，不能用 text-disabled（对比度不达标）；
+ * 按次级文字渲染，真正禁用的单元格保持禁用色。
+ */
+.ant-picker-dropdown
+  .ant-picker-cell:not(.ant-picker-cell-in-view):not(.ant-picker-cell-disabled)
+  .ant-picker-cell-inner {
+  color: var(--ds-color-text-tertiary);
+}

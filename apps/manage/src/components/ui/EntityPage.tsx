@@ -48,7 +48,7 @@ export type EntityDetailPageProps = {
   summary?: SummaryStripItem[];
   /** 其余只读属性：页头下的字段网格（覆盖编辑表单里的全部字段 + 只读元数据）。 */
   fields?: InformationField[];
-  /** 从属数据（账单、权限、调用记录）：页签，当前页签记在地址的 ?tab= 里，可分享、刷新不丢。 */
+  /** 从属数据（明细、权限、调用记录）：页签，当前页签记在地址的 ?tab= 里，可分享、刷新不丢。 */
   tabs?: EntityDetailTab[];
   query: EntityQueryState;
   /** 没有页签时的正文。 */

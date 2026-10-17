@@ -56,7 +56,7 @@ export const columnWidth = {
   time: 160,
   /** 名称、类型、渠道/模型名等短文本。 */
   name: 200,
-  /** UPN、哈希、权限键、路径等原子长值。 */
+  /** 标识符、哈希、权限键、路径等原子长值。 */
   code: 240,
   /** 来源说明、规则表达式等较长但仍单行的文本。 */
   text: 320,
@@ -66,8 +66,9 @@ export const columnWidth = {
   actions: (textCount: number, iconCount = 0) => textCount * 100 + iconCount * 40,
 } as const;
 
-/** 表头单元格左右内边距之和与排序图标的占位（Ant 默认 16px × 2、排序箭头约 24px）。 */
-const HEADER_CELL_CHROME = 32;
+/** 单元格左右内边距之和：与 theme.ts `cellPaddingInline = space.sm` 同源，改 token 自动同步。 */
+const HEADER_CELL_CHROME = designTokens.space.sm * 2;
+/** 排序图标在表头的占位宽度。 */
 const HEADER_SORTER_CHROME = 24;
 const WIDTH_STEP = 20;
 
@@ -152,7 +153,7 @@ export function squeezedFitWidth(
   return Math.min(fit, Math.max(titleWidth, shortWidest, Math.min(declared, widest)));
 }
 
-/** 操作列只保留图标时的最小宽度：每个动作 32px、动作间距 8px 与单元格内边距 32px，向上取整到列宽步长，留出百分比列宽的亚像素余量。 */
+/** 操作列只保留图标时的最小宽度：每个动作 32px、动作间距 8px 与单元格内边距 16px，向上取整到列宽步长，留出百分比列宽的亚像素余量。 */
 export function actionIconOnlyWidth(count: number): number {
   return (
     Math.ceil((count * 32 + Math.max(0, count - 1) * 8 + HEADER_CELL_CHROME) / WIDTH_STEP) *

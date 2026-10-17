@@ -6,6 +6,10 @@ import './prose.css';
 export { ActionLink } from './ActionLink';
 export type { ActionLinkProps } from './ActionLink';
 export { LazyBoundary } from './LazyBoundary';
+export { SidebarMenu } from './SidebarMenu';
+export type { SidebarMenuItem, SidebarMenuProps } from './SidebarMenu';
+export { AccountMenu } from './AccountMenu';
+export type { AccountLogout, AccountMenuProps } from './AccountMenu';
 export { AppPage } from './AppPage';
 export type { AppPageProps, AppPageTab } from './AppPage';
 export { RouteCrumbsContext } from './routeCrumbs';
@@ -119,9 +123,6 @@ export { ReadonlyValue } from './ReadonlyValue';
 export { IconLabelHint } from './IconLabelHint';
 
 export { notificationDefaults } from './notificationDefaults';
-
-export { SidebarMenu } from './SidebarMenu';
-export { AccountMenu, type AccountMenuProps } from './AccountMenu';
 
 export { ViewportFrame, SidebarFrame } from './ViewportFrame';
 export type { SidebarFrameProps } from './ViewportFrame';

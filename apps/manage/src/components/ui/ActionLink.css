@@ -30,18 +30,18 @@
 }
 
 /* 名称可能成为共享滚动槽位的直接子项，留白不能随内容滚走。 */
-.ds-action-link[data-variant='name'] {
+.ds-action-link[data-variant="name"] {
   padding-inline: 0;
   border-inline: var(--ds-space-8) solid transparent;
 }
 
 /* 关联名称在自己的列内滚动，图标保持可见；操作链接保留原有布局。 */
-.ds-action-link[data-variant='name'] {
+.ds-action-link[data-variant="name"] {
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
 }
 
-.ds-action-link[data-variant='name'] > .ds-action-link__label {
+.ds-action-link[data-variant="name"] > .ds-action-link__label {
   min-width: 0;
 }

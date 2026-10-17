@@ -27,7 +27,7 @@
 .ds-responsive-tabs--fill
   > :has(> .ds-responsive-tabs__body)
   > .ds-responsive-tabs__body
-  > .ds-responsive-tabs__content[aria-hidden='false'] {
+  > .ds-responsive-tabs__content[aria-hidden="false"] {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -98,15 +98,15 @@
 
 .ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
   > .ds-responsive-tabs__header
-  .ds-responsive-tabs__item:has(> [role='tab'][aria-selected='true']) {
+  .ds-responsive-tabs__item:has(> [role="tab"][aria-selected="true"]) {
   background: var(--ds-color-surface-muted);
   box-shadow: none;
 }
 
 .ds-responsive-tabs:not(.ds-responsive-tabs--horizontal)
   > .ds-responsive-tabs__header
-  .ds-responsive-tabs__item:has(> [role='tab'][aria-selected='true'])
-  [role='tab'] {
+  .ds-responsive-tabs__item:has(> [role="tab"][aria-selected="true"])
+  [role="tab"] {
   color: var(--ds-color-text);
 }
 

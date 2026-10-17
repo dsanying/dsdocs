@@ -48,7 +48,7 @@ export function detectLanguage(): SupportedLanguage {
 /**
  * 文案排版后处理器（字典只负责词条与拼接，排版细节统一在这里）：
  * - 句首大写：英文词条在字典里统一小写以便拼接，最终展示时首字母大写；句中大小写以字典为准；
- * - 中西文间距：汉字与拉丁字母/数字相邻处补一个空格（拼接产生的 "同步UPN" → "同步 UPN"），中文不受其它影响。
+ * - 中西文间距：汉字与拉丁字母/数字相邻处补一个空格（拼接产生的 "同步ID" → "同步 ID"），中文不受其它影响。
  */
 const typeset = {
   type: 'postProcessor' as const,
@@ -83,7 +83,7 @@ i18n
       suffix: '}',
     },
     // JSON 是嵌套结构，沿用 i18next 默认的 keySeparator: "." 即可。
-    // 父子冲突（如 menu.dashboard 同时是分类标题和有子菜单）通过 _self 约定处理：
+    // 父子冲突（如 menu.home 同时是分类标题和有子菜单）通过 _self 约定处理：
     // 冲突的父值放在 X._self 节点。详见 i18n-flatten-to-nested.mjs 转换脚本。
   });
 

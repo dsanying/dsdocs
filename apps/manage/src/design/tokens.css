@@ -14,7 +14,7 @@
   --ds-color-brand: #1677ff;
 
   /*
-   * 中性梯与参考基线同构：纯黑纯白是产品锚点，灰阶只承担层级、悬停与浮起，
+   * 中性梯：纯黑纯白是产品锚点，灰阶只承担层级、悬停与浮起，
    * 不带蓝紫等色偏；默认蓝色表达品牌主操作、链接、焦点与信息，状态色只表达真实状态。
    */
   --ds-color-canvas: #f6f6f4;
@@ -71,8 +71,8 @@
   --ds-color-data-7: #4a3aa7;
   --ds-color-data-8: #e34948;
   --ds-font-family-body:
-    'IBM Plex Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
-  --ds-font-family-code: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+    "IBM Plex Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --ds-font-family-code: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   --ds-space-2: 2px;
   --ds-space-4: 4px;
   --ds-space-8: 8px;
@@ -104,7 +104,7 @@
   --ds-layout-dialog-width: 720px;
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   color-scheme: dark;
 
   --ds-color-canvas: #080808;
@@ -173,7 +173,7 @@
  * 语义色变量可继承，在这里改绑到 *-on-inverse 后，里面任何 var(--ds-color-success) 等的图标/文字自动换色，
  * 业务不需要知道自己在不在反色表面上。需要反色的其他容器加 data-surface="inverse"。
  */
-[data-surface='inverse'] {
+[data-surface="inverse"] {
   --ds-color-link: var(--ds-color-link-on-inverse);
   --ds-color-info: var(--ds-color-info-on-inverse);
   --ds-color-success: var(--ds-color-success-on-inverse);

@@ -1,0 +1,118 @@
+.documents-page {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.documents {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+.document-tree {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-16);
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--ds-space-16);
+  border-inline-end: 1px solid var(--ds-color-border);
+}
+.document-tree-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+}
+.editor-pane {
+  padding-inline-start: var(--ds-space-16);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+.document-editor-stack {
+  height: 100%;
+  min-height: 0;
+}
+.document-editor-stack > :not(.markdown-editor) {
+  flex: none;
+}
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-md);
+  overflow: hidden;
+}
+.document-body-scroll {
+  flex: 1 1 0;
+  min-height: 0;
+}
+.editor-pane {
+  overflow-anchor: none;
+}
+.document-actions {
+  flex: none;
+}
+.document-actions-stack {
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
+}
+.document-actions-stack > * {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.document-metadata[hidden] {
+  display: none;
+}
+.documents--compact {
+  & {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .document-tree {
+    border-inline-end: 0;
+  }
+  .editor-pane {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .document-editor-stack {
+    height: 100%;
+    min-height: 0;
+    gap: var(--ds-space-16);
+  }
+  .markdown-editor {
+    flex: 1 1 0;
+    height: auto;
+    min-height: 240px;
+  }
+  .editor-pane--info .document-editor-stack {
+    height: auto;
+    min-height: 100%;
+  }
+  .editor-pane--info .markdown-editor {
+    flex: none;
+    height: 50dvh;
+    min-height: 320px;
+  }
+}
+@media (max-height: 640px) {
+  .editor-pane {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .document-editor-stack {
+    height: auto;
+    min-height: 100%;
+  }
+  .markdown-editor {
+    flex: none;
+    height: 420px;
+  }
+}

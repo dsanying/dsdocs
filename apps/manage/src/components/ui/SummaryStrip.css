@@ -30,18 +30,18 @@
 }
 
 /* 每行首格不画分隔线、不缩进 */
-.ds-summary-strip__item[data-row-start='true'] {
+.ds-summary-strip__item[data-row-start="true"] {
   padding-inline-start: 0;
   border-inline-start: 0;
 }
 
 /* 测量态：各项按内容不折行横排，读出固有宽度后立即撤销（同一帧内，不会被绘制） */
-.ds-summary-strip__track[data-measuring='true'] {
+.ds-summary-strip__track[data-measuring="true"] {
   display: flex;
   width: max-content;
 }
 
-.ds-summary-strip__track[data-measuring='true'] > .ds-summary-strip__item {
+.ds-summary-strip__track[data-measuring="true"] > .ds-summary-strip__item {
   flex: none;
   width: max-content;
   padding-inline-start: var(--ds-space-24);
@@ -93,15 +93,15 @@
 }
 
 /* 强调色只给语义状态：正/负/警示 */
-.ds-summary-strip__item[data-tone='success'] .ds-summary-strip__value {
+.ds-summary-strip__item[data-tone="success"] .ds-summary-strip__value {
   color: var(--ds-color-success);
 }
 
-.ds-summary-strip__item[data-tone='warning'] .ds-summary-strip__value {
+.ds-summary-strip__item[data-tone="warning"] .ds-summary-strip__value {
   color: var(--ds-color-warning);
 }
 
-.ds-summary-strip__item[data-tone='error'] .ds-summary-strip__value {
+.ds-summary-strip__item[data-tone="error"] .ds-summary-strip__value {
   color: var(--ds-color-error);
 }
 

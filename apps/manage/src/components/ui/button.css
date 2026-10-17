@@ -5,7 +5,7 @@
  */
 @media (max-width: 640px) {
   .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
-  .ds-action-link:not([data-variant='name']) > .ds-action-link__label {
+  .ds-action-link:not([data-variant="name"]) > .ds-action-link__label {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -25,7 +25,7 @@
     margin-inline-end: 0;
   }
 
-  .ds-action-link:not([data-variant='name']) {
+  .ds-action-link:not([data-variant="name"]) {
     gap: 0;
   }
 }

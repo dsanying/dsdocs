@@ -35,6 +35,6 @@ pnpm manage
 - [验收记录](docs/设计/验收记录.md)
 - [发布准备](docs/发布.md)
 
-运行 `pnpm check` 检查服务行为、类型和构建，`pnpm test:browser` 执行隔离浏览器测试。项目采用 MIT 许可证，第三方依赖保留各自许可。
+运行 `pnpm check` 完整检查规范、服务行为、两端类型和构建，并执行共享组件与业务浏览器测试。首次检查前运行 `pnpm -C apps/manage exec playwright install chromium firefox`；业务测试默认使用本机 Chrome，也可设置 `DSDOCS_CHROME_CHANNEL=chromium`。CI 执行静态检查及构建，浏览器验收在本地执行。项目采用 MIT 许可证，第三方依赖保留各自许可。
 
 网站名称、字体、主题、导航与页脚可在后台「网站设置」修改，也可直接编辑数据目录中的 `workspace/site.json`。文档支持后台可视化、源码模式与 Markdown 文件三个入口；文件改动先存草稿，发布后读者可见。详细格式与冲突处理见 [文件与站点设置](docs/设计/文件与站点设置.md)。

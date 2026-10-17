@@ -54,6 +54,8 @@ try {
     viewport: { width: 1440, height: 1000 },
   });
   context.setDefaultTimeout(15000);
+  let expectingProxyFailure = false,
+    proxyFailureCount = 0;
   context.on('page', (page) => {
     page.on('pageerror', (error) => report.diagnostics.push(error.message));
     page.on('console', (message) => {
@@ -63,21 +65,52 @@ try {
         message.location().url.endsWith('/__dsdocs_content/settings')
       )
         return;
+      if (
+        expectingProxyFailure &&
+        message.type() === 'error' &&
+        message.text().includes('503') &&
+        message.location().url === 'http://127.0.0.1:15782/__dsdocs_content/files'
+      ) {
+        proxyFailureCount++;
+        if (proxyFailureCount === 1) return;
+      }
       if (['error', 'warning'].includes(message.type())) report.diagnostics.push(message.text());
     });
   });
   const page = await context.newPage();
   await page.goto(reader + '/zh/markdown');
   const admin = await context.newPage();
-  await admin.goto('http://127.0.0.1:15782/?page=settings');
+  await admin.goto('http://127.0.0.1:15782/settings');
   const save = admin.getByRole('button', { name: '保存', exact: true });
   const name = admin.getByLabel('网站名称', { exact: true });
   await expect(name).toHaveValue('DSdocs');
   await expect(save).toHaveCount(0);
   await name.fill('未保存的名字');
   await expect(save).toBeVisible();
+  await admin.getByRole('menuitem', { name: '文档', exact: true }).click();
+  await expect(admin.locator('.ds-save-bar')).toHaveCount(0);
+  await admin.getByRole('menuitem', { name: '网站设置', exact: true }).click();
+  await expect(name).toHaveValue('未保存的名字');
+  await expect(save).toBeVisible();
+  record('切换页面保留未保存设置，但隐藏页面的保存条不能泄漏到其他页面');
+
   await admin.getByRole('button', { name: '取消', exact: true }).click();
   await expect(name).toHaveValue('DSdocs');
+  let invalidSaveRequests = 0;
+  const countInvalidSave = (request) => {
+    if (request.method() === 'PATCH' && request.url().endsWith('/__dsdocs_content/settings'))
+      invalidSaveRequests++;
+  };
+  admin.on('request', countInvalidSave);
+  await name.fill('');
+  await save.click();
+  await expect(admin.locator('.ant-form-item-explain-error')).toBeVisible();
+  await expect(admin.locator('.ant-notification-notice')).toHaveCount(0);
+  expect(invalidSaveRequests).toBe(0);
+  admin.off('request', countInvalidSave);
+  await admin.getByRole('button', { name: '取消', exact: true }).click();
+  await expect(name).toHaveValue('DSdocs');
+  record('必填校验只在字段展示，不发送保存请求或重复结果通知');
   await name.fill('可视化文档');
   await admin.getByRole('tab', { name: '阅读外观' }).click();
   await admin.getByLabel('基准字号', { exact: true }).fill('18');
@@ -159,11 +192,7 @@ try {
   await save.click();
   await expect(name).toHaveValue('DSdocs');
   await admin.setViewportSize({ width: 760, height: 900 });
-  await expect
-    .poll(() =>
-      admin.locator('.ant-layout-sider').evaluate((el) => el.getBoundingClientRect().width)
-    )
-    .toBe(0);
+  await expect(admin.locator('.ds-basic-layout__sider')).toHaveCount(0);
   await admin.screenshot({ path: path.join(artifacts, 'settings-narrow.png') });
   record('旧表单写入冲突保留输入、重新加载与恢复默认值、窄屏截图');
   await admin.setViewportSize({ width: 1440, height: 1000 });
@@ -211,6 +240,53 @@ try {
   await expect(admin.getByText('文件与面板已同步', { exact: true })).toBeVisible();
   await admin.screenshot({ path: path.join(artifacts, 'files-synced.png') });
   record('真实文件同步面板比较双方内容、显式采用文件版本并解除冲突');
+
+  await expect(admin.locator('.ant-notification-notice')).toHaveCount(0);
+  expectingProxyFailure = true;
+  await admin.route('**/__dsdocs_content/files', (route) =>
+    route.fulfill({
+      status: 503,
+      contentType: 'text/html',
+      body: '<h1>private upstream detail</h1>',
+    })
+  );
+  await admin.getByRole('button', { name: '重新检查', exact: true }).click();
+  await expect(admin.getByRole('alert').filter({ hasText: '503' })).toBeVisible();
+  await expect(admin.getByText('private upstream detail', { exact: false })).toHaveCount(0);
+  await expect(admin.locator('.ant-notification-notice')).toHaveCount(0);
+  await admin.unroute('**/__dsdocs_content/files');
+  await admin.getByRole('button', { name: '重试', exact: true }).click();
+  await expect(admin.getByRole('alert').filter({ hasText: '503' })).toHaveCount(0);
+  if (proxyFailureCount !== 1) throw new Error('受控 503 诊断次数不匹配');
+  expectingProxyFailure = false;
+  record('非 JSON 的 503 保留状态、隐藏上游正文、原位读取失败及重试恢复，不弹写操作通知');
+
+  await admin.getByRole('menuitem', { name: '网站设置', exact: true }).click();
+  await admin.getByRole('button', { name: '重新加载', exact: true }).click();
+  const previousName = await name.inputValue(),
+    longName = '超长文档站名称'.repeat(10);
+  await name.fill(longName);
+  await save.click();
+  const brand = admin.locator('.ds-basic-layout__sider .ds-brand-header__title');
+  await expect(brand).toHaveText(longName);
+  await expect(brand).toHaveAttribute('data-overflowing', 'true');
+  await brand.hover();
+  await admin.mouse.wheel(1500, 0);
+  await expect.poll(() => brand.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
+  await admin.mouse.wheel(-1500, 0);
+  await expect.poll(() => brand.evaluate((el) => el.scrollLeft)).toBe(0);
+  if (
+    !(await admin.evaluate(
+      () =>
+        document.documentElement.scrollWidth <= innerWidth &&
+        document.body.scrollWidth <= innerWidth
+    ))
+  )
+    throw new Error('长站点名挤出页面');
+  await expect(admin.getByRole('button', { name: '收起侧边栏', exact: true })).toBeVisible();
+  await name.fill(previousName);
+  await save.click();
+  record('长站点名称完整局部滚动、折叠入口保留、整页不横向溢出');
   if (report.diagnostics.length) throw new Error(JSON.stringify(report.diagnostics));
 } catch (error) {
   await writeFile(

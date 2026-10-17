@@ -6,6 +6,10 @@ for (const gate of gates) {
   if (ids.has(gate.id)) throw new Error('重复门禁');
   ids.add(gate.id);
   await readFile(gate.rule);
+  if (gate.localOnly && process.env.CI) {
+    console.log(`[gate:${gate.id}] LOCAL-ONLY 浏览器验收在本地执行`);
+    continue;
+  }
   const start = Date.now();
   console.log(`[gate:${gate.id}] START`);
   const result = spawnSync(gate.command[0], gate.command.slice(1), { stdio: 'inherit' });

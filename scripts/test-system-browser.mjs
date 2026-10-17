@@ -13,7 +13,7 @@ await mkdir(artifacts, { recursive: true, mode: 0o700 });
 const env = {
   ...process.env,
   DSDOCS_STARTER: 'none',
-    DSDOCS_DATA_DIR: path.join(root, 'content'),
+  DSDOCS_DATA_DIR: path.join(root, 'content'),
   DSDOCS_AUTH_DATA_DIR: path.join(root, 'accounts'),
   DSDOCS_PORT: '15382',
   DSDOCS_URL: 'http://127.0.0.1:15382',
@@ -62,31 +62,70 @@ try {
   await page.getByLabel('密码', { exact: true }).fill('admin');
   await page.getByRole('button', { name: '登录', exact: true }).click();
   await expect(
-    page.getByText('首次使用，请修改默认用户名和密码，完成后才能进入编辑后台。')
+    page.getByText('首次使用，请更改默认用户名和密码，完成后才能进入编辑后台。')
   ).toBeVisible();
   await page.getByLabel('新用户名', { exact: true }).fill('owner');
   await page.getByLabel('新密码', { exact: true }).fill('browser-pass-123');
   await page.getByLabel('确认新密码', { exact: true }).fill('browser-pass-123');
-  await page.getByRole('button', { name: '保存并重新登录' }).click();
+  await page.getByRole('button', { name: '保存' }).click();
   await page.getByLabel('用户名', { exact: true }).fill('owner');
   await page.getByLabel('密码', { exact: true }).fill('browser-pass-123');
   await page.getByRole('button', { name: '登录', exact: true }).click();
-  await expect(page.getByRole('heading', { name: '文档编辑' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '文档', exact: true })).toBeVisible();
   report.checks.push('默认登录、首次强制更改、重新登录');
+  const logoutEndpoint = '**/__dsdocs_accounts/logout';
+  await page.route(logoutEndpoint, (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: 'incomplete response' })
+  );
+  await page.getByRole('button', { name: 'owner', exact: true }).hover();
+  await page.getByRole('menuitem', { name: '退出登录', exact: true }).click();
+  await expect(page.getByText('退出登录失败', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '文档', exact: true })).toBeVisible();
+  await page.locator('.ant-notification-notice-close').click();
+  await page.unroute(logoutEndpoint);
+  await page.getByRole('button', { name: 'owner', exact: true }).hover();
+  await page.getByRole('menuitem', { name: '退出登录', exact: true }).click();
+  await expect(page.getByLabel('用户名', { exact: true })).toBeVisible();
+  await page.getByLabel('用户名', { exact: true }).fill('owner');
+  await page.getByLabel('密码', { exact: true }).fill('browser-pass-123');
+  await page.getByRole('button', { name: '登录', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '文档', exact: true })).toBeVisible();
+  report.checks.push('退出响应异常保留登录并共享通知、成功退出后重新登录');
   await page.screenshot({ path: path.join(artifacts, 'management.png') });
   await page.getByRole('menuitem', { name: '目录', exact: true }).click();
-  await page.getByRole('button', { name: '新建目录' }).click();
+  await page.getByRole('button', { name: '新增' }).click();
   await page.getByLabel('中文名称', { exact: true }).fill('指南');
   await page.getByLabel('英文名称', { exact: true }).fill('Guide');
   await page.getByRole('button', { name: '保存', exact: true }).click();
   await expect(page.getByRole('cell', { name: '指南', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: '修改', exact: true }).click();
+  await page.getByRole('button', { name: '编辑', exact: true }).click();
   await page.getByLabel('中文名称', { exact: true }).fill('使用指南');
   await page.getByRole('button', { name: '保存', exact: true }).click();
   await expect(page.getByRole('cell', { name: '使用指南', exact: true })).toBeVisible();
   report.checks.push('目录创建与重命名');
+  await page.getByRole('button', { name: '新增', exact: true }).click();
+  await page.getByLabel('中文名称', { exact: true }).fill('子目录');
+  await page.getByLabel('英文名称', { exact: true }).fill('Child');
+  await page.getByRole('combobox', { name: '父目录', exact: true }).click();
+  await page.locator('.ant-select-item-option').filter({ hasText: '使用指南' }).click();
+  await page.getByRole('button', { name: '保存', exact: true }).click();
+  const childRow = page
+    .getByRole('row')
+    .filter({ has: page.getByRole('cell', { name: '子目录', exact: true }) });
+  await expect(childRow.getByRole('cell', { name: '使用指南', exact: true })).toBeVisible();
+  await childRow.getByRole('button', { name: '编辑', exact: true }).click();
+  await page.getByRole('dialog').locator('.ant-select-clear').click();
+  await page.getByRole('button', { name: '保存', exact: true }).click();
+  await expect(childRow.getByRole('cell', { name: '—', exact: true })).toBeVisible();
+  const folderState = await (await context.request.get(admin + '/__dsdocs_content')).json();
+  expect(folderState.folders.find((folder) => folder.title === '子目录').parent).toBeNull();
+  await childRow.getByRole('button', { name: '删除', exact: true }).click();
+  await page.locator('.ant-popconfirm .ant-btn-primary').click();
+  await expect(childRow).toHaveCount(0);
+  report.checks.push('子目录创建、可视化清除父目录写入 null、删除空目录');
+
   await page.getByRole('menuitem', { name: '文档', exact: true }).click();
-  await page.getByRole('button', { name: '新建文档' }).click();
+  await page.getByRole('button', { name: '新增' }).click();
   await page.getByRole('dialog').getByLabel('标题', { exact: true }).fill('接入指南');
   await page.getByRole('dialog').getByLabel('路径', { exact: true }).fill('getting-started');
   await page.getByRole('button', { name: '保存', exact: true }).click();
@@ -191,8 +230,32 @@ try {
   await page.getByRole('button', { name: '保存', exact: true }).click();
   await expect(page.getByRole('cell', { name: 'writer', exact: true })).toBeVisible();
   report.checks.push('后台创建管理员');
+  const writerContext = await browser.newContext({ locale: 'zh-CN' });
+  const writerPage = await writerContext.newPage();
+  watch(writerPage);
+  await writerPage.goto(admin + '/login');
+  await writerPage.getByLabel('用户名', { exact: true }).fill('writer');
+  await writerPage.getByLabel('密码', { exact: true }).fill('writer-pass-123');
+  await writerPage.getByRole('button', { name: '登录', exact: true }).click();
+  await writerPage.getByRole('menuitem', { name: '我的账号', exact: true }).click();
+  await expect(writerPage.getByRole('cell', { name: 'writer', exact: true })).toBeVisible();
+  await expect(writerPage.getByRole('cell', { name: 'owner', exact: true })).toHaveCount(0);
+  await expect(writerPage.getByRole('button', { name: '创建账号', exact: true })).toHaveCount(0);
+  await writerPage.getByRole('button', { name: '编辑', exact: true }).click();
+  await writerPage.getByLabel('用户名', { exact: true }).fill('writer_new');
+  await writerPage.getByLabel('当前密码', { exact: true }).fill('writer-pass-123');
+  await writerPage.getByLabel('新密码', { exact: true }).fill('writer-pass-456');
+  await writerPage.getByRole('button', { name: '保存', exact: true }).click();
+  await expect(writerPage).toHaveURL(admin + '/login');
+  await writerPage.getByLabel('用户名', { exact: true }).fill('writer_new');
+  await writerPage.getByLabel('密码', { exact: true }).fill('writer-pass-456');
+  await writerPage.getByRole('button', { name: '登录', exact: true }).click();
+  await expect(writerPage.getByRole('heading', { name: '文档', exact: true })).toBeVisible();
+  await writerContext.close();
+  report.checks.push('普通管理员只见自己、无创建入口，自行改账密后会话失效并可重新登录');
+
   await page.getByRole('menuitem', { name: '文档', exact: true }).click();
-  await page.getByRole('button', { name: '切换主题', exact: true }).click();
+  await page.getByRole('menuitem', { name: '切换亮暗主题', exact: true }).click();
   await expect(page.locator('.mdxeditor.dark-theme')).toBeVisible();
   await page.screenshot({ path: path.join(artifacts, 'editor-dark.png') });
   await page.getByRole('button', { name: '历史版本', exact: true }).click();
@@ -201,7 +264,7 @@ try {
   await page.getByRole('button', { name: '保存', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: '已保存' })).toBeVisible();
   report.checks.push('历史版本恢复到草稿、编辑器暗色主题');
-  await page.getByRole('button', { name: '新建文档', exact: true }).click();
+  await page.getByRole('button', { name: '新增', exact: true }).click();
   await page.getByRole('dialog').getByLabel('标题', { exact: true }).fill('Getting started');
   await page.getByRole('dialog').getByLabel('路径', { exact: true }).fill('getting-started');
   await page.locator('#locale').click();

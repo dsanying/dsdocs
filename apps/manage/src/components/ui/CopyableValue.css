@@ -29,7 +29,7 @@
 
 .ds-copyable:hover .ds-copyable__icon,
 .ds-copyable:focus-visible .ds-copyable__icon,
-.ds-copyable[data-copied='true'] .ds-copyable__icon {
+.ds-copyable[data-copied="true"] .ds-copyable__icon {
   color: var(--ds-color-text);
 }
 

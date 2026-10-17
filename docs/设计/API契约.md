@@ -5,7 +5,7 @@
 | 路径 | 方法 | 权限与行为 | 验证 |
 | --- | --- | --- | --- |
 | /__dsdocs_auth/sign-in/username | POST | 登录，受限流保护 | system.test.mjs 首次设置与登录 |
-| /__dsdocs_accounts/capabilities | GET | 是否启用账号及当前账号；不含密码/会话 | system-browser |
+| /__dsdocs_accounts/capabilities | GET | 是否启用账号及当前账号（id、username、role、needsSetup）；不含密码/会话 | system-browser |
 | /__dsdocs_accounts | GET/POST | 管理员只读自己；超管列举和创建普通管理员 | system.test.mjs 角色隔离 |
 | /__dsdocs_accounts/me | PATCH | 自己改名/改密；首次设置强制两者修改 | system.test.mjs 首次设置 |
 | /__dsdocs_accounts/:id | PATCH/DELETE | 仅超管管理普通管理员 | system.test.mjs 会话撤销 |
@@ -30,3 +30,5 @@
 | /docs/assets/:id | GET | 仅已发布正文或网站标识设置引用的附件可读 | 读者回归 |
 
 读者页为 `/docs/{zh|en}/{slug}`，与管理 API 不共用权限模型。默认本地管理入口为独立端口；统一域名部署使用部署文件中的代理配置，不将未保护端口直接暴露。
+
+管理页面通过 `/`、`/folders`、`/assets`、`/settings`、`/files`、`/accounts` 提供 SPA 入口。匿名访问转到 `/login`；登录页与首次设置使用同一 React 产物。只有构建目录中格式受限的哈希静态资源可匿名读取，以支持登录表单；内容、附件与账号 API 不因此公开。`/server/`、环境文件、数据库和源码映射不属于静态入口。

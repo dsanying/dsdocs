@@ -5,7 +5,7 @@
   min-width: 0;
   flex-direction: column;
   gap: var(--ds-space-16);
-  padding: var(--ds-space-24);
+  padding: var(--ds-space-24) var(--ds-space-16);
 }
 
 /* 页头各块（面包屑/标题行/说明区/页级页签）同属一个簇：间距统一取 block 角色，由父级 gap 表达 */
@@ -93,9 +93,9 @@
  * 页头一行放不下完整按钮时（useFitHeading 判定），操作按钮先收成仅图标、与标题同行；
  * 文字视觉隐藏但仍是可访问名称，与窄屏（≤640px）的全站收起规则同一形态。
  */
-.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
-.ds-app-page__heading[data-compact='true']
-  .ds-action-link:not([data-variant='name'])
+.ds-app-page__heading[data-compact="true"] .ant-btn:has(> .ant-btn-icon) > span:not(.ant-btn-icon),
+.ds-app-page__heading[data-compact="true"]
+  .ds-action-link:not([data-variant="name"])
   > .ds-action-link__label {
   position: absolute;
   width: 1px;
@@ -108,10 +108,10 @@
   white-space: nowrap;
 }
 
-.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) {
+.ds-app-page__heading[data-compact="true"] .ant-btn:has(> .ant-btn-icon) {
   padding-inline: var(--ds-space-8);
 }
 
-.ds-app-page__heading[data-compact='true'] .ant-btn:has(> .ant-btn-icon) > .ant-btn-icon {
+.ds-app-page__heading[data-compact="true"] .ant-btn:has(> .ant-btn-icon) > .ant-btn-icon {
   margin-inline-end: 0;
 }

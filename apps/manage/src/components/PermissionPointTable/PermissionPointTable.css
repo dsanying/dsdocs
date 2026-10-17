@@ -16,7 +16,7 @@
 }
 
 /* 数量为 0 的状态只作参照，弱化显示 */
-.ds-permission-point-table__statuses > [data-empty='true'] {
+.ds-permission-point-table__statuses > [data-empty="true"] {
   opacity: 0.55;
 }
 
@@ -29,6 +29,6 @@
   cursor: pointer;
 }
 
-.ds-permission-point-table__row--clickable[data-selected='true'] > td {
+.ds-permission-point-table__row--clickable[data-selected="true"] > td {
   background: var(--ds-color-primary-surface);
 }

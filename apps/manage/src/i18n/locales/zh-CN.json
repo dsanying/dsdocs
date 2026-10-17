@@ -15,9 +15,7 @@
       "month": "月",
       "request": "请求",
       "status": "状态",
-      "users": "关联$t(common.vocab.user)",
       "chinese": "中文",
-      "user": "用户",
       "permission": "权限",
       "searchPermissions": "$t(common.vocab.permission)点",
       "search": "搜索",
@@ -30,7 +28,37 @@
       "everyDay": "每天",
       "everyMonth": "每月",
       "week": "周",
-      "close": "关闭"
+      "home": "首页",
+      "editAccount": "$t(common.actions.edit)账号",
+      "username": "用户名",
+      "currentPassword": "当前$t(common.vocab.password)",
+      "newPassword": "新$t(common.vocab.password)",
+      "password": "密码",
+      "administrator": "$t(common.vocab.administration)员",
+      "actions": "操作",
+      "name": "名称",
+      "attachments": "附件",
+      "documentTree": "$t(common.vocab.documents)$t(common.vocab.folders)",
+      "revisionHistory": "历史版本",
+      "documents": "文档",
+      "reload": "重新加载",
+      "title": "标题",
+      "path": "路径",
+      "description": "简介",
+      "folder": "所属$t(common.vocab.folders)",
+      "language": "语言",
+      "linkedTranslation": "关联翻译",
+      "unsaved": "待$t(common.actions.save)",
+      "thisDocumentNoLongerExists": "$t(common.vocab.documents)已不存在。",
+      "folders": "目录",
+      "baseFontSize": "基准字号",
+      "serif": "衬线字体",
+      "system": "跟随系统",
+      "light": "浅色",
+      "dark": "深色",
+      "siteSettings": "网站设置",
+      "signIn": "登录",
+      "administration": "管理"
     },
     "actions": {
       "cancel": "取消",
@@ -55,13 +83,10 @@
       "send": "发送",
       "back": "返回",
       "view": "查看",
-      "logout": "退出登录"
+      "logout": "退出$t(common.vocab.signIn)"
     },
     "loadingPage": "页面加载中",
     "requestFailed": "$t(common.vocab.request)失败",
-    "objects": {
-      "quotaPool": "配额池"
-    },
     "theme": {
       "toggle": "切换亮暗主题"
     },
@@ -80,22 +105,6 @@
       "titleTemplateNoDimension": "{metric}{form}",
       "metricJoiner": "与",
       "byDimension": "按{dimension}",
-      "dimensions": {
-        "department": "部门",
-        "person": "个人",
-        "model": "模型",
-        "service": "服务",
-        "identity": "身份",
-        "hour": "时段"
-      },
-      "metrics": {
-        "cost": "费用",
-        "requests": "$t(common.vocab.request)数",
-        "tokens": "Token",
-        "costPerRequest": "单次$t(common.chart.metrics.cost)",
-        "tokensPerRequest": "单次 $t(common.chart.metrics.tokens)",
-        "activeUsers": "活跃$t(common.vocab.user)"
-      },
       "forms": {
         "ranking": "排行",
         "share": "占比",
@@ -109,7 +118,7 @@
       "short": {
         "enUS": "EN"
       },
-      "switch": "切换语言"
+      "switch": "切换$t(common.vocab.language)"
     },
     "brand": "DSdocs",
     "request": {
@@ -131,43 +140,129 @@
       "actionSucceeded": "{action}成功",
       "actionFailed": "{action}失败",
       "pasteIgnoredValues": "{count} 个粘贴项不在候选中，未加入",
-      "similarCandidates": "近似候选"
+      "similarCandidates": "近似候选",
+      "errorDetail": "{title}：{detail}",
+      "valuesAutoCorrected": "{count} 个粘贴项已自动更正为候选值"
     },
-    "unsavedChanges": "有未$t(common.actions.save)的修改"
+    "unsavedChanges": "有未$t(common.actions.save)的$t(common.actions.edit)",
+    "rangePresets": {
+      "7": "近 7 天",
+      "30": "近 30 天",
+      "90": "近 90 天"
+    }
   },
   "components": {
     "cronVisualSelector": {
       "hour": {
         "every": "每小时"
       },
-      "dayOfWeek": {},
       "minute": {
         "every": "每分钟"
-      },
-      "month": {}
+      }
     },
     "jsonEditor": {
       "loading": "$t(common.vocab.json) $t(common.actions.edit)器加载中"
     }
   },
-  "menu": {
-    "home": "首页"
-  },
-  "pages": {
-    "analysis": {
-      "model": {}
-    },
-    "policyList": {
-      "permissionDefinition": {
-        "search": {
-          "hint": "按空格拆分多个关键词，全部命中才显示"
-        }
-      }
-    }
-  },
-  "common.feedback.errorDetail": "错误详情",
-  "common.feedback.valuesAutoCorrected": "已修正输入值",
-  "common.rangePresets.7": "最近7天",
-  "common.rangePresets.30": "最近30天",
-  "common.rangePresets.90": "最近90天"
+  "dsdocs": {
+    "createAccount": "创建账号",
+    "usernameHint": "3–64 位字母、数字、点、下划线或连字符。",
+    "passwordHint": "8–128 个字符；$t(common.vocab.editAccount)时留空保留原$t(common.vocab.password)。$t(common.vocab.password)仅$t(common.actions.save)哈希，不显示原$t(common.vocab.password)。",
+    "role": "身份",
+    "superadmin": "超级$t(common.vocab.administrator)",
+    "deleteAccountConfirm": "$t(common.actions.delete)该$t(common.vocab.administrator)？其会话将立即失效。",
+    "accounts": "账号$t(common.vocab.administration)",
+    "myAccount": "我的账号",
+    "sizeBytes": "大小（字节）",
+    "deleteAssetConfirm": "$t(common.actions.delete)$t(common.vocab.attachments)？有$t(common.vocab.documents)引用时会阻止$t(common.actions.delete)。",
+    "createDocument": "新建$t(common.vocab.documents)",
+    "documentTreeList": "$t(common.vocab.documentTree)列表",
+    "insertAsset": "插入$t(common.vocab.attachments)",
+    "unpublishConfirm": "$t(common.actions.unpublish)此$t(common.vocab.documents)？读者端将不再显示。",
+    "deleteDocumentConfirm": "$t(common.actions.delete)$t(common.vocab.documents)及其$t(common.vocab.revisionHistory)？",
+    "documentInfo": "$t(common.vocab.documents)信息",
+    "reloadConfirm": "$t(common.vocab.reload)将丢弃当前未$t(common.actions.save)的改动，继续？",
+    "documentActions": "$t(common.vocab.documents)$t(common.vocab.actions)",
+    "moreActions": "更多$t(common.vocab.actions)",
+    "slugHint": "小写字母、数字、连字符，可用斜线分级。",
+    "body": "$t(common.vocab.documents)正文",
+    "chooseDocument": "从$t(common.vocab.folders)选择$t(common.vocab.documents)，或新建第一篇$t(common.vocab.documents)。",
+    "newSlugHint": "例如 getting-started，$t(common.actions.publish)后作为访问$t(common.vocab.path)。",
+    "chinese": "简体$t(common.vocab.chinese)",
+    "translationHint": "选择对应的另一$t(common.vocab.language)$t(common.vocab.documents)；留空表示独立$t(common.vocab.documents)。",
+    "restoreDraft": "恢复历史到草稿",
+    "saved": "已$t(common.actions.save)",
+    "publishedVersion": "$t(common.actions.publish)版本",
+    "restoreHint": "恢复只$t(common.actions.update)草稿；点击$t(common.actions.publish)后才替换读者内容。",
+    "saving": "$t(common.actions.save)中",
+    "saveFailed": "$t(common.actions.save)失败",
+    "documentMissingRefresh": "$t(common.vocab.documents)已不存在，请刷新$t(common.vocab.folders)。",
+    "documentChanged": "$t(common.vocab.documents)已切换，请在目标$t(common.vocab.documents)重新$t(common.actions.publish)。",
+    "recheck": "重新检查",
+    "filesSynced": "文件与面板已$t(common.actions.sync)",
+    "compare": "比较",
+    "fileContent": "文件内容",
+    "panelContent": "面板内容",
+    "useFile": "采用文件版本",
+    "usePanel": "采用面板版本",
+    "editFolder": "$t(common.actions.edit)$t(common.vocab.folders)",
+    "createFolder": "新建$t(common.vocab.folders)",
+    "chineseName": "$t(common.vocab.chinese)$t(common.vocab.name)",
+    "englishName": "英文$t(common.vocab.name)",
+    "parentFolder": "父$t(common.vocab.folders)",
+    "deleteFolderConfirm": "$t(common.actions.delete)空$t(common.vocab.folders)？",
+    "currentImage": "当前图片",
+    "resetDefaults": "恢复默认值",
+    "basic": "基本信息",
+    "siteName": "网站$t(common.vocab.name)",
+    "siteDescription": "网站$t(common.vocab.description)",
+    "siteDescriptionHint": "显示在网页描述信息中，最多 300 字。",
+    "logo": "网站标识",
+    "logoHint": "PNG、JPEG 或 WebP，最大 5 MiB；仅$t(common.actions.save)后对读者可见。",
+    "favicon": "浏览器图标",
+    "faviconHint": "使用 PNG、JPEG 或 WebP 图片。",
+    "footerText": "页脚文字",
+    "linkName": "链接$t(common.vocab.name)",
+    "linkUrl": "链接地址",
+    "linkHint": "支持 https://、http://、mailto:、/docs/ 站内$t(common.vocab.path)及锚点。",
+    "deleteLink": "$t(common.actions.delete)链接",
+    "addFooterLink": "添加页脚链接",
+    "appearance": "阅读外观",
+    "fontSizeHint": "14–20 px，$t(common.vocab.title)和控件随$t(common.vocab.baseFontSize)缩放。",
+    "lineHeight": "正文行高",
+    "lineHeightHint": "字号的 1.4–2.2 倍。",
+    "fontFamily": "正文字体",
+    "sansSerif": "系统无衬线",
+    "accentColor": "品牌色",
+    "accentColorHint": "链接等原生主题元素使用该色；明暗模式自动调整可读性。",
+    "defaultTheme": "默认主题",
+    "defaultThemeHint": "新访客使用此主题；手动切换优先。",
+    "contentWidth": "阅读宽度",
+    "normalWidth": "标准",
+    "wideWidth": "宽屏",
+    "navigationLanguage": "导航与$t(common.vocab.language)",
+    "initialLanguage": "初始$t(common.vocab.language)",
+    "initialLanguageHint": "仅首次进入 /docs 时生效；读者手动选择后记住该选择。",
+    "browserLanguage": "浏览器$t(common.vocab.language)",
+    "homeDocument": "$t(common.vocab.home)$t(common.vocab.documents)",
+    "homeDocumentHint": "选择已$t(common.actions.publish)$t(common.vocab.documents)；$t(common.language.switch)时使用$t(common.vocab.linkedTranslation)，无可用翻译则使用默认$t(common.vocab.home)。",
+    "toc": "本页$t(common.vocab.folders)",
+    "breadcrumbs": "面包屑导航",
+    "previousNext": "上一篇与下一篇",
+    "search": "$t(common.vocab.documents)$t(common.vocab.search)",
+    "runtime": "运行信息",
+    "storage": "存储",
+    "workspace": "可$t(common.actions.edit)文件$t(common.vocab.folders)",
+    "plainText": "纯文本",
+    "files": "文件$t(common.actions.sync)",
+    "setupHint": "首次使用，请更改默认$t(common.vocab.username)和$t(common.vocab.password)，完成后才能进入$t(common.actions.edit)后台。",
+    "loginHint": "$t(common.vocab.signIn)$t(common.vocab.documents)$t(common.vocab.administration)后台",
+    "newUsername": "新$t(common.vocab.username)",
+    "changeDefaultUsername": "请$t(common.actions.edit)默认$t(common.vocab.username)。",
+    "confirmPassword": "确认$t(common.vocab.newPassword)",
+    "passwordMismatch": "两次输入的$t(common.vocab.password)不一致。",
+    "filesHint": "site.json 为$t(common.vocab.siteSettings)；documents 中的 Markdown 与 folders 中的 $t(common.vocab.json) 均可直接$t(common.actions.edit)。$t(common.vocab.documents)文件$t(common.actions.edit)进入草稿，$t(common.actions.publish)后读者可见。$t(common.actions.delete)文件不会$t(common.actions.delete)$t(common.vocab.documents)；两边同时$t(common.actions.edit)时先处理冲突。",
+    "accountModuleDisabled": "未$t(common.actions.enable)账号模块",
+    "documentList": "$t(common.vocab.documents)列表"
+  }
 }

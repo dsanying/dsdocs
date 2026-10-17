@@ -1,7 +1,7 @@
 import { AtomicValue } from './AtomicValue';
 
 export type ReadonlyValueProps = {
-  /** 由 Form.Item 注入；字段仍留在表单里，供依赖它的其他字段派生（如按持有人取配额池候选）。 */
+  /** 由 Form.Item 注入；字段仍留在表单里，供依赖它的其他字段派生（如按持有人取资源候选）。 */
   value?: string;
 };
 

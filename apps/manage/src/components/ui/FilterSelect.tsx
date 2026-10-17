@@ -35,7 +35,7 @@ export type FilterSelectProps = Omit<
   kind: FilterSelectKind;
   options: FilterSelectOption[];
   /**
-   * 大候选集（主体、UPN 等以万计）的实时候选：传入即不再依赖静态 `options`，按关键词防抖向后端取前 N 条，
+   * 大候选集（主体、邮箱等以万计）的实时候选：传入即不再依赖静态 `options`，按关键词防抖向后端取前 N 条，
    * 已选值保留为选项；`options` 此时只作为已选值的初始标签来源。
    */
   loadOptions?: RemoteOptionsLoader;

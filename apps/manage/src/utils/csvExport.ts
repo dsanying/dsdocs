@@ -91,7 +91,7 @@ export const mapCsvSection = <T>(
   rows: rows.map((item) => columns.map((column) => column.value(item))),
 });
 
-// maskCsvIdentifier 脱敏 CSV 中的 UPN/owner 标识，降低离线文件扩散后的 PII 暴露面。
+// maskCsvIdentifier 脱敏 CSV 中的账号/owner 标识，降低离线文件扩散后的 PII 暴露面。
 export const maskCsvIdentifier = (value: CsvCell) => {
   if (value == null) {
     return value;
@@ -109,7 +109,7 @@ export const maskCsvIdentifier = (value: CsvCell) => {
   return domain ? `${maskedLocal}@${domain}` : `${visiblePrefix}***`;
 };
 
-// maskCsvSensitiveText 脱敏姓名、部门、身份、配额池等识别性文本，避免离线报表暴露组织结构。
+// maskCsvSensitiveText 脱敏姓名、归属、身份等识别性文本，避免离线报表暴露组织结构。
 export const maskCsvSensitiveText = (value: CsvCell) => {
   if (value == null) {
     return value;

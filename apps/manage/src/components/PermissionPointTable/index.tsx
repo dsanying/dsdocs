@@ -35,6 +35,9 @@ export interface PermissionPointStatus<S extends string> {
   tone: StatusTone;
 }
 
+/** 权限筛选标识：一行对应一个拒绝/授权来源，同一权限可能有多个来源行；筛选按权限去重，命中任一来源都保留。 */
+const permissionId = <T extends PermissionPointRowBase>(row: T) => `${row.obj} ${row.act}`;
+
 /** 额外的离散维度筛选（类型、来源等）：enum 多选，空数组 = 全部，多个值之间是 OR。 */
 export interface PermissionPointFilter<T> {
   /** 维度名（去重与内部状态用）。 */
@@ -70,7 +73,7 @@ export interface PermissionPointTableProps<T extends PermissionPointRowBase, S e
 }
 
 /**
- * 权限点列表的唯一入口（主体授权、标签编辑、权限诊断、标签删除预览、配额池权限）：
+ * 权限点列表的唯一入口（主体授权、标签编辑、权限诊断、标签删除预览、资源授权）：
  * 查询区 = 权限点候选多选（标签含名称与标识）+ 调用方声明的离散维度多选（类型/来源）+ 状态开关（状态色标签 + 数量，勾选即筛选）；
  * 首列固定“权限点”（名称在上、obj · act 在下），其余列由调用方提供；
  * 默认按状态优先级、再按名称排序；全局分页标准（默认每页 10）。不得另做树视图或自绘计数卡。
@@ -100,23 +103,23 @@ export function PermissionPointTable<T extends PermissionPointRowBase, S extends
   const [hidden, setHidden] = useState<ReadonlySet<S>>(new Set());
   const [page, setPage] = useState({ current: 1, pageSize: DEFAULT_PAGE_SIZE });
 
-  const permissionOptions = useMemo<FilterSelectOption[]>(
-    () =>
-      rows.map((row) => {
-        const target = `${row.obj} · ${row.act}`;
-        const name = row.displayName || row.permissionKey;
-        return {
-          value: rowKey(row),
-          label: name && name !== target ? `${name} · ${target}` : target,
-        };
-      }),
-    [rows, rowKey]
-  );
+  // 候选按权限去重：同一权限的多个来源行共享一条候选项，选中即保留全部命中来源
+  const permissionOptions = useMemo<FilterSelectOption[]>(() => {
+    const seen = new Map<string, FilterSelectOption>();
+    for (const row of rows) {
+      const id = permissionId(row);
+      if (seen.has(id)) continue;
+      const target = `${row.obj} · ${row.act}`;
+      const name = row.displayName || row.permissionKey;
+      seen.set(id, { value: id, label: name && name !== target ? `${name} · ${target}` : target });
+    }
+    return [...seen.values()];
+  }, [rows]);
 
   // 深链焦点行：数据就绪后一次性写进权限点筛选并显示在控件里；用户提交过筛选后不再接管
   const focusKeys = useMemo(
-    () => (!submitted && focusRow ? rows.filter(focusRow).map(rowKey) : []),
-    [focusRow, rowKey, rows, submitted]
+    () => (!submitted && focusRow ? [...new Set(rows.filter(focusRow).map(permissionId))] : []),
+    [focusRow, rows, submitted]
   );
   const focusShownRef = useRef(false);
   useEffect(() => {
@@ -129,7 +132,7 @@ export function PermissionPointTable<T extends PermissionPointRowBase, S extends
     () =>
       rows.filter((row) => {
         const picked = applied?.permissions ?? focusKeys;
-        if (picked.length && !picked.includes(rowKey(row))) return false;
+        if (picked.length && !picked.includes(permissionId(row))) return false;
         for (const filter of filters) {
           const selected = applied?.[filter.name];
           if (selected?.length && !filter.valuesOf(row).some((value) => selected.includes(value)))
@@ -137,7 +140,7 @@ export function PermissionPointTable<T extends PermissionPointRowBase, S extends
         }
         return true;
       }),
-    [applied, filters, focusKeys, rowKey, rows]
+    [applied, filters, focusKeys, rows]
   );
 
   const order = useMemo(

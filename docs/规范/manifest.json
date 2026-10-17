@@ -1,0 +1,709 @@
+{
+  "version": 1,
+  "chapters": [
+    {
+      "path": "docs/规范/前端/01-架构与主题.md",
+      "link": "规范/前端/01-架构与主题.md",
+      "title": "架构、主题与样式"
+    },
+    {
+      "path": "docs/规范/前端/02-布局与响应式.md",
+      "link": "规范/前端/02-布局与响应式.md",
+      "title": "布局与响应式"
+    },
+    {
+      "path": "docs/规范/前端/03-组件与提示.md",
+      "link": "规范/前端/03-组件与提示.md",
+      "title": "组件与提示"
+    },
+    {
+      "path": "docs/规范/前端/04-表格与查询.md",
+      "link": "规范/前端/04-表格与查询.md",
+      "title": "表格与查询"
+    },
+    {
+      "path": "docs/规范/前端/05-页面与流程.md",
+      "link": "规范/前端/05-页面与流程.md",
+      "title": "页面与流程"
+    },
+    {
+      "path": "docs/规范/前端/06-文案与国际化.md",
+      "link": "规范/前端/06-文案与国际化.md",
+      "title": "文案、国际化与可访问性"
+    },
+    {
+      "path": "docs/规范/前端/07-数据与反馈.md",
+      "link": "规范/前端/07-数据与反馈.md",
+      "title": "数据与反馈"
+    },
+    {
+      "path": "docs/规范/前端/08-门禁.md",
+      "link": "规范/前端/08-门禁.md",
+      "title": "门禁"
+    }
+  ],
+  "gateOrchestration": {
+    "manifest": "docs/规范/manifest.json",
+    "packageManifest": "apps/manage/package.json",
+    "lockfile": "apps/manage/pnpm-lock.yaml",
+    "packageManagerPolicy": "apps/manage/pnpm-workspace.yaml",
+    "runner": "apps/manage/scripts/run-checks.mjs",
+    "runnerTests": "apps/manage/scripts/run-checks.test.mjs",
+    "manifestValidator": "apps/manage/scripts/manifest-governance.mjs",
+    "manifestValidatorTests": "apps/manage/scripts/manifest-governance.test.mjs",
+    "ciWorkflow": ".github/workflows/check.yml",
+    "buildWorkflow": ".github/workflows/check.yml",
+    "commands": {
+      "complete": "check",
+      "affected": "check:affected",
+      "staged": "check:staged",
+      "ci": "check:ci"
+    },
+    "sharedInputs": [
+      "docs/规范/manifest.json",
+      "apps/manage/package.json",
+      "apps/manage/pnpm-lock.yaml",
+      "apps/manage/pnpm-workspace.yaml",
+      "apps/manage/scripts/run-checks.mjs",
+      "apps/manage/scripts/run-checks.test.mjs",
+      "apps/manage/scripts/manifest-governance.mjs",
+      "apps/manage/scripts/manifest-governance.test.mjs",
+      ".github/workflows/check.yml"
+    ]
+  },
+  "checks": [
+    {
+      "id": "design",
+      "domain": "design-system",
+      "phase": "static",
+      "tier": "fast",
+      "script": "lint:design",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.mjs",
+        "apps/manage/scripts/design-system.project.json",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/manifest-governance.mjs",
+        "apps/manage/scripts/manifest-governance.test.mjs",
+        "apps/manage/scripts/report-structure.mjs",
+        "apps/manage/scripts/report-structure.test.mjs",
+        "docs/规范/",
+        "apps/manage/scripts/i18n-nesting.mjs",
+        "apps/manage/scripts/test-design.mjs",
+        "apps/manage/scripts/navigation-governance.mjs",
+        "apps/manage/scripts/navigation-governance.test.mjs",
+        "apps/manage/scripts/component-selection.mjs",
+        "apps/manage/scripts/component-selection.json",
+        "apps/manage/scripts/component-catalog.mjs",
+        "apps/manage/scripts/component-catalog.test.mjs",
+        "apps/manage/scripts/transport-governance.mjs",
+        "apps/manage/scripts/transport-governance.test.mjs",
+        "apps/manage/tsconfig.json",
+        "apps/manage/tsconfig.app.json",
+        "apps/manage/scripts/query-field-governance.mjs",
+        "apps/manage/scripts/table-ordering-governance.mjs",
+        "apps/manage/scripts/table-ordering.unit.test.mjs"
+      ],
+      "tests": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/manifest-governance.test.mjs",
+        "apps/manage/scripts/run-checks.test.mjs",
+        "apps/manage/scripts/report-structure.test.mjs",
+        "apps/manage/scripts/test-design.mjs",
+        "apps/manage/scripts/navigation-governance.test.mjs",
+        "apps/manage/scripts/component-catalog.test.mjs",
+        "apps/manage/scripts/transport-governance.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-THEME",
+        "FRONTEND-STYLE",
+        "FRONTEND-LAYOUT",
+        "FRONTEND-COMPONENTS",
+        "FRONTEND-TOOLTIP",
+        "FRONTEND-COPY",
+        "FRONTEND-DATA",
+        "FRONTEND-GATES",
+        "FRONTEND-INFOARCH",
+        "FRONTEND-FEEDBACK",
+        "FRONTEND-TABLE",
+        "FRONTEND-NAVIGATION",
+        "FRONTEND-I18N"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "dependency-builds",
+      "domain": "dependency-build-policy",
+      "phase": "static",
+      "tier": "fast",
+      "script": "lint:dependency-builds",
+      "inputs": [
+        "apps/manage/pnpm-workspace.yaml",
+        "apps/manage/scripts/check-ignored-builds.mjs",
+        "apps/manage/patches/",
+        "apps/manage/scripts/check-runtime-patches.mjs"
+      ],
+      "tests": [
+        "apps/manage/scripts/dependency-builds.unit.test.mjs",
+        "apps/manage/scripts/runtime-patches.unit.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-GATES"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "unit",
+      "domain": "frontend-unit-contract",
+      "phase": "static",
+      "tier": "fast",
+      "script": "test:unit",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/scripts/",
+        "apps/manage/patches/"
+      ],
+      "tests": [
+        "apps/manage/scripts/run-unit-tests.unit.test.mjs",
+        "apps/manage/scripts/i18n-types.unit.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-ARCHITECTURE",
+        "FRONTEND-COMPONENTS",
+        "FRONTEND-DATA",
+        "FRONTEND-NAVIGATION",
+        "FRONTEND-I18N"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "types",
+      "domain": "typescript",
+      "phase": "static",
+      "tier": "fast",
+      "script": "typecheck",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/vite.config.ts",
+        "apps/manage/tsconfig.app.json",
+        "apps/manage/tsconfig.node.json",
+        "apps/manage/tsconfig.json"
+      ],
+      "tests": [
+        "apps/manage/tsconfig.app.json",
+        "apps/manage/tsconfig.node.json"
+      ],
+      "rules": [
+        "FRONTEND-ARCHITECTURE",
+        "FRONTEND-COMPONENTS",
+        "FRONTEND-DATA",
+        "FRONTEND-I18N"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "eslint",
+      "domain": "source-quality",
+      "phase": "static",
+      "tier": "fast",
+      "script": "lint:eslint",
+      "inputs": [
+        "apps/manage/"
+      ],
+      "tests": [
+        "apps/manage/eslint.config.js"
+      ],
+      "rules": [
+        "FRONTEND-ARCHITECTURE",
+        "FRONTEND-COMPONENTS"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "i18n",
+      "domain": "localization",
+      "phase": "static",
+      "tier": "fast",
+      "script": "lint:i18n",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/scripts/i18n-governance.mjs",
+        "apps/manage/scripts/i18n-governance.test.mjs",
+        "apps/manage/scripts/i18n-lint.mjs",
+        "apps/manage/scripts/i18n-nesting.mjs",
+        "apps/manage/scripts/i18n-compose.mjs",
+        "apps/manage/scripts/i18n-compose.test.mjs",
+        "apps/manage/scripts/i18n-rewrite-keys.mjs",
+        "apps/manage/scripts/i18n-rewrite-keys.test.mjs"
+      ],
+      "tests": [
+        "apps/manage/scripts/i18n-governance.test.mjs",
+        "apps/manage/scripts/i18n-compose.test.mjs",
+        "apps/manage/scripts/i18n-rewrite-keys.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-COPY",
+        "FRONTEND-I18N"
+      ],
+      "dependsOn": []
+    },
+    {
+      "id": "build",
+      "domain": "production-bundle",
+      "phase": "build",
+      "tier": "complete",
+      "script": "build:bundle",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/public/",
+        "apps/manage/index.html",
+        "apps/manage/scripts/bundle/",
+        "apps/manage/vite.config.ts",
+        "apps/manage/tsconfig.app.json",
+        "apps/manage/tsconfig.node.json",
+        "apps/manage/tsconfig.json",
+        "apps/manage/patches/"
+      ],
+      "tests": [
+        "apps/manage/scripts/bundle/lazy-boundary.mjs",
+        "apps/manage/scripts/bundle/lazy-boundary.unit.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-ARCHITECTURE",
+        "FRONTEND-THEME",
+        "FRONTEND-COMPONENTS"
+      ],
+      "dependsOn": [
+        "design",
+        "dependency-builds",
+        "unit",
+        "types",
+        "eslint",
+        "i18n"
+      ]
+    },
+    {
+      "id": "ui",
+      "domain": "browser-contract",
+      "phase": "ui",
+      "tier": "complete",
+      "script": "test:ui",
+      "inputs": [
+        "apps/manage/src/",
+        "apps/manage/tests/ui/",
+        "apps/manage/playwright.config.ts",
+        "apps/manage/vite.config.ts",
+        "apps/manage/scripts/run-runtime.mjs",
+        "apps/manage/patches/"
+      ],
+      "tests": [
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/tests/ui/tabs-fill.spec.ts"
+      ],
+      "rules": [
+        "FRONTEND-LAYOUT",
+        "FRONTEND-COMPONENTS",
+        "FRONTEND-TOOLTIP",
+        "FRONTEND-DATA",
+        "FRONTEND-A11Y",
+        "FRONTEND-GATES",
+        "FRONTEND-FEEDBACK",
+        "FRONTEND-TABLE",
+        "FRONTEND-NAVIGATION"
+      ],
+      "dependsOn": [
+        "build"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "id": "structure",
+      "domain": "frontend-architecture",
+      "script": "report:structure",
+      "inputs": [
+        "apps/manage/src/"
+      ],
+      "tests": [
+        "apps/manage/scripts/report-structure.test.mjs"
+      ],
+      "rules": [
+        "FRONTEND-ARCHITECTURE"
+      ],
+      "signals": [
+        "file-scale",
+        "hook-density",
+        "mixed-responsibilities"
+      ],
+      "nonBlocking": true
+    }
+  ],
+  "rules": [
+    {
+      "id": "FRONTEND-ARCHITECTURE",
+      "document": "docs/规范/前端/01-架构与主题.md",
+      "implementation": [
+        "apps/manage/src/routes/index.tsx",
+        "apps/manage/src/routes/pages.ts",
+        "apps/manage/src/routes/lazyRoute.ts",
+        "apps/manage/src/routes/menuMatch.ts",
+        "apps/manage/src/layouts/BasicLayout.tsx",
+        "apps/manage/src/components/ui/routeCrumbs.ts",
+        "apps/manage/src/components/ui/AppPage.tsx"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/menu-match.unit.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-THEME",
+      "document": "docs/规范/前端/01-架构与主题.md",
+      "implementation": [
+        "apps/manage/src/design/tokens.ts",
+        "apps/manage/src/config/theme.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-STYLE",
+      "document": "docs/规范/前端/01-架构与主题.md",
+      "implementation": [
+        "apps/manage/src/design/tokens.ts",
+        "apps/manage/src/components/ui/StatusTag.css",
+        "apps/manage/src/layouts/BasicLayout.css",
+        "apps/manage/src/components/ui/scrollbar.css",
+        "apps/manage/src/components/ui/overflowScroll.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-LAYOUT",
+      "document": "docs/规范/前端/02-布局与响应式.md",
+      "implementation": [
+        "apps/manage/src/components/ui/Layout.tsx",
+        "apps/manage/src/components/ui/Layout.css",
+        "apps/manage/src/components/ui/tableConfig.ts",
+        "apps/manage/src/components/ui/Table.tsx",
+        "apps/manage/src/components/ui/Table.css",
+        "apps/manage/src/components/ui/SortableList.tsx",
+        "apps/manage/src/components/ui/SortableList.css",
+        "apps/manage/src/components/ui/ScrollRegion.tsx",
+        "apps/manage/src/components/ui/ScrollRegion.css",
+        "apps/manage/src/components/ui/SidebarMenu.tsx",
+        "apps/manage/src/components/ui/AccountMenu.tsx",
+        "apps/manage/src/components/ui/ViewportFrame.tsx",
+        "apps/manage/src/components/ui/ViewportFrame.css",
+        "apps/manage/src/layouts/BasicLayout.tsx",
+        "apps/manage/src/layouts/BasicLayout.css"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/tests/ui/forced-wrap.ts",
+        "apps/manage/tests/ui/information-grid-regressions.spec.ts",
+        "apps/manage/tests/ui/migration-regressions.spec.ts",
+        "apps/manage/tests/ui/sidebar-contract.ts",
+        "apps/manage/tests/ui/viewport-regressions.spec.ts",
+        "apps/manage/tests/ui/viewport-contract.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-COMPONENTS",
+      "document": "docs/规范/前端/03-组件与提示.md",
+      "implementation": [
+        "apps/manage/src/components/ui/index.ts",
+        "apps/manage/src/components/ui/ResponsiveTabs.tsx",
+        "apps/manage/src/components/ui/ViewSwitch.tsx",
+        "apps/manage/src/components/ui/InformationFieldGrid.tsx",
+        "apps/manage/src/components/ui/Feedback.tsx",
+        "apps/manage/src/components/ui/Feedback.css",
+        "apps/manage/src/components/ui/IconButton.tsx",
+        "apps/manage/src/components/ui/ActionLink.tsx",
+        "apps/manage/src/components/ui/button.css",
+        "apps/manage/src/components/ui/AtomicValue.tsx",
+        "apps/manage/src/components/ui/CopyableValue.tsx",
+        "apps/manage/src/components/ui/useCopyToClipboard.ts",
+        "apps/manage/src/components/ui/InlineList.tsx",
+        "apps/manage/src/components/ui/InlineList.css",
+        "apps/manage/src/components/ui/LongText.tsx",
+        "apps/manage/src/components/ui/LongText.css",
+        "apps/manage/src/components/ui/TallContent.tsx",
+        "apps/manage/src/components/ui/DetailDrawer.tsx",
+        "apps/manage/src/components/ui/TallContent.css",
+        "apps/manage/src/utils/collation.ts",
+        "apps/manage/src/utils/dateTime.ts",
+        "apps/manage/src/components/ui/ScrollRegion.tsx",
+        "apps/manage/src/components/ui/ModalForm.tsx",
+        "apps/manage/src/components/ui/DrawerForm.tsx",
+        "apps/manage/src/components/ui/FormFooter.tsx",
+        "apps/manage/src/components/ui/useFormSubmit.ts",
+        "apps/manage/src/hooks/useDataTable.ts",
+        "apps/manage/src/components/ui/StatusTag.tsx",
+        "apps/manage/src/components/ui/SecondarySection.tsx",
+        "apps/manage/src/components/ui/SecondarySection.css",
+        "apps/manage/src/components/ui/MultiSelect.tsx",
+        "apps/manage/src/components/ui/MultiSelect.css",
+        "apps/manage/src/components/ui/select.css",
+        "apps/manage/src/components/ui/form.css",
+        "apps/manage/src/components/ui/RatioProgress.tsx",
+        "apps/manage/src/components/ui/RatioProgress.css",
+        "apps/manage/src/components/ui/FilterSelect.tsx",
+        "apps/manage/src/components/ui/FilterSelect.css",
+        "apps/manage/src/components/ui/RemoteSelect.tsx",
+        "apps/manage/src/hooks/useRemoteOptions.ts",
+        "apps/manage/src/components/ui/SaveBar.css",
+        "apps/manage/src/components/ui/PageFooterSlot.tsx",
+        "apps/manage/src/components/ui/PageFooterSlot.css",
+        "apps/manage/src/components/ui/Popconfirm.tsx",
+        "apps/manage/src/components/ui/Popconfirm.css",
+        "apps/manage/src/components/ui/ColorLegend.tsx",
+        "apps/manage/src/components/ui/ColorLegend.css",
+        "apps/manage/src/hooks/useFormDirty.ts",
+        "apps/manage/scripts/component-selection.json",
+        "apps/manage/scripts/component-selection.mjs",
+        "apps/manage/src/components/ui/SidebarMenu.tsx",
+        "apps/manage/src/components/ui/AccountMenu.tsx"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/scripts/date-time.unit.test.mjs",
+        "apps/manage/scripts/component-catalog.test.mjs",
+        "apps/manage/tests/ui/migration-regressions.spec.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-TABLE",
+      "document": "docs/规范/前端/04-表格与查询.md",
+      "implementation": [
+        "apps/manage/src/components/ui/Table.tsx",
+        "apps/manage/src/components/ui/tableConfig.ts",
+        "apps/manage/src/components/ui/DataTable.tsx",
+        "apps/manage/src/components/ui/TablePanel.tsx",
+        "apps/manage/src/components/ui/QueryForm.tsx",
+        "apps/manage/src/components/PermissionPointTable/index.tsx",
+        "apps/manage/src/components/ui/FilterSelect.tsx",
+        "apps/manage/src/hooks/useRemoteOptions.ts",
+        "apps/manage/src/components/ui/Table.css",
+        "apps/manage/scripts/design-system.project.json",
+        "apps/manage/scripts/design-governance.mjs",
+        "apps/manage/src/components/ui/scrollbar.css",
+        "apps/manage/src/components/ui/overflowScroll.ts",
+        "apps/manage/scripts/query-field-governance.mjs",
+        "apps/manage/src/components/ui/QueryForm.css",
+        "apps/manage/src/components/ui/RemoteSelect.tsx",
+        "apps/manage/src/config/theme.ts",
+        "apps/manage/scripts/table-ordering-governance.mjs"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/tests/ui/forced-wrap.ts",
+        "apps/manage/tests/ui/filter-selection.spec.ts",
+        "apps/manage/tests/ui/table-alignment-fixture.tsx",
+        "apps/manage/tests/ui/table-alignment-regressions.spec.ts",
+        "apps/manage/tests/ui/table-fit-fixture.tsx",
+        "apps/manage/tests/ui/table-fit-regressions.spec.ts",
+        "apps/manage/tests/ui/query-layout-regressions.spec.ts",
+        "apps/manage/tests/ui/select-candidates-regressions.spec.ts",
+        "apps/manage/tests/ui/table-geometry.ts",
+        "apps/manage/tests/ui/table-geometry-regressions.spec.ts",
+        "apps/manage/tests/ui/console-guard.ts",
+        "apps/manage/scripts/table-leaf-width.unit.test.mjs",
+        "apps/manage/scripts/table-ordering.unit.test.mjs",
+        "apps/manage/scripts/table-squeeze.unit.test.mjs",
+        "apps/manage/scripts/table-drop-completion.unit.test.mjs",
+        "apps/manage/scripts/ordering-runtime.unit.test.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-NAVIGATION",
+      "document": "docs/规范/前端/05-页面与流程.md",
+      "implementation": [
+        "apps/manage/src/routes/index.tsx",
+        "apps/manage/src/routes/menuMatch.ts",
+        "apps/manage/src/components/ui/AppPage.tsx",
+        "apps/manage/src/components/ui/EntityPage.tsx",
+        "apps/manage/src/components/ui/SaveBar.tsx",
+        "apps/manage/scripts/navigation-governance.mjs",
+        "apps/manage/scripts/design-system.project.json",
+        "apps/manage/scripts/design-governance.mjs"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/menu-match.unit.test.mjs",
+        "apps/manage/tests/ui/forced-wrap.ts",
+        "apps/manage/scripts/navigation-governance.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-TOOLTIP",
+      "document": "docs/规范/前端/03-组件与提示.md",
+      "implementation": [
+        "apps/manage/src/components/ui/Tooltip.tsx",
+        "apps/manage/src/components/ui/Tooltip.css",
+        "apps/manage/src/components/ui/AtomicValue.tsx",
+        "apps/manage/src/components/ui/AtomicValue.css",
+        "apps/manage/src/components/ui/InlineList.tsx",
+        "apps/manage/scripts/design-governance.mjs",
+        "apps/manage/src/components/ui/IconLabelHint.tsx"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/scripts/tooltip-width.unit.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-COPY",
+      "document": "docs/规范/前端/06-文案与国际化.md",
+      "implementation": [
+        "apps/manage/src/i18n/locales/zh-CN.json",
+        "apps/manage/src/i18n/locales/en-US.json"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/i18n-lint.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-I18N",
+      "document": "docs/规范/前端/06-文案与国际化.md",
+      "implementation": [
+        "apps/manage/src/i18n/index.ts",
+        "apps/manage/src/i18n/dynamic-keys.json",
+        "apps/manage/src/i18n/locales/zh-CN.json",
+        "apps/manage/src/i18n/locales/en-US.json",
+        "apps/manage/src/i18n/bilingual.ts",
+        "apps/manage/scripts/i18n-nesting.mjs",
+        "apps/manage/scripts/i18n-compose.mjs",
+        "apps/manage/scripts/i18n-promote-vocab.mjs",
+        "apps/manage/scripts/i18n-rewrite-keys.mjs",
+        "apps/manage/scripts/transport-governance.mjs",
+        "apps/manage/src/i18n/i18next.d.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/i18n-governance.mjs",
+        "apps/manage/scripts/i18n-governance.test.mjs",
+        "apps/manage/scripts/i18n-lint.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/i18n-compose.test.mjs",
+        "apps/manage/scripts/i18n-rewrite-keys.test.mjs",
+        "apps/manage/scripts/transport-governance.test.mjs",
+        "apps/manage/scripts/i18n-types.unit.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-DATA",
+      "document": "docs/规范/前端/07-数据与反馈.md",
+      "implementation": [
+        "apps/manage/src/components/ui/Feedback.tsx",
+        "apps/manage/src/components/JsonEditor/index.tsx",
+        "apps/manage/src/components/JsonEditor/MonacoEditor.tsx",
+        "apps/manage/src/components/JsonPreview/index.tsx",
+        "apps/manage/src/components/ReactEcharts/index.tsx",
+        "apps/manage/src/components/ReactEcharts/chartTheme.ts",
+        "apps/manage/src/components/ReactEcharts/chartOptions.ts",
+        "apps/manage/src/components/ReactEcharts/useChartColors.ts",
+        "apps/manage/src/hooks/useRequest.ts",
+        "apps/manage/src/hooks/useDataTable.ts",
+        "apps/manage/src/utils/cronCycle.ts",
+        "apps/manage/src/utils/json.ts",
+        "apps/manage/src/utils/number.ts",
+        "apps/manage/src/components/ReactEcharts/ReactEcharts.css",
+        "apps/manage/src/utils/requestError.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/cron-cycle.unit.test.mjs",
+        "apps/manage/scripts/json-utils.unit.test.mjs",
+        "apps/manage/scripts/run-unit-tests.mjs",
+        "apps/manage/scripts/run-unit-tests.unit.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/tests/ui/forced-wrap.ts",
+        "apps/manage/scripts/request-feedback.unit.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-A11Y",
+      "document": "docs/规范/前端/06-文案与国际化.md",
+      "implementation": [
+        "apps/manage/src/components/ui/Tooltip.tsx",
+        "apps/manage/src/components/ui/Feedback.tsx",
+        "apps/manage/src/components/ui/IconButton.tsx",
+        "apps/manage/src/components/ui/StatusTag.tsx"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-INFOARCH",
+      "document": "docs/规范/前端/05-页面与流程.md",
+      "implementation": [
+        "apps/manage/src/routes/index.tsx"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs"
+      ]
+    },
+    {
+      "id": "FRONTEND-FEEDBACK",
+      "document": "docs/规范/前端/07-数据与反馈.md",
+      "implementation": [
+        "apps/manage/src/utils/feedback.ts",
+        "apps/manage/src/utils/request.ts",
+        "apps/manage/src/components/ui/Feedback.tsx",
+        "apps/manage/src/utils/requestError.ts",
+        "apps/manage/src/components/ui/notificationDefaults.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/i18n-governance.mjs",
+        "apps/manage/scripts/request-feedback.unit.test.mjs",
+        "apps/manage/tests/ui/notification-motion-regressions.spec.ts"
+      ]
+    },
+    {
+      "id": "FRONTEND-GATES",
+      "document": "docs/规范/前端/08-门禁.md",
+      "implementation": [
+        "apps/manage/playwright.config.ts",
+        "apps/manage/vite.config.ts",
+        "apps/manage/scripts/run-checks.mjs",
+        "apps/manage/scripts/report-structure.mjs",
+        "apps/manage/scripts/check-design.mjs",
+        "apps/manage/scripts/design-governance.mjs",
+        "apps/manage/scripts/design-system.project.json",
+        "apps/manage/scripts/manifest-governance.mjs",
+        "apps/manage/scripts/i18n-governance.mjs",
+        "apps/manage/scripts/i18n-lint.mjs",
+        "apps/manage/tests/ui/native-overlay.ts"
+      ],
+      "validation": [
+        "apps/manage/scripts/design-governance.test.mjs",
+        "apps/manage/scripts/manifest-governance.test.mjs",
+        "apps/manage/scripts/run-checks.test.mjs",
+        "apps/manage/scripts/report-structure.test.mjs",
+        "apps/manage/scripts/i18n-governance.test.mjs",
+        "apps/manage/tests/ui/design-system.spec.ts",
+        "apps/manage/tests/ui/native-overlay-regressions.spec.ts"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,29 @@
 name: dsdocs-check
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "*"
+      - apps/manage/**
+      - apps/reader/**
+      - docs/**
+      - scripts/**
+      - packages/**
+      - quality/**
+      - AGENTS.md
+      - package.json
+      - .github/workflows/check.yml
+  pull_request:
+    paths:
+      - "*"
+      - apps/manage/**
+      - apps/reader/**
+      - docs/**
+      - scripts/**
+      - packages/**
+      - quality/**
+      - AGENTS.md
+      - package.json
+      - .github/workflows/check.yml
 permissions:
   contents: read
 concurrency:
@@ -21,12 +45,4 @@ jobs:
             apps/manage/pnpm-lock.yaml
             apps/reader/pnpm-lock.yaml
       - run: pnpm install:all
-      - run: pnpm check
-      - run: pnpm -C apps/manage exec playwright install --with-deps chromium firefox
-      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:browser
-
-      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:starter:browser
-
-      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:settings:browser
-
-      - run: DSDOCS_CHROME_CHANNEL=chromium pnpm test:layout:browser
+      - run: pnpm run check

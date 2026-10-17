@@ -1,0 +1,13 @@
+.login-page {
+  box-sizing: border-box;
+  width: min(100%, 400px);
+  margin: auto;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  padding: var(--ds-space-24);
+}
+.login-page h1 {
+  margin: 0;
+  font-size: var(--ds-font-size-title);
+}

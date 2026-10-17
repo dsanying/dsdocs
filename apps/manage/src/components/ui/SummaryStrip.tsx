@@ -29,7 +29,7 @@ export type SummaryStripItem = {
    * “A 部分 + B 部分”，让读者一眼看出总数怎么来的，而不用另开一行字段。
    */
   breakdown?: { key: Key; label: ReactNode; value: ReactNode }[];
-  /** 值的参照说明（不是求和），如“占定期配额 ¥1,200.00 的 31.9%”；与 breakdown 同样以小字列在值下方。 */
+  /** 值的参照说明（不是求和），如“占定期额度 ¥1,200.00 的 31.9%”；与 breakdown 同样以小字列在值下方。 */
   note?: ReactNode;
 };
 

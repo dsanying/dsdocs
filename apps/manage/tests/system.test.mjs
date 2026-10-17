@@ -2,7 +2,7 @@ import { openContent } from '../../../packages/content/store.mjs';
 import { request as httpRequest } from 'node:http';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { startManagement } from '../server/start.mjs';
@@ -42,6 +42,14 @@ test('本地账号、内容、发布和附件边界', async (t) => {
   const signIn = async (username, password) =>
     call('/__dsdocs_auth/sign-in/username', 'POST', { username, password }, '');
   await t.test('匿名不能读取内容和伪造来源', async () => {
+    const entry = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
+    const bundle = entry.match(/src="(\/assets\/[^"/]+\.js)"/)[1];
+    const asset = await fetch(origin + bundle);
+    assert.equal(asset.status, 200);
+    assert.match(asset.headers.get('content-type'), /javascript/);
+    assert.equal(asset.headers.get('x-content-type-options'), 'nosniff');
+    for (const route of ['/folders', '/assets', '/settings', '/files', '/accounts'])
+      assert.equal((await call(route)).status, 302);
     assert.equal((await call('/login')).status, 200);
     assert.equal((await call('/')).status, 302);
     assert.equal((await call('/__dsdocs_auth/sign-up/email', 'POST', {})).status, 404);
@@ -62,6 +70,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     cookie = login.cookie;
     assert.equal((await call('/')).status, 200);
     assert.equal((await call('/login')).status, 302);
+    assert.equal((await call('/__dsdocs_accounts/capabilities')).data.user.needsSetup, true);
     assert.equal((await call('/__dsdocs_content')).status, 403);
     assert.equal((await call('/__dsdocs_content/files')).status, 403);
     assert.equal(
@@ -82,6 +91,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
     const login2 = await signIn('owner', 'new-pass-123');
     assert.equal(login2.status, 200);
     cookie = login2.cookie;
+    assert.equal((await call('/__dsdocs_accounts/capabilities')).data.user.needsSetup, false);
     assert.notEqual((await signIn('admin', 'admin')).status, 200);
   });
   let member, memberCookie;
@@ -386,7 +396,7 @@ test('本地账号、内容、发布和附件边界', async (t) => {
       200
     );
   });
-  await t.test('普通管理员改名必须核验当前密码，成功后撤销会话', async () => {
+  await t.test('普通管理员同时改名改密，完成后撤销会话并仅接受新凭据', async () => {
     assert.equal(
       (
         await call(
@@ -403,13 +413,21 @@ test('本地账号、内容、发布和附件边界', async (t) => {
         await call(
           '/__dsdocs_accounts/me',
           'PATCH',
-          { username: 'writer2', currentPassword: 'member-pass-123' },
+          { username: 'writer2', currentPassword: 'member-pass-123', password: 'updated-pass-123' },
           memberCookie
         )
       ).status,
       200
     );
     assert.equal((await call('/__dsdocs_accounts', 'GET', undefined, memberCookie)).status, 401);
+    // 原生登录端点每 10 秒最多 3 次；独立窗口验证凭据，不关闭限流或重试失败。
+    await new Promise((resolve) => setTimeout(resolve, 11000));
+    assert.equal((await signIn('writer', 'member-pass-123')).status, 401);
+    assert.equal((await signIn('writer2', 'member-pass-123')).status, 401);
+    const fresh = await signIn('writer2', 'updated-pass-123');
+    assert.equal(fresh.status, 200);
+    memberCookie = fresh.cookie;
+    await new Promise((resolve) => setTimeout(resolve, 11000));
   });
   await t.test('历史恢复仅改变草稿，撤下后保留历史', async () => {
     const history = (await call(`/__dsdocs_content/documents/${doc.id}/revisions`)).data;

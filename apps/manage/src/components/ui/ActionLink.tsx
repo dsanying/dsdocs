@@ -10,7 +10,7 @@ export type ActionLinkProps = Omit<LinkProps, 'children' | 'className'> & {
   className?: string;
   /**
    * action（默认）：“详情”“编辑”等动作，窄屏与按钮一起收成仅图标；
-   * name：文字就是对象名称（配额池名、规则来源等），任何宽度都保留文字，否则只剩一个无从分辨的图标。
+   * name：文字就是对象名称（资源名、规则来源等），任何宽度都保留文字，否则只剩一个无从分辨的图标。
    */
   variant?: 'action' | 'name';
 };

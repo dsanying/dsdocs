@@ -8,7 +8,7 @@ export type RemoteOption = { value: string; label: string; unverified?: boolean 
 export type RemoteOptionsLoader = (keyword: string) => Promise<RemoteOption[]>;
 
 /**
- * 大候选集（主体、UPN、邮箱这类以万计的枚举）的实时候选机制：
+ * 大候选集（主体、账号、邮箱这类以万计的枚举）的实时候选机制：
  * 不全量下发，按输入关键词防抖后向后端取前 N 条；只有最新一次请求的结果会写入（useRequest 保证），
  * 已选值即使不在当前结果里也保留为选项，保证选中标签不丢失。
  * 传 resolve 时已选值会按真实值精确核验：服务端认得的回填标签，认不得的保留为未核验项（unverified），
@@ -24,8 +24,12 @@ export type RemoteOptionsResolveExtras = {
   /**
    * 精确核验失败后的折叠核验：按大小写不敏感匹配取回库中规范值，
    * 一个输入值对应唯一规范值时通过 onCorrect 自动校正，多个变体视为歧义保持未核验。
+   * 变体集可能被服务端截断：返回 `{ items, hasMore }` 且 hasMore 为真时结果不完整，
+   * 本批一律不自动修正（同一输入的变体可能分处截断边界两侧，唯一性无法证明）。
    */
-  resolveFold?: (values: string[]) => Promise<RemoteOption[]>;
+  resolveFold?: (
+    values: string[]
+  ) => Promise<RemoteOption[] | { items: RemoteOption[]; hasMore?: boolean }>;
   /** 批量应用规范化修正：由调用方把已选值 from 替换为 to（只改选择，不重发请求）。 */
   onCorrect?: (fixes: readonly RemoteOptionsCorrection[]) => void;
   /**
@@ -182,7 +186,7 @@ export function useRemoteOptions(
           return;
         }
         // 折叠核验失败只影响 pending 这批值（精确已命中的不回退）：同样退回 failed 等显式重试
-        let folded: RemoteOption[];
+        let folded: Awaited<ReturnType<NonNullable<typeof resolveFold>>>;
         try {
           folded = await resolveFold(pending);
         } catch (cause) {
@@ -195,16 +199,21 @@ export function useRemoteOptions(
           return;
         }
         if (!isCurrentScope()) return;
-        mergeLabels(folded);
+        const foldedItems = Array.isArray(folded) ? folded : folded.items;
+        // 折叠结果被截断时变体集不完整：无法证明唯一性，本批全部不自动修正
+        const foldComplete = Array.isArray(folded) || folded.hasMore !== true;
+        mergeLabels(foldedItems);
         const fixes: RemoteOptionsCorrection[] = [];
         for (const value of pending) {
-          const canonicals = [
-            ...new Set(
-              folded
-                .filter((item) => item.value.toLowerCase() === value.toLowerCase())
-                .map((item) => item.value)
-            ),
-          ];
+          const canonicals = foldComplete
+            ? [
+                ...new Set(
+                  foldedItems
+                    .filter((item) => item.value.toLowerCase() === value.toLowerCase())
+                    .map((item) => item.value)
+                ),
+              ]
+            : [];
           const canonical = canonicals.length === 1 ? canonicals[0] : undefined;
           corrections.current.map.set(value, canonical);
           if (canonical && canonical !== value && !corrections.current.pushed.has(value)) {

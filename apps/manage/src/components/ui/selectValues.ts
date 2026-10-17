@@ -22,16 +22,28 @@ export type PasteOption = { value?: unknown; label?: unknown };
 /** 粘贴命中的规范化修正：from 是输入原文，to 是候选规范值（仅大小写差异或按名称命中）。 */
 export type PasteCorrection = { from: string; to: string };
 
-/** 候选值或显示文案命中（候选的值与名称都接受粘贴/匹配输入）：先精确匹配，落空再做
+/** 候选值或显示文案命中（候选的值与名称都接受粘贴/匹配输入）：先精确值匹配——真实值是权威
+ * 身份，先于名称命中；名称命中须唯一，多个候选同名属歧义不按数组首项猜；都落空再做
  * 大小写折叠匹配——唯一变体自动校正为候选规范值；多个候选只差大小写属歧义，不猜，
- * 收为幽灵值标红由“近似候选”修正。远端未加载的变体由 useRemoteOptions 的折叠核验兜底。 */
+ * 收为幽灵值标红由“近似候选”修正。远端未加载的变体由 useRemoteOptions 的折叠核验兜底。
+ * allowInexact 关闭时（候选由远端按值核验、本地候选只是分页的一页）只认精确值：
+ * 名称命中与折叠命中都属页内局部结论，名称唯一/折叠唯一都不证明库中唯一，
+ * 原文须保留送远端核验，不能按当前页改写。 */
 function findOption(
   options: readonly PasteOption[] | undefined,
-  probe: string
+  probe: string,
+  allowInexact = true
 ): PasteOption | undefined {
   const list = options ?? [];
-  const exact = list.find((option) => String(option.value) === probe || option.label === probe);
-  if (exact) return exact;
+  const byValue = list.find((option) => String(option.value) === probe);
+  if (byValue) return byValue;
+  if (!allowInexact) return undefined;
+  const byLabel = new Map<string, PasteOption>();
+  for (const option of list) {
+    if (option.label === probe) byLabel.set(String(option.value), option);
+  }
+  if (byLabel.size === 1) return [...byLabel.values()][0];
+  if (byLabel.size > 1) return undefined;
   const lower = probe.toLowerCase();
   const folded = new Map<string, PasteOption>();
   for (const option of list) {
@@ -101,6 +113,13 @@ export function applyPastedValues<T = string>(
     onChange?: (next: T[]) => void;
     onUnknown?: (ignored: string[]) => void;
     onCorrected?: (fixes: readonly PasteCorrection[]) => void;
+    /**
+     * 已选值由远端按值核验时开启：本地候选页只是全集的一页，名称命中与折叠命中都不能
+     * 证明库中唯一（库中同时存在 Foo/foo 而候选页只有 Foo 时，粘贴 foo 会被错写成 Foo；
+     * 同理候选页标签唯一也可能只是分页的一页），因此本地只做精确值匹配，
+     * 名称与折叠修正都交给远端核验在完整集上判定，原文保留为幽灵值。
+     */
+    deferFold?: boolean;
   }
 ): boolean {
   const tokens = splitPastedValues(text);
@@ -110,6 +129,7 @@ export function applyPastedValues<T = string>(
     if (!next.includes(item)) next.push(item);
   };
   const corrected: PasteCorrection[] = [];
+  const allowInexact = !params.deferFold;
   // 命中项保留候选值本身的类型（数值候选仍是数值）；原文与规范值不同才算修正
   const pushHit = (probe: string, hit: PasteOption) => {
     push(hit.value as T);
@@ -118,12 +138,12 @@ export function applyPastedValues<T = string>(
   if (params.freeInput) {
     for (const token of tokens) push(token as T);
   } else {
-    const whole = findOption(params.options, text.trim());
+    const whole = findOption(params.options, text.trim(), allowInexact);
     if (whole) pushHit(text.trim(), whole);
     else {
       const unknown: string[] = [];
       for (const token of tokens) {
-        const hit = findOption(params.options, token);
+        const hit = findOption(params.options, token, allowInexact);
         if (hit) pushHit(token, hit);
         else {
           unknown.push(token);

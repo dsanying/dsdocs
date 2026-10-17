@@ -1,0 +1,1077 @@
+{
+  "version": 1,
+  "publicIndex": "src/components/ui/index.ts",
+  "exports": [
+    {
+      "name": "AccountLogout",
+      "kind": "type",
+      "module": "./AccountMenu",
+      "source": "src/components/ui/AccountMenu.tsx",
+      "selection": "真实退出回调、文案与提交禁用状态。"
+    },
+    {
+      "name": "AccountMenu",
+      "kind": "value",
+      "module": "./AccountMenu",
+      "source": "src/components/ui/AccountMenu.tsx",
+      "selection": "头像悬停、点击与键盘菜单；可选 logout 由共享层固定追加到最后。"
+    },
+    {
+      "name": "AccountMenuProps",
+      "kind": "type",
+      "module": "./AccountMenu",
+      "source": "src/components/ui/AccountMenu.tsx",
+      "selection": "身份、业务项、动作回调及可选登出；不伪造业务能力。"
+    },
+    {
+      "name": "ActionLink",
+      "kind": "value",
+      "module": "./ActionLink",
+      "source": "src/components/ui/ActionLink.tsx",
+      "selection": "站内和站外文字跳转；icon 必填，窄屏同动作收成图标。"
+    },
+    {
+      "name": "ActionLinkProps",
+      "kind": "type",
+      "module": "./ActionLink",
+      "source": "src/components/ui/ActionLink.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "AppEmpty",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "已加载且无结果。"
+    },
+    {
+      "name": "AppEmptyProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "AppPage",
+      "kind": "value",
+      "module": "./AppPage",
+      "source": "src/components/ui/AppPage.tsx",
+      "selection": "导航树驱动标题的普通页面外壳。"
+    },
+    {
+      "name": "AppPageProps",
+      "kind": "type",
+      "module": "./AppPage",
+      "source": "src/components/ui/AppPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "AppPageTab",
+      "kind": "type",
+      "module": "./AppPage",
+      "source": "src/components/ui/AppPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "AtomicValue",
+      "kind": "value",
+      "module": "./AtomicValue",
+      "source": "src/components/ui/AtomicValue.tsx",
+      "selection": "名称、ID、路径与单项值；完整单行，局部横滚。"
+    },
+    {
+      "name": "AtomicValueProps",
+      "kind": "type",
+      "module": "./AtomicValue",
+      "source": "src/components/ui/AtomicValue.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ColorLegend",
+      "kind": "value",
+      "module": "./ColorLegend",
+      "source": "src/components/ui/ColorLegend.tsx",
+      "selection": "图表与状态的语义色图例。"
+    },
+    {
+      "name": "ColorLegendItem",
+      "kind": "type",
+      "module": "./ColorLegend",
+      "source": "src/components/ui/ColorLegend.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ColorLegendProps",
+      "kind": "type",
+      "module": "./ColorLegend",
+      "source": "src/components/ui/ColorLegend.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ContentStack",
+      "kind": "value",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "内容块的统一纵向间距。"
+    },
+    {
+      "name": "CopyableValue",
+      "kind": "value",
+      "module": "./CopyableValue",
+      "source": "src/components/ui/CopyableValue.tsx",
+      "selection": "完整值与复制反馈，不自行堆 Tooltip。"
+    },
+    {
+      "name": "CopyableValueProps",
+      "kind": "type",
+      "module": "./CopyableValue",
+      "source": "src/components/ui/CopyableValue.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "DEFAULT_PAGE_SIZE",
+      "kind": "value",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "界面分页唯一默认值 10；所有受控状态从此初始化，候选由共享构建器提供。"
+    },
+    {
+      "name": "DataTable",
+      "kind": "value",
+      "module": "./DataTable",
+      "source": "src/components/ui/DataTable.tsx",
+      "selection": "useDataTable 控制的查询表格与就地反馈。"
+    },
+    {
+      "name": "DataTableProps",
+      "kind": "type",
+      "module": "./DataTable",
+      "source": "src/components/ui/DataTable.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "DetailDrawer",
+      "kind": "value",
+      "module": "./DetailDrawer",
+      "source": "src/components/ui/DetailDrawer.tsx",
+      "selection": "停留阅读的结构化详情。"
+    },
+    {
+      "name": "DetailDrawerButton",
+      "kind": "value",
+      "module": "./DetailDrawer",
+      "source": "src/components/ui/DetailDrawer.tsx",
+      "selection": "由动作打开同一种详情层。"
+    },
+    {
+      "name": "DetailDrawerButtonProps",
+      "kind": "type",
+      "module": "./DetailDrawer",
+      "source": "src/components/ui/DetailDrawer.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "DetailDrawerProps",
+      "kind": "type",
+      "module": "./DetailDrawer",
+      "source": "src/components/ui/DetailDrawer.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "DrawerForm",
+      "kind": "value",
+      "module": "./DrawerForm",
+      "source": "src/components/ui/DrawerForm.tsx",
+      "selection": "少量配置项编辑；实体新建编辑使用页面。"
+    },
+    {
+      "name": "DrawerFormProps",
+      "kind": "type",
+      "module": "./DrawerForm",
+      "source": "src/components/ui/DrawerForm.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "EntityDetailPage",
+      "kind": "value",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "实体详情：返回、对象名、状态、操作、摘要、字段及页签。"
+    },
+    {
+      "name": "EntityDetailPageProps",
+      "kind": "type",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "EntityDetailTab",
+      "kind": "type",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "EntityEditPage",
+      "kind": "value",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "实体新建/编辑：返回、表单、脏值保存条。"
+    },
+    {
+      "name": "EntityEditPageProps",
+      "kind": "type",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "EntityQueryState",
+      "kind": "type",
+      "module": "./EntityPage",
+      "source": "src/components/ui/EntityPage.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FieldDatePicker",
+      "kind": "value",
+      "module": "./RangePicker",
+      "source": "src/components/ui/RangePicker.tsx",
+      "selection": "表单日期选择唯一入口，与 RangePicker 同源。"
+    },
+    {
+      "name": "FilterSelect",
+      "kind": "value",
+      "module": "./FilterSelect",
+      "source": "src/components/ui/FilterSelect.tsx",
+      "selection": "查询筛选，enum/pair/scope 按候选契约选择。"
+    },
+    {
+      "name": "FilterSelectKind",
+      "kind": "type",
+      "module": "./FilterSelect",
+      "source": "src/components/ui/FilterSelect.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FilterSelectOption",
+      "kind": "type",
+      "module": "./FilterSelect",
+      "source": "src/components/ui/FilterSelect.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FilterSelectProps",
+      "kind": "type",
+      "module": "./FilterSelect",
+      "source": "src/components/ui/FilterSelect.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FlexStackProps",
+      "kind": "type",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FormGrid",
+      "kind": "value",
+      "module": "./FormGrid",
+      "source": "src/components/ui/FormGrid.tsx",
+      "selection": "编辑控件网格，容器宽度决定均衡分列。"
+    },
+    {
+      "name": "FormGridProps",
+      "kind": "type",
+      "module": "./FormGrid",
+      "source": "src/components/ui/FormGrid.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "FormSubmitter",
+      "kind": "type",
+      "module": "./useFormSubmit",
+      "source": "src/components/ui/useFormSubmit.ts",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "HelpTip",
+      "kind": "value",
+      "module": "./HelpTip",
+      "source": "src/components/ui/HelpTip.tsx",
+      "selection": "非表单位置的一段简短说明。"
+    },
+    {
+      "name": "HelpTipProps",
+      "kind": "type",
+      "module": "./HelpTip",
+      "source": "src/components/ui/HelpTip.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "IconButton",
+      "kind": "value",
+      "module": "./IconButton",
+      "source": "src/components/ui/IconButton.tsx",
+      "selection": "纯图标操作，label 同源生成可访问名称。"
+    },
+    {
+      "name": "IconButtonProps",
+      "kind": "type",
+      "module": "./IconButton",
+      "source": "src/components/ui/IconButton.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "IconLabelHint",
+      "kind": "value",
+      "module": "./IconLabelHint",
+      "source": "src/components/ui/IconLabelHint.tsx",
+      "selection": "根部统一提示被隐藏的按钮/链接名称。"
+    },
+    {
+      "name": "InformationField",
+      "kind": "type",
+      "module": "./InformationFieldGrid",
+      "source": "src/components/ui/InformationFieldGrid.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "InformationFieldGrid",
+      "kind": "value",
+      "module": "./InformationFieldGrid",
+      "source": "src/components/ui/InformationFieldGrid.tsx",
+      "selection": "只读键值信息；区别于 FormGrid 编辑布局。"
+    },
+    {
+      "name": "InformationFieldGridProps",
+      "kind": "type",
+      "module": "./InformationFieldGrid",
+      "source": "src/components/ui/InformationFieldGrid.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "InlineList",
+      "kind": "value",
+      "module": "./InlineList",
+      "source": "src/components/ui/InlineList.tsx",
+      "selection": "表格内完整短项集合，不省略折叠。"
+    },
+    {
+      "name": "InlineListItem",
+      "kind": "type",
+      "module": "./InlineList",
+      "source": "src/components/ui/InlineList.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "InlineListProps",
+      "kind": "type",
+      "module": "./InlineList",
+      "source": "src/components/ui/InlineList.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "LazyBoundary",
+      "kind": "value",
+      "module": "./LazyBoundary",
+      "source": "src/components/ui/LazyBoundary.tsx",
+      "selection": "懒加载页面的统一加载/错误边界。"
+    },
+    {
+      "name": "LoadingIndicator",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "局部加载指示。"
+    },
+    {
+      "name": "LoadingIndicatorProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "LoadingOverlay",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "保留旧结果时覆盖加载。"
+    },
+    {
+      "name": "LoadingOverlayProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "LoadingState",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "初次加载占位。"
+    },
+    {
+      "name": "LoadingStateProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "LongText",
+      "kind": "value",
+      "module": "./LongText",
+      "source": "src/components/ui/LongText.tsx",
+      "selection": "长单项文本的完整横滚展示。"
+    },
+    {
+      "name": "LongTextProps",
+      "kind": "type",
+      "module": "./LongText",
+      "source": "src/components/ui/LongText.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "MetadataTag",
+      "kind": "value",
+      "module": "./StatusTag",
+      "source": "src/components/ui/StatusTag.tsx",
+      "selection": "中性元数据标签。"
+    },
+    {
+      "name": "ModalForm",
+      "kind": "value",
+      "module": "./ModalForm",
+      "source": "src/components/ui/ModalForm.tsx",
+      "selection": "适合短暂局部流程的表单；实体编辑不得借此替代页面。"
+    },
+    {
+      "name": "ModalFormProps",
+      "kind": "type",
+      "module": "./ModalForm",
+      "source": "src/components/ui/ModalForm.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "MultiSelect",
+      "kind": "value",
+      "module": "./MultiSelect",
+      "source": "src/components/ui/MultiSelect.tsx",
+      "selection": "多项选择；可选自由输入，完整已选标签。"
+    },
+    {
+      "name": "MultiSelectProps",
+      "kind": "type",
+      "module": "./MultiSelect",
+      "source": "src/components/ui/MultiSelect.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "PageFooterPortal",
+      "kind": "value",
+      "module": "./PageFooterSlot",
+      "source": "src/components/ui/PageFooterSlot.tsx",
+      "selection": "将页面保存动作送入统一页脚槽位。"
+    },
+    {
+      "name": "PageFooterSlotProvider",
+      "kind": "value",
+      "module": "./PageFooterSlot",
+      "source": "src/components/ui/PageFooterSlot.tsx",
+      "selection": "应用壳唯一页脚槽位所有者。"
+    },
+    {
+      "name": "PageStack",
+      "kind": "value",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "页面级统一间距。"
+    },
+    {
+      "name": "Popconfirm",
+      "kind": "value",
+      "module": "./Popconfirm",
+      "source": "src/components/ui/Popconfirm.tsx",
+      "selection": "锚定触发动作的二次确认，可异步 prepare。"
+    },
+    {
+      "name": "PopconfirmProps",
+      "kind": "type",
+      "module": "./Popconfirm",
+      "source": "src/components/ui/Popconfirm.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "QueryErrorAlert",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "就地展示读取失败。"
+    },
+    {
+      "name": "QueryErrorAlertProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "QueryErrorLayout",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "QueryFeedback",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "统一读取加载/错误/重试反馈。"
+    },
+    {
+      "name": "QueryFeedbackProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "QueryForm",
+      "kind": "value",
+      "module": "./QueryForm",
+      "source": "src/components/ui/QueryForm.tsx",
+      "selection": "明确提交的查询区。"
+    },
+    {
+      "name": "QueryFormProps",
+      "kind": "type",
+      "module": "./QueryForm",
+      "source": "src/components/ui/QueryForm.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "RangePicker",
+      "kind": "value",
+      "module": "./RangePicker",
+      "source": "src/components/ui/RangePicker.tsx",
+      "selection": "时间/日期范围选择唯一入口，统一弹层防越界与快捷预设。"
+    },
+    {
+      "name": "RatioProgress",
+      "kind": "value",
+      "module": "./RatioProgress",
+      "source": "src/components/ui/RatioProgress.tsx",
+      "selection": "比例及状态的统一进度显示。"
+    },
+    {
+      "name": "RatioProgressProps",
+      "kind": "type",
+      "module": "./RatioProgress",
+      "source": "src/components/ui/RatioProgress.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ReadonlyValue",
+      "kind": "value",
+      "module": "./ReadonlyValue",
+      "source": "src/components/ui/ReadonlyValue.tsx",
+      "selection": "表单只读模式的统一值展示。"
+    },
+    {
+      "name": "RemoteSelect",
+      "kind": "value",
+      "module": "./RemoteSelect",
+      "source": "src/components/ui/RemoteSelect.tsx",
+      "selection": "服务驱动的大候选单选。"
+    },
+    {
+      "name": "RemoteSelectProps",
+      "kind": "type",
+      "module": "./RemoteSelect",
+      "source": "src/components/ui/RemoteSelect.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ResponsiveActions",
+      "kind": "value",
+      "module": "./ResponsiveTableToolbar",
+      "source": "src/components/ui/ResponsiveTableToolbar.tsx",
+      "selection": "工具栏动作的响应式收束。"
+    },
+    {
+      "name": "ResponsiveActionsProps",
+      "kind": "type",
+      "module": "./ResponsiveTableToolbar",
+      "source": "src/components/ui/ResponsiveTableToolbar.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ResponsiveGrid",
+      "kind": "value",
+      "module": "./ResponsiveGrid",
+      "source": "src/components/ui/ResponsiveGrid.tsx",
+      "selection": "一般响应式网格。"
+    },
+    {
+      "name": "ResponsiveGridLayout",
+      "kind": "type",
+      "module": "./ResponsiveGrid",
+      "source": "src/components/ui/ResponsiveGrid.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ResponsiveGridProps",
+      "kind": "type",
+      "module": "./ResponsiveGrid",
+      "source": "src/components/ui/ResponsiveGrid.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ResponsiveTabs",
+      "kind": "value",
+      "module": "./ResponsiveTabs",
+      "source": "src/components/ui/ResponsiveTabs.tsx",
+      "selection": "有内容页签或明确 navigation-only 导航。"
+    },
+    {
+      "name": "ResponsiveTabsProps",
+      "kind": "type",
+      "module": "./ResponsiveTabs",
+      "source": "src/components/ui/ResponsiveTabs.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "RouteCrumb",
+      "kind": "type",
+      "module": "./routeCrumbs",
+      "source": "src/components/ui/routeCrumbs.ts",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "RouteCrumbsContext",
+      "kind": "value",
+      "module": "./routeCrumbs",
+      "source": "src/components/ui/routeCrumbs.ts",
+      "selection": "从同一导航定义提供面包屑与一级标题。"
+    },
+    {
+      "name": "SaveBar",
+      "kind": "value",
+      "module": "./SaveBar",
+      "source": "src/components/ui/SaveBar.tsx",
+      "selection": "脏值才出现的保存/撤销；实体页通过 EntityEditPage 接管。"
+    },
+    {
+      "name": "SaveBarConfirm",
+      "kind": "type",
+      "module": "./SaveBar",
+      "source": "src/components/ui/SaveBar.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SaveBarProps",
+      "kind": "type",
+      "module": "./SaveBar",
+      "source": "src/components/ui/SaveBar.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ScrollRegion",
+      "kind": "value",
+      "module": "./ScrollRegion",
+      "source": "src/components/ui/ScrollRegion.tsx",
+      "selection": "明确的局部纵向滚动所有者。"
+    },
+    {
+      "name": "ScrollRegionProps",
+      "kind": "type",
+      "module": "./ScrollRegion",
+      "source": "src/components/ui/ScrollRegion.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SearchInput",
+      "kind": "value",
+      "module": "./SearchInput",
+      "source": "src/components/ui/SearchInput.tsx",
+      "selection": "搜索输入与尾部匹配说明。"
+    },
+    {
+      "name": "SearchInputProps",
+      "kind": "type",
+      "module": "./SearchInput",
+      "source": "src/components/ui/SearchInput.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SecondarySection",
+      "kind": "value",
+      "module": "./SecondarySection",
+      "source": "src/components/ui/SecondarySection.tsx",
+      "selection": "默认折叠的次要元数据。"
+    },
+    {
+      "name": "SecondarySectionProps",
+      "kind": "type",
+      "module": "./SecondarySection",
+      "source": "src/components/ui/SecondarySection.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SectionHeader",
+      "kind": "value",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "区块标题与动作。"
+    },
+    {
+      "name": "SectionHeaderProps",
+      "kind": "type",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SidebarFrame",
+      "kind": "value",
+      "module": "./ViewportFrame",
+      "source": "src/components/ui/ViewportFrame.tsx",
+      "selection": "侧栏统一框架：头部固定、中部滚动、底部锚定。"
+    },
+    {
+      "name": "SidebarFrameProps",
+      "kind": "type",
+      "module": "./ViewportFrame",
+      "source": "src/components/ui/ViewportFrame.tsx",
+      "selection": "SidebarFrame 的属性类型。"
+    },
+    {
+      "name": "SidebarMenu",
+      "kind": "value",
+      "module": "./SidebarMenu",
+      "source": "src/components/ui/SidebarMenu.tsx",
+      "selection": "上下侧栏共用 Ant Menu；位置改变不改变几何、颜色和交互。"
+    },
+    {
+      "name": "SidebarMenuItem",
+      "kind": "type",
+      "module": "./SidebarMenu",
+      "source": "src/components/ui/SidebarMenu.tsx",
+      "selection": "菜单项的可访问标签、按压状态和键盘停靠属性，与 Ant Menu 一起传给真实项。"
+    },
+    {
+      "name": "SidebarMenuProps",
+      "kind": "type",
+      "module": "./SidebarMenu",
+      "source": "src/components/ui/SidebarMenu.tsx",
+      "selection": "Ant Menu 公开属性；共享层接管 mode/theme/className/style/inlineCollapsed。"
+    },
+    {
+      "name": "SortableList",
+      "kind": "value",
+      "module": "./SortableList",
+      "source": "src/components/ui/SortableList.tsx",
+      "selection": "拖动排序，plain 控件行或 card 内容块。"
+    },
+    {
+      "name": "SortableListProps",
+      "kind": "type",
+      "module": "./SortableList",
+      "source": "src/components/ui/SortableList.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "Stack",
+      "kind": "value",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "行内横向或纵向排列。"
+    },
+    {
+      "name": "StackGap",
+      "kind": "type",
+      "module": "./Layout",
+      "source": "src/components/ui/Layout.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "StatusTag",
+      "kind": "value",
+      "module": "./StatusTag",
+      "source": "src/components/ui/StatusTag.tsx",
+      "selection": "成功/警告/错误等明确语义状态。"
+    },
+    {
+      "name": "StatusTagProps",
+      "kind": "type",
+      "module": "./StatusTag",
+      "source": "src/components/ui/StatusTag.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "StatusTone",
+      "kind": "type",
+      "module": "./StatusTag",
+      "source": "src/components/ui/StatusTag.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SummaryStrip",
+      "kind": "value",
+      "module": "./SummaryStrip",
+      "source": "src/components/ui/SummaryStrip.tsx",
+      "selection": "轻量指标条，长值时整体均衡降列。"
+    },
+    {
+      "name": "SummaryStripItem",
+      "kind": "type",
+      "module": "./SummaryStrip",
+      "source": "src/components/ui/SummaryStrip.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "SummaryStripProps",
+      "kind": "type",
+      "module": "./SummaryStrip",
+      "source": "src/components/ui/SummaryStrip.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "Table",
+      "kind": "value",
+      "module": "./Table",
+      "source": "src/components/ui/Table.tsx",
+      "selection": "已有行数据的展示表格，统一列测量与宽度。"
+    },
+    {
+      "name": "TablePaginationState",
+      "kind": "type",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TablePanel",
+      "kind": "value",
+      "module": "./TablePanel",
+      "source": "src/components/ui/TablePanel.tsx",
+      "selection": "标题、动作、查询、摘要与表格的统一容器。"
+    },
+    {
+      "name": "TablePanelProps",
+      "kind": "type",
+      "module": "./TablePanel",
+      "source": "src/components/ui/TablePanel.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TableProps",
+      "kind": "type",
+      "module": "./Table",
+      "source": "src/components/ui/Table.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TableQueryBoundary",
+      "kind": "value",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "表格加载/错误/空态边界。"
+    },
+    {
+      "name": "TableQueryBoundaryProps",
+      "kind": "type",
+      "module": "./Feedback",
+      "source": "src/components/ui/Feedback.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TableScroll",
+      "kind": "type",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TableSortable",
+      "kind": "type",
+      "module": "./Table",
+      "source": "src/components/ui/Table.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "TallContent",
+      "kind": "value",
+      "module": "./TallContent",
+      "source": "src/components/ui/TallContent.tsx",
+      "selection": "高正文区的纵向内容容器。"
+    },
+    {
+      "name": "TallContentProps",
+      "kind": "type",
+      "module": "./TallContent",
+      "source": "src/components/ui/TallContent.tsx",
+      "selection": "对应公开 API 的类型；字段、默认值与泛型以 source 声明为准。"
+    },
+    {
+      "name": "ViewSwitch",
+      "kind": "value",
+      "module": "./ViewSwitch",
+      "source": "src/components/ui/ViewSwitch.tsx",
+      "selection": "短互斥模式选择，禁止另建按钮 Radio。"
+    },
+    {
+      "name": "ViewportFrame",
+      "kind": "value",
+      "module": "./ViewportFrame",
+      "source": "src/components/ui/ViewportFrame.tsx",
+      "selection": "应用壳统一视口容器：占满视口，子区滚动，长内容不传播到页面根。"
+    },
+    {
+      "name": "buildTablePagination",
+      "kind": "value",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "只接收分页状态，统一分页选项与展示。"
+    },
+    {
+      "name": "columnAlign",
+      "kind": "value",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "列用途决定对齐：正文与动作左，比较数值右，独立控件居中；不从列宽推断。"
+    },
+    {
+      "name": "columnWidth",
+      "kind": "value",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "唯一语义列宽和动作宽度机制。"
+    },
+    {
+      "name": "confirmButtonProps",
+      "kind": "value",
+      "module": "./confirmButtons",
+      "source": "src/components/ui/confirmButtons.tsx",
+      "selection": "确认/取消图标；Popconfirm复用，Modal经modalDefaults注入。"
+    },
+    {
+      "name": "installOverflowScroll",
+      "kind": "value",
+      "module": "./overflowScroll",
+      "source": "src/components/ui/overflowScroll.ts",
+      "selection": "App 根 body 全局安装，包括弹层。"
+    },
+    {
+      "name": "measureOptionsWidth",
+      "kind": "value",
+      "module": "./measureText",
+      "source": "src/components/ui/measureText.ts",
+      "selection": "下拉候选自然宽度测量。"
+    },
+    {
+      "name": "measureTextWidth",
+      "kind": "value",
+      "module": "./measureText",
+      "source": "src/components/ui/measureText.ts",
+      "selection": "以真实字体测量单行内容宽度。"
+    },
+    {
+      "name": "modalDefaults",
+      "kind": "value",
+      "module": "./confirmButtons",
+      "source": "src/components/ui/confirmButtons.tsx",
+      "selection": "根 ConfigProvider 的 Modal 短视口布局及统一确认图标。"
+    },
+    {
+      "name": "notificationDefaults",
+      "kind": "value",
+      "module": "./notificationDefaults",
+      "source": "src/components/ui/notificationDefaults.ts",
+      "selection": "根 AntdApp 通知配置，右上角且仅纵向和透明度动效，避免窄窗口横向溢出。"
+    },
+    {
+      "name": "readBodyFont",
+      "kind": "value",
+      "module": "./measureText",
+      "source": "src/components/ui/measureText.ts",
+      "selection": "读取浏览器实际正文字体。"
+    },
+    {
+      "name": "tableScroll",
+      "kind": "value",
+      "module": "./tableConfig",
+      "source": "src/components/ui/tableConfig.ts",
+      "selection": "统一表格横滚配置。"
+    },
+    {
+      "name": "useCopyToClipboard",
+      "kind": "value",
+      "module": "./useCopyToClipboard",
+      "source": "src/components/ui/useCopyToClipboard.ts",
+      "selection": "复制行为和受控短反馈。"
+    }
+  ],
+  "specialized": [
+    {
+      "name": "ReactEcharts",
+      "source": "src/components/ReactEcharts/index.tsx",
+      "selection": "图表统一主题、色板与宽度；业务只提供数据和形态。"
+    },
+    {
+      "name": "BarList",
+      "source": "src/components/ReactEcharts/BarList.tsx",
+      "selection": "紧凑类别排行，不自画第二套条形组件。"
+    },
+    {
+      "name": "JsonEditor",
+      "source": "src/components/JsonEditor/index.tsx",
+      "selection": "JSON 编辑，Monaco 异步边界。"
+    },
+    {
+      "name": "JsonPreview",
+      "source": "src/components/JsonPreview/index.tsx",
+      "selection": "只读 JSON 预览。"
+    },
+    {
+      "name": "CronVisualSelector",
+      "source": "src/components/CronVisualSelector/index.tsx",
+      "selection": "Cron 可视化选择，语法/人类描述保持同源。"
+    },
+    {
+      "name": "PermissionPointTable",
+      "source": "src/components/PermissionPointTable/index.tsx",
+      "selection": "权限点专用查询与表格。"
+    },
+    {
+      "name": "ThemeToggle",
+      "source": "src/components/ThemeToggle/index.tsx",
+      "selection": "主题偏好控制。"
+    },
+    {
+      "name": "SelectLang",
+      "source": "src/components/SelectLang/index.tsx",
+      "selection": "语言偏好控制。"
+    },
+    {
+      "name": "MarkdownEditor",
+      "source": "src/components/MarkdownEditor/index.tsx",
+      "selection": "MDXEditor 专业 Markdown 可视化与源码编辑；使用原生工具栏、公开插件、主题变量和类名，不替换通用管理控件。"
+    }
+  ],
+  "antdDirect": "Button、Form、Input、InputNumber、Select、Checkbox、普通 Radio、DatePicker、Switch、Alert、Popover、受控 Modal 等未被共享层接管的官方基础控件可直接用；Tooltip/Tabs/Segmented/Descriptions/Spin/Empty/Tag/Badge/List/Popconfirm 等按规范采用共享入口。",
+  "staticMembers": {
+    "Table": [
+      "Summary",
+      "SELECTION_ALL",
+      "SELECTION_INVERT",
+      "SELECTION_NONE"
+    ]
+  }
+}

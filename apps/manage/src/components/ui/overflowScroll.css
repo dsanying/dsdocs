@@ -11,7 +11,7 @@
   > td
   > .ds-layout-stack:not(.ds-layout-stack--row)
   > *,
-.ds-action-link[data-variant='name'] > .ds-action-link__label,
+.ds-action-link[data-variant="name"] > .ds-action-link__label,
 .ds-ratio-progress__text,
 .ds-status-tag__content,
 .ds-atomic-value,
@@ -36,32 +36,32 @@
 .ds-table
   .ant-table-tbody
   > tr.ant-table-row
-  > td:not(.ds-table__action-cell)[data-overflowing='true'],
+  > td:not(.ds-table__action-cell)[data-overflowing="true"],
 .ds-table
   .ant-table-tbody
   > tr.ant-table-row
   > td
   > .ds-layout-stack:not(.ds-layout-stack--row)
-  > *[data-overflowing='true'],
-.ds-action-link[data-variant='name'] > .ds-action-link__label[data-overflowing='true'],
-.ds-ratio-progress__text[data-overflowing='true'],
-.ds-status-tag__content[data-overflowing='true'],
-.ds-atomic-value[data-overflowing='true'],
-.ds-long-text[data-overflowing='true'],
-.ds-inline-list[data-overflowing='true'],
-.ds-single-line[data-overflowing='true'],
-.ds-app-page__title[data-overflowing='true'],
-.ds-app-page__header > .ant-breadcrumb li:last-child[data-overflowing='true'],
-.ant-card .ant-card-head-title[data-overflowing='true'],
-.ds-select-option .ant-select-item-option-content[data-overflowing='true'],
+  > *[data-overflowing="true"],
+.ds-action-link[data-variant="name"] > .ds-action-link__label[data-overflowing="true"],
+.ds-ratio-progress__text[data-overflowing="true"],
+.ds-status-tag__content[data-overflowing="true"],
+.ds-atomic-value[data-overflowing="true"],
+.ds-long-text[data-overflowing="true"],
+.ds-inline-list[data-overflowing="true"],
+.ds-single-line[data-overflowing="true"],
+.ds-app-page__title[data-overflowing="true"],
+.ds-app-page__header > .ant-breadcrumb li:last-child[data-overflowing="true"],
+.ant-card .ant-card-head-title[data-overflowing="true"],
+.ds-select-option .ant-select-item-option-content[data-overflowing="true"],
 .ant-select-multiple
   .ds-select-content.ds-multi-select__content--wrap
-  .ds-select-tag-content[data-overflowing='true'],
+  .ds-select-tag-content[data-overflowing="true"],
 .ant-select-multiple
   .ds-select-content.ds-filter-select__content
-  .ds-select-tag-content[data-overflowing='true'],
-.ds-view-switch .ant-segmented-group[data-overflowing='true'],
-.ds-view-switch .ant-segmented-item-label.ds-view-switch__label[data-overflowing='true'] {
+  .ds-select-tag-content[data-overflowing="true"],
+.ds-view-switch .ant-segmented-group[data-overflowing="true"],
+.ds-view-switch .ant-segmented-item-label.ds-view-switch__label[data-overflowing="true"] {
   overflow-x: auto;
 }
 
@@ -118,7 +118,7 @@
 }
 
 /* 单对象详情完整展示；复用的单行组件在此语境自然折行，不保留内部横滚。 */
-.ds-information-grid .ds-action-link[data-variant='name'] > .ds-action-link__label,
+.ds-information-grid .ds-action-link[data-variant="name"] > .ds-action-link__label,
 .ds-information-grid
   :is(
     dt,

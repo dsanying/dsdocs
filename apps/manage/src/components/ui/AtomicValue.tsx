@@ -9,7 +9,7 @@ export type AtomicValueProps = {
   text: string;
   /** 可见内容（如高亮后的片段）；缺省显示原值。 */
   children?: ReactNode;
-  /** 为 UPN、哈希、密钥标识等需要精确复用的原值提供统一复制入口；空值占位符不可复制。 */
+  /** 为标识符、哈希、密钥标识等需要精确复用的原值提供统一复制入口；空值占位符不可复制。 */
   copyable?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -18,7 +18,7 @@ export type AtomicValueProps = {
 const EMPTY_PLACEHOLDER = '-';
 
 /**
- * UPN、哈希、ID、路径、名称等单行值的统一入口：只占一行、宽度跟着容器走，
+ * 标识符、哈希、ID、路径、名称等单行值的统一入口：只占一行、宽度跟着容器走，
  * 放不下时在自身范围内左右滚动——全文始终在页面上，不省略、不靠悬停 Tooltip 才能看全。
  * 是否溢出由 overflowScroll 统一标记（真溢出才可滚动、可键盘聚焦）。
  */

@@ -15,9 +15,7 @@
       "month": "month",
       "request": "request",
       "status": "status",
-      "users": "users",
       "chinese": "Chinese",
-      "user": "user",
       "permission": "permission",
       "searchPermissions": "$t(common.vocab.search) permissions",
       "search": "search",
@@ -30,7 +28,37 @@
       "everyDay": "every $t(common.vocab.day)",
       "everyMonth": "every $t(common.vocab.month)",
       "week": "week",
-      "close": "close"
+      "home": "home",
+      "editAccount": "$t(common.actions.edit) account",
+      "username": "username",
+      "currentPassword": "current $t(common.vocab.password)",
+      "newPassword": "new $t(common.vocab.password)",
+      "password": "password",
+      "administrator": "administrator",
+      "actions": "actions",
+      "name": "name",
+      "attachments": "attachments",
+      "documentTree": "document tree",
+      "revisionHistory": "revision history",
+      "documents": "documents",
+      "reload": "reload",
+      "title": "title",
+      "path": "path",
+      "description": "description",
+      "folder": "folder",
+      "language": "language",
+      "linkedTranslation": "linked translation",
+      "unsaved": "unsaved",
+      "thisDocumentNoLongerExists": "this document no longer exists.",
+      "folders": "folders",
+      "baseFontSize": "base font size",
+      "serif": "serif",
+      "system": "system",
+      "light": "light",
+      "dark": "dark",
+      "siteSettings": "site settings",
+      "signIn": "sign in",
+      "administration": "administration"
     },
     "actions": {
       "cancel": "cancel",
@@ -59,9 +87,6 @@
     },
     "loadingPage": "loading page",
     "requestFailed": "$t(common.vocab.request) failed",
-    "objects": {
-      "quotaPool": "quota pool"
-    },
     "theme": {
       "toggle": "toggle theme"
     },
@@ -80,22 +105,6 @@
       "titleTemplateNoDimension": "{metric} {form}",
       "metricJoiner": " & ",
       "byDimension": "by {dimension}",
-      "dimensions": {
-        "department": "department",
-        "person": "person",
-        "model": "model",
-        "service": "service",
-        "identity": "identity",
-        "hour": "$t(common.vocab.hour) of $t(common.vocab.day)"
-      },
-      "metrics": {
-        "cost": "cost",
-        "requests": "requests",
-        "tokens": "tokens",
-        "costPerRequest": "$t(common.chart.metrics.cost) per $t(common.vocab.request)",
-        "tokensPerRequest": "$t(common.chart.metrics.tokens) per $t(common.vocab.request)",
-        "activeUsers": "active $t(common.vocab.users)"
-      },
       "forms": {
         "ranking": "ranking",
         "share": "share",
@@ -109,7 +118,7 @@
       "short": {
         "enUS": "EN"
       },
-      "switch": "switch language"
+      "switch": "switch $t(common.vocab.language)"
     },
     "brand": "DSdocs",
     "request": {
@@ -131,43 +140,129 @@
       "actionSucceeded": "{action} succeeded",
       "actionFailed": "{action} failed",
       "pasteIgnoredValues": "{count} pasted entries are not among the candidates",
-      "similarCandidates": "Similar candidates"
+      "similarCandidates": "similar candidates",
+      "errorDetail": "{title}: {detail}",
+      "valuesAutoCorrected": "{count} pasted values were auto-corrected to candidates"
     },
-    "unsavedChanges": "unsaved changes"
+    "unsavedChanges": "$t(common.vocab.unsaved) changes",
+    "rangePresets": {
+      "7": "last 7 days",
+      "30": "last 30 days",
+      "90": "last 90 days"
+    }
   },
   "components": {
     "cronVisualSelector": {
       "hour": {
         "every": "every $t(common.vocab.hour)"
       },
-      "dayOfWeek": {},
       "minute": {
         "every": "every minute"
-      },
-      "month": {}
+      }
     },
     "jsonEditor": {
       "loading": "loading $t(common.vocab.json) editor"
     }
   },
-  "menu": {
-    "home": "home"
-  },
-  "pages": {
-    "analysis": {
-      "model": {}
-    },
-    "policyList": {
-      "permissionDefinition": {
-        "search": {
-          "hint": "separate keywords with spaces; all must match"
-        }
-      }
-    }
-  },
-  "common.feedback.errorDetail": "Error details",
-  "common.feedback.valuesAutoCorrected": "Input values corrected",
-  "common.rangePresets.7": "Last 7 days",
-  "common.rangePresets.30": "Last 30 days",
-  "common.rangePresets.90": "Last 90 days"
+  "dsdocs": {
+    "createAccount": "$t(common.actions.create) account",
+    "usernameHint": "3–64 letters, digits, dots, underscores or hyphens.",
+    "passwordHint": "8–128 characters. Leave blank when editing to keep the $t(common.vocab.currentPassword). Only $t(common.vocab.password) hashes are stored; existing passwords cannot be displayed.",
+    "role": "role",
+    "superadmin": "super $t(common.vocab.administrator)",
+    "deleteAccountConfirm": "$t(common.actions.delete) this $t(common.vocab.administrator)? Their sessions will expire immediately.",
+    "accounts": "accounts",
+    "myAccount": "my account",
+    "sizeBytes": "size (bytes)",
+    "deleteAssetConfirm": "$t(common.actions.delete) this attachment? Referenced $t(common.vocab.attachments) cannot be deleted.",
+    "createDocument": "new document",
+    "documentTreeList": "$t(common.vocab.documentTree) list",
+    "insertAsset": "insert attachment",
+    "unpublishConfirm": "$t(common.actions.unpublish) this document? Readers will no longer see it.",
+    "deleteDocumentConfirm": "$t(common.actions.delete) this document and its revisions?",
+    "documentInfo": "document information",
+    "reloadConfirm": "$t(common.vocab.reload) and discard $t(common.unsavedChanges)?",
+    "documentActions": "document $t(common.vocab.actions)",
+    "moreActions": "more $t(common.vocab.actions)",
+    "slugHint": "lowercase letters, digits and hyphens; use slashes for nested paths.",
+    "body": "document body",
+    "chooseDocument": "select a document from the tree or $t(common.actions.create) your first document.",
+    "newSlugHint": "for example, getting-started. This becomes the published URL $t(common.vocab.path).",
+    "chinese": "Simplified $t(common.vocab.chinese)",
+    "translationHint": "choose the matching document in another $t(common.vocab.language). Leave blank for a standalone document.",
+    "restoreDraft": "restore revision to draft",
+    "saved": "saved",
+    "publishedVersion": "published version",
+    "restoreHint": "restoring updates the draft. $t(common.actions.publish) to $t(common.actions.update) the reader site.",
+    "saving": "saving",
+    "saveFailed": "$t(common.actions.save) failed",
+    "documentMissingRefresh": "$t(common.vocab.thisDocumentNoLongerExists) Refresh the tree.",
+    "documentChanged": "the selected document changed. $t(common.actions.publish) from the intended document.",
+    "recheck": "check again",
+    "filesSynced": "files and panel are synchronized",
+    "compare": "compare",
+    "fileContent": "file content",
+    "panelContent": "panel content",
+    "useFile": "use file version",
+    "usePanel": "use panel version",
+    "editFolder": "$t(common.actions.edit) $t(common.vocab.folder)",
+    "createFolder": "new $t(common.vocab.folder)",
+    "chineseName": "$t(common.vocab.chinese) $t(common.vocab.name)",
+    "englishName": "English $t(common.vocab.name)",
+    "parentFolder": "parent $t(common.vocab.folder)",
+    "deleteFolderConfirm": "$t(common.actions.delete) this empty $t(common.vocab.folder)?",
+    "currentImage": "current image",
+    "resetDefaults": "restore defaults",
+    "basic": "general",
+    "siteName": "site $t(common.vocab.name)",
+    "siteDescription": "site $t(common.vocab.description)",
+    "siteDescriptionHint": "shown in page metadata; up to 300 characters.",
+    "logo": "site logo",
+    "logoHint": "PNG, JPEG or WebP, up to 5 MiB. $t(common.actions.save) to show it on the reader site.",
+    "favicon": "browser icon",
+    "faviconHint": "use a PNG, JPEG or WebP image.",
+    "footerText": "footer text",
+    "linkName": "link $t(common.vocab.name)",
+    "linkUrl": "link URL",
+    "linkHint": "supports https://, http://, mailto:, local /docs/ paths and anchors.",
+    "deleteLink": "$t(common.actions.delete) link",
+    "addFooterLink": "add footer link",
+    "appearance": "reading appearance",
+    "fontSizeHint": "14–20 px. Headings and controls scale with the base size.",
+    "lineHeight": "body line height",
+    "lineHeightHint": "1.4–2.2 times the font size.",
+    "fontFamily": "body font",
+    "sansSerif": "$t(common.vocab.system) sans $t(common.vocab.serif)",
+    "accentColor": "brand color",
+    "accentColorHint": "used for native theme elements such as links. $t(common.vocab.light) and $t(common.vocab.dark) modes adjust readability automatically.",
+    "defaultTheme": "default theme",
+    "defaultThemeHint": "used for new visitors; manual selections take priority.",
+    "contentWidth": "reading width",
+    "normalWidth": "standard",
+    "wideWidth": "wide",
+    "navigationLanguage": "navigation and $t(common.vocab.language)",
+    "initialLanguage": "initial $t(common.vocab.language)",
+    "initialLanguageHint": "applies on the first visit to /docs. Manual $t(common.vocab.language) selections are remembered.",
+    "browserLanguage": "browser $t(common.vocab.language)",
+    "homeDocument": "$t(common.vocab.home) document",
+    "homeDocumentHint": "choose a published document. $t(common.vocab.language) switching uses its $t(common.vocab.linkedTranslation) or the default $t(common.vocab.home) page when unavailable.",
+    "toc": "table of contents",
+    "breadcrumbs": "breadcrumbs",
+    "previousNext": "previous and next pages",
+    "search": "document $t(common.vocab.search)",
+    "runtime": "runtime information",
+    "storage": "storage",
+    "workspace": "editable files directory",
+    "plainText": "plain text",
+    "files": "file synchronization",
+    "setupHint": "change the default $t(common.vocab.username) and $t(common.vocab.password) before entering the $t(common.vocab.administration) panel.",
+    "loginHint": "$t(common.vocab.signIn) to document $t(common.vocab.administration).",
+    "newUsername": "new $t(common.vocab.username)",
+    "changeDefaultUsername": "change the default $t(common.vocab.username).",
+    "confirmPassword": "confirm $t(common.vocab.newPassword)",
+    "passwordMismatch": "the passwords do not match.",
+    "filesHint": "$t(common.actions.edit) site.json for $t(common.vocab.siteSettings), Markdown in $t(common.vocab.documents) and $t(common.vocab.json) in $t(common.vocab.folders). Document changes become drafts and need publishing. Deleting a file does not $t(common.actions.delete) the document. Resolve conflicts when both sides change.",
+    "accountModuleDisabled": "account module is disabled",
+    "documentList": "document list"
+  }
 }

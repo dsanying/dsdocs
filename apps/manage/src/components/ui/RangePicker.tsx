@@ -44,9 +44,9 @@ export function RangePicker({
 }: RangePickerProps) {
   const { t } = useTranslation();
   const quickPresets = presets ?? [
-    { label: t('common.rangePresets.7'), value: quickPreset(7) },
-    { label: t('common.rangePresets.30'), value: quickPreset(30) },
-    { label: t('common.rangePresets.90'), value: quickPreset(90) },
+    { label: t('common.rangePresets.7'), value: () => quickPreset(7) },
+    { label: t('common.rangePresets.30'), value: () => quickPreset(30) },
+    { label: t('common.rangePresets.90'), value: () => quickPreset(90) },
   ];
   return (
     <DatePicker.RangePicker

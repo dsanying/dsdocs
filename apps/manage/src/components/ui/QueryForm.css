@@ -7,7 +7,7 @@
   flex-wrap: wrap;
   align-items: flex-start;
   container: ds-query-form / inline-size;
-  gap: var(--ds-space-12) var(--ds-space-24);
+  gap: var(--ds-space-12) var(--ds-space-16);
   width: 100%;
   max-width: 100%;
   min-width: 0;
@@ -39,7 +39,7 @@
 
 /*
  * 条件控件宽度：自由文本/数字/日期用固定的查询控件宽度（原生输入框内容超出时自身横向滚动，不省略）；
- * 下拉（FilterSelect）按最长选项自适应，由组件自带 width；搜索框由 SearchInput 自身约束。
+ * 下拉（FilterSelect）按最长选项量宽但封顶查询控件宽度，由组件自带 width；搜索框由 SearchInput 自身约束。
  */
 .ds-query-form.ant-form-inline .ant-form-item .ant-form-item-control-input-content > .ant-input,
 .ds-query-form.ant-form-inline
@@ -59,12 +59,12 @@
   max-width: 100%;
 }
 
-/* 日期范围容纳两端日期/时间；窄屏仍由官方输入的可键盘滚动视口维护完整值。 */
+/* 日期范围是天然双值控件，用检索控件宽度容纳两端日期/时间；窄屏仍由官方输入的可键盘滚动视口维护完整值。 */
 .ds-query-form.ant-form-inline
   .ant-form-item
   .ant-form-item-control-input-content
   > .ant-picker-range {
-  width: var(--ds-layout-wide-control-width);
+  width: var(--ds-layout-control-width);
   max-width: 100%;
 }
 

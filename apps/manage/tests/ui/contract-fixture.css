@@ -1,0 +1,24 @@
+.contract-page {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+  padding: 16px;
+}
+.contract-page > * {
+  min-width: 0;
+}
+.identifier-wide {
+  width: 240px;
+}
+.identifier-narrow {
+  width: min(180px, 100%);
+}
+.tabs-boundary,
+.switch-boundary {
+  width: 100%;
+  max-width: 320px;
+}
+
+.strip-boundary {
+  width: min(600px, calc(100vw - 32px));
+}

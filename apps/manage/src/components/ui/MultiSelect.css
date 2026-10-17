@@ -1,14 +1,6 @@
 /*
- * 多选控件：行内只是一行滚动的已选展示，点击控件区域打开弹窗编辑；弹窗里标签换行铺开。
+ * 多选控件：行内单击是正常候选下拉；双击打开批量编辑弹窗，弹窗里标签换行铺开、有界滚动。
  */
-.ds-multi-select__inline:not(.ant-select-disabled) {
-  cursor: pointer;
-}
-
-.ds-multi-select__inline:not(.ant-select-disabled) .ant-select-selection-search-input {
-  cursor: pointer;
-}
-
 .ds-multi-select__full {
   width: 100%;
 }

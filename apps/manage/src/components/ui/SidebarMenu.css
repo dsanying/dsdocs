@@ -38,7 +38,7 @@
     animation-fill-mode: none;
     transition: none;
   }
-  .ds-account-menu__popup.ant-dropdown[class*='leave'] {
+  .ds-account-menu__popup.ant-dropdown[class*="leave"] {
     animation-name: ds-account-menu-motion-out;
   }
 }

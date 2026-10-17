@@ -49,7 +49,7 @@
   color: var(--ds-color-text);
 }
 
-.ds-information-grid .ds-information-grid__field[data-span='full'] {
+.ds-information-grid .ds-information-grid__field[data-span="full"] {
   grid-column: 1 / -1;
 }
 

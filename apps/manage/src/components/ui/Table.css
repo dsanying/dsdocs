@@ -75,7 +75,7 @@
   background: var(--ds-color-surface-muted);
 }
 
-.ds-table__sortable[data-dragging='true'] .ds-table__cancel-zone {
+.ds-table__sortable[data-dragging="true"] .ds-table__cancel-zone {
   display: flex;
 }
 

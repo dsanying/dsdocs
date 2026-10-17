@@ -5,7 +5,6 @@ import { fromNodeHeaders } from 'better-auth/node';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createAccounts } from './accounts.mjs';
-import { accountPage } from './pages.mjs';
 import { createContentAPI } from './content.mjs';
 import { dataDirectory } from '../../../packages/content/store.mjs';
 const fail = (status, message) => Object.assign(new Error(message), { status });
@@ -109,6 +108,29 @@ export async function startManagement(env = process.env) {
       throw fail(400, '新密码须为 8–128 个字符。');
     return value;
   }
+  async function serveFrontend(req, res, pathname) {
+    const dist = fileURLToPath(new URL('../dist/', import.meta.url));
+    const resource = /^\/(?:login|folders|assets|settings|files|accounts)?$/.test(pathname)
+      ? 'index.html'
+      : pathname.slice(1);
+    if (resource.includes('..') || !/^(?:index\.html|assets\/[A-Za-z0-9_.-]+)$/.test(resource))
+      throw fail(404, '页面不存在。');
+    const types = {
+      '.html': 'text/html; charset=utf-8',
+      '.js': 'text/javascript; charset=utf-8',
+      '.css': 'text/css; charset=utf-8',
+      '.woff2': 'font/woff2',
+    };
+    const data = await readFile(path.join(dist, resource)).catch(() => {
+      throw fail(404, '文件不存在。');
+    });
+    res.writeHead(200, {
+      'Content-Type': types[path.extname(resource)] ?? 'application/octet-stream',
+      'Cache-Control': resource === 'index.html' ? 'no-store' : 'public,max-age=31536000,immutable',
+      'X-Content-Type-Options': 'nosniff',
+    });
+    res.end(req.method === 'HEAD' ? undefined : data);
+  }
   const server = createServer(async (req, res) => {
     try {
       if (req.headers.host !== new URL(origin).host) throw fail(421, '请使用配置的管理入口。');
@@ -146,23 +168,29 @@ export async function startManagement(env = process.env) {
         return;
       }
       if (pathname.startsWith('/__dsdocs_auth')) throw fail(404, '接口不存在。');
+      if (['GET', 'HEAD'].includes(req.method) && /^\/assets\/[A-Za-z0-9_.-]+$/.test(pathname))
+        return await serveFrontend(req, res, pathname);
       const state = await session(req);
       if (pathname === '/__dsdocs_accounts/capabilities' && req.method === 'GET')
         return json(res, 200, {
           enabled: Boolean(accounts),
-          user: state ? accounts.visible(state.user) : null,
+          user: state
+            ? {
+                ...accounts.visible(accounts.userById(state.user.id) ?? state.user),
+                needsSetup: Boolean(accounts.userById(state.user.id)?.needsSetup),
+              }
+            : null,
         });
       if (accounts && pathname === '/login' && req.method === 'GET') {
         if (state) return redirect(res, '/');
-        res.writeHead(200, {
-          'Content-Type': 'text/html; charset=utf-8',
-          'Cache-Control': 'no-store',
-        });
-        res.end(accountPage(false, content.store.settings().data.siteName));
-        return;
+        return await serveFrontend(req, res, pathname);
       }
       if (accounts && !state) {
-        if (req.method === 'GET' && pathname === '/') return redirect(res, '/login');
+        if (
+          req.method === 'GET' &&
+          /^\/(?:folders|assets|settings|files|accounts)?$/.test(pathname)
+        )
+          return redirect(res, '/login');
         throw fail(401, '请先登录。');
       }
       if (accounts && pathname === '/__dsdocs_accounts/logout' && req.method === 'POST') {
@@ -211,7 +239,9 @@ export async function startManagement(env = process.env) {
                 body: {
                   currentPassword: data.currentPassword,
                   newPassword: nextPassword,
-                  revokeOtherSessions: true,
+                  // 改名和改密完成后由 accounts.revoke 统一撤销会话。
+                  // 此处提前撤销会让下一步 updateUser 无法通过当前会话认证。
+                  revokeOtherSessions: false,
                 },
               });
           }
@@ -230,12 +260,7 @@ export async function startManagement(env = process.env) {
         throw fail(401, '账号已失效。');
       if (accounts && actor.needsSetup) {
         if (req.method === 'GET' && pathname === '/') {
-          res.writeHead(200, {
-            'Content-Type': 'text/html; charset=utf-8',
-            'Cache-Control': 'no-store',
-          });
-          res.end(accountPage(true, content.store.settings().data.siteName));
-          return;
+          return await serveFrontend(req, res, pathname);
         }
         throw fail(403, '请先修改默认用户名和密码。');
       }
@@ -314,26 +339,7 @@ export async function startManagement(env = process.env) {
       }
       if (proxy) return await proxy.web(req, res);
       if (!['GET', 'HEAD'].includes(req.method)) throw fail(405, '不支持的请求方法。');
-      const dist = fileURLToPath(new URL('../dist/', import.meta.url));
-      const resource = pathname === '/' ? 'index.html' : pathname.slice(1);
-      if (resource.includes('..') || !/^(?:index\.html|assets\/[A-Za-z0-9_.-]+)$/.test(resource))
-        throw fail(404, '页面不存在。');
-      const types = {
-        '.html': 'text/html; charset=utf-8',
-        '.js': 'text/javascript; charset=utf-8',
-        '.css': 'text/css; charset=utf-8',
-        '.woff2': 'font/woff2',
-      };
-      const data = await readFile(path.join(dist, resource)).catch(() => {
-        throw fail(404, '文件不存在。');
-      });
-      res.writeHead(200, {
-        'Content-Type': types[path.extname(resource)] ?? 'application/octet-stream',
-        'Cache-Control':
-          resource === 'index.html' ? 'no-store' : 'public,max-age=31536000,immutable',
-        'X-Content-Type-Options': 'nosniff',
-      });
-      res.end(req.method === 'HEAD' ? undefined : data);
+      return await serveFrontend(req, res, pathname);
     } catch (error) {
       if (res.headersSent) {
         res.destroy();

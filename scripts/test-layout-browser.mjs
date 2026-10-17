@@ -90,7 +90,7 @@ try {
       await page.getByLabel('新用户名', { exact: true }).fill('layout_owner');
       await page.getByLabel('新密码', { exact: true }).fill('layout-pass-123');
       await page.getByLabel('确认新密码', { exact: true }).fill('layout-pass-123');
-      await page.getByRole('button', { name: '保存并重新登录', exact: true }).click();
+      await page.getByRole('button', { name: '保存', exact: true }).click();
       await page.getByLabel('用户名', { exact: true }).fill('layout_owner');
       await page.getByLabel('密码', { exact: true }).fill('layout-pass-123');
       await page.getByRole('button', { name: '登录', exact: true }).click();
@@ -100,7 +100,7 @@ try {
     await page.getByRole('menuitem', { name: '欢迎使用 DSdocs · zh', exact: true }).click();
     const body = page.getByRole('region', { name: '文档正文', exact: true }),
       tree = page.getByRole('region', { name: '文档目录列表', exact: true }),
-      nav = page.getByRole('region', { name: '主导航', exact: true });
+      nav = page.getByRole('region', { name: '菜单', exact: true });
     await expect(page.locator('html')).toHaveCSS('overflow-anchor', 'none');
     await expect(page.locator('body')).toHaveCSS('overflow-anchor', 'none');
     for (const region of [body, tree, nav])
@@ -108,16 +108,16 @@ try {
     for (const theme of ['light', 'dark']) {
       phase = `${theme} 桌面滚动`;
       if (theme === 'dark')
-        await page.getByRole('button', { name: '切换主题', exact: true }).click();
+        await page.getByRole('menuitem', { name: '切换亮暗主题', exact: true }).click();
       await expect(page.locator('.mdxeditor')).toBeVisible();
       const footer = page.locator('.ds-sidebar-frame__footer');
       const before = await box(footer);
       expect(Math.abs(before.y + before.height - 900)).toBeLessThanOrEqual(2);
-      const heading = await box(page.getByRole('heading', { name: '文档编辑', exact: true }));
+      const heading = await box(page.getByRole('heading', { name: '文档', exact: true }));
       await wheel(page, body, 800);
       await expect.poll(() => scrollTop(body)).toBeGreaterThan(0);
       await rootStill(page);
-      expect((await box(page.getByRole('heading', { name: '文档编辑', exact: true }))).y).toBe(
+      expect((await box(page.getByRole('heading', { name: '文档', exact: true }))).y).toBe(
         heading.y
       );
       expect((await box(footer)).y).toBe(before.y);
@@ -171,15 +171,11 @@ try {
       await expect.poll(() => scrollTop(nav)).toBeGreaterThan(0);
       await rootStill(page);
       await page.setViewportSize({ width: 320, height: 900 });
-      await expect
-        .poll(() =>
-          page.locator('.ant-layout-sider').evaluate((el) => el.getBoundingClientRect().width)
-        )
-        .toBe(0);
-      await expect(page.getByRole('button', { name: '打开导航', exact: true })).toBeVisible();
+      await expect(page.locator('.ds-basic-layout__sider')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: '菜单', exact: true })).toBeVisible();
       await expect(page.getByLabel('标题', { exact: true })).toBeHidden();
       await page.getByRole('button', { name: '更多操作', exact: true }).click();
-      for (const action of ['历史版本', '插入附件', '撤下', '删除'])
+      for (const action of ['历史版本', '插入附件', '下线', '删除'])
         await expect(
           page.getByRole('button', { name: new RegExp('^' + action.split('').join('\\s*') + '$') })
         ).toBeVisible();
@@ -209,14 +205,32 @@ try {
       ]) {
         phase = `${theme} ${viewport.width}x${viewport.height}`;
         await page.setViewportSize(viewport);
-        await expect(page.getByRole('button', { name: '打开导航', exact: true })).toBeVisible();
+        const shellMobile = viewport.width < 768;
+        await expect(page.getByRole('button', { name: '菜单', exact: true }))[
+          shellMobile ? 'toBeVisible' : 'toBeHidden'
+        ]();
         await rootStill(page);
-        await page.getByRole('button', { name: '文档列表', exact: true }).click();
-        const list = page.getByRole('dialog', { name: '文档列表', exact: true });
-        await expect(list).toBeVisible();
-        await list.getByRole('menuitem', { name: '使用指南', exact: true }).click();
-        await list.getByRole('menuitem', { name: '欢迎使用 DSdocs · zh', exact: true }).click();
-        await expect(list).toBeHidden();
+        // 等待 ResizeObserver 根据本轮实际容器宽度完成响应式切换，再选择对应入口。
+        await expect
+          .poll(async () => {
+            const workspace = await box(page.locator('.documents'));
+            const compact = (await page.locator('.documents--compact').count()) > 0;
+            return compact === workspace.width < 640;
+          })
+          .toBe(true);
+        const compactEditor = (await page.locator('.documents--compact').count()) > 0;
+        if (compactEditor) {
+          await page.getByRole('button', { name: '文档列表', exact: true }).click();
+          const list = page.getByRole('dialog', { name: '文档列表', exact: true });
+          await expect(list).toBeVisible();
+          await list.getByRole('menuitem', { name: '使用指南', exact: true }).click();
+          await list.getByRole('menuitem', { name: '欢迎使用 DSdocs · zh', exact: true }).click();
+          await expect(list).toBeHidden();
+        } else {
+          await expect(
+            page.getByRole('region', { name: '文档目录列表', exact: true })
+          ).toBeVisible();
+        }
         await expect(page.locator('.mdxeditor')).toBeVisible();
         // 工具栏组件不得挤成零宽；横滚到末端仍可触达源码入口。
         const toolbar = page.locator('.document-toolbar');
@@ -258,16 +272,22 @@ try {
           await page.getByRole('radio', { name: 'Rich text', exact: true }).click();
           await expect(page.getByRole('status')).toHaveText('已保存');
         }
-        await page.getByRole('button', { name: '打开导航', exact: true }).click();
-        const navigation = page.getByRole('dialog', { name: '导航', exact: true });
-        await expect(navigation).toBeVisible();
-        const account = await box(navigation.locator('.ds-sidebar-frame__footer'));
-        expect(Math.abs(account.y + account.height - viewport.height)).toBeLessThanOrEqual(2);
-        await navigation.getByRole('menuitem', { name: '网站设置', exact: true }).click();
-        await expect(navigation).toBeHidden();
-        await expect(page.locator('.management-page--scroll:visible')).toBeVisible();
-        await page.getByRole('button', { name: '打开导航', exact: true }).click();
-        await navigation.getByRole('menuitem', { name: '文档', exact: true }).click();
+        if (shellMobile) {
+          await page.getByRole('button', { name: '菜单', exact: true }).click();
+          const navigation = page.getByRole('dialog', { name: 'DSdocs', exact: true });
+          await expect(navigation).toBeVisible();
+          const account = await box(navigation.locator('.ant-drawer-footer'));
+          expect(Math.abs(account.y + account.height - viewport.height)).toBeLessThanOrEqual(2);
+          await navigation.getByRole('menuitem', { name: '网站设置', exact: true }).click();
+          await expect(navigation).toBeHidden();
+          await expect(page.locator('.ds-basic-layout__content')).toBeVisible();
+          await page.getByRole('button', { name: '菜单', exact: true }).click();
+          await navigation.getByRole('menuitem', { name: '文档', exact: true }).click();
+        } else {
+          await page.getByRole('menuitem', { name: '网站设置', exact: true }).click();
+          await expect(page.getByLabel('网站名称', { exact: true })).toBeVisible();
+          await page.getByRole('menuitem', { name: '文档', exact: true }).click();
+        }
         await expect(page.locator('.ant-drawer-mask:visible')).toHaveCount(0);
         await expect(page.locator('.mdxeditor')).toBeVisible();
         await rootStill(page);
@@ -277,9 +297,13 @@ try {
       }
       for (const width of [992, 1024]) {
         await page.setViewportSize({ width, height: 800 });
-        await expect(page.getByRole('button', { name: '打开导航', exact: true })).toBeHidden();
+        await expect(page.getByRole('button', { name: '菜单', exact: true })).toBeHidden();
         await expect(page.getByRole('region', { name: '文档目录列表', exact: true })).toBeVisible();
-        expect((await box(page.locator('.editor-pane'))).width).toBeGreaterThan(500);
+        const pane = await box(page.locator('.editor-pane'));
+        const workspace = await box(page.locator('.documents'));
+        const documentTree = await box(page.locator('.document-tree'));
+        expect(Math.abs(pane.width + documentTree.width - workspace.width)).toBeLessThanOrEqual(2);
+        expect(pane.width).toBeGreaterThanOrEqual(640 - documentTree.width);
         await rootStill(page);
       }
       await page.setViewportSize({ width: 1440, height: 900 });
@@ -292,11 +316,11 @@ try {
       await wheel(page, tree, -4000);
       await wheel(page, body, -10000);
       report.checks.push(
-        `${name} ${theme}：桌面分区滚动；320/390/768/990px及横屏抽屉导航、文档选择、信息展开、工具栏宽度与账号区；390px元数据和源码保存往返`
+        `${name} ${theme}：桌面分区滚动；320/390/768/990px及横屏按主导航与文档容器分别适配，验证文档选择、信息展开、工具栏宽度与账号区；390px元数据和源码保存往返`
       );
     }
     await page.getByRole('menuitem', { name: '网站设置', exact: true }).click();
-    const settings = page.locator('.management-page--scroll:visible');
+    const settings = page.locator('.ds-basic-layout__content');
     await wheel(page, settings, 1500);
     await rootStill(page);
     await page.getByRole('menuitem', { name: '文档', exact: true }).click();

@@ -1,18 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true,
-    "noEmit": true,
-    "allowJs": true,
-    "types": ["vite/client", "node"],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "allowImportingTsExtensions": true
-  },
-  "include": ["src", "vite.config.ts"]
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
