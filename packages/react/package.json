@@ -27,7 +27,10 @@
       "types": "./dist/reader.d.ts",
       "import": "./dist/reader.js"
     },
-    "./style.css": "./dist/style.css",
+    "./style.css": {
+      "types": "./dist/style.d.ts",
+      "default": "./dist/style.css"
+    },
     "./locales/zh-CN": {
       "types": "./dist/zh-CN.d.ts",
       "import": "./dist/zh-CN.js"

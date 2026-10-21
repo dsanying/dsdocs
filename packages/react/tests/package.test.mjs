@@ -52,7 +52,36 @@ test('published package has public exports and excludes application data and cre
     'dist/reader.js',
     'dist/reader.d.ts',
     'dist/style.css',
+    'dist/style.d.ts',
+    'dist/zh-CN.js',
+    'dist/zh-CN.d.ts',
   ])
     assert(files.includes(path));
   assert(!files.some((file) => /node_modules|\.env|sqlite|\.key|test-results/.test(file)));
+});
+
+test('all public entries type-check without a host CSS wildcard declaration', () => {
+  execFileSync(
+    'pnpm',
+    [
+      'exec',
+      'tsc',
+      '--ignoreConfig',
+      '--noEmit',
+      '--skipLibCheck',
+      '--jsx',
+      'react-jsx',
+      '--module',
+      'NodeNext',
+      '--moduleResolution',
+      'NodeNext',
+      '--target',
+      'es2022',
+      'tests/exports.tsx',
+    ],
+    {
+      cwd: new URL('..', import.meta.url),
+      stdio: 'inherit',
+    }
+  );
 });
