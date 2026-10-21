@@ -1,4 +1,5 @@
 import { test, expect, type Page } from './console-guard';
+import { waitForNativeOverlayReady } from './native-overlay';
 import {
   expectReadableInformationFields,
   collectUnreadableText,
@@ -102,6 +103,7 @@ test('MultiSelect 保持数值候选与回调类型，弹窗仍只有即时选�
   await page.goto(fixture + '&lang=zh-CN');
   await page.locator('.ds-multi-select__inline').dblclick();
   await expect(page.getByRole('dialog')).toBeVisible();
+  await waitForNativeOverlayReady(page.getByRole('dialog'));
   await page.locator('.ds-multi-select__full').click();
   // 行内控件残留的隐藏下拉里也有同名候选，只点可见弹层中的那项
   await page

@@ -1,6 +1,6 @@
 ## 本地运行
 
-准备 Node.js 26 和 pnpm 12.8.1，在项目根目录执行：
+准备 Node.js 26 和 pnpm 12.9.0，在项目根目录执行：
 
 ```bash
 pnpm install:all

@@ -1,0 +1,31 @@
+@import "@mdxeditor/editor/style.css";
+
+/* Public MDXEditor theme variables; inherit the host's palette. */
+.dsdocs-editor.mdxeditor {
+  --baseBg: var(--dsdocs-surface, Canvas);
+  --baseText: var(--dsdocs-text, CanvasText);
+  --baseBase: var(--dsdocs-surface, Canvas);
+  --baseBorder: var(--dsdocs-border, GrayText);
+  color: var(--baseText);
+  background: var(--baseBg);
+}
+.dsdocs-editor-prose {
+  min-height: 320px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+.dsdocs-editor-prose img {
+  max-width: 100%;
+}
+.dsdocs-editor-toolbar > * {
+  flex-shrink: 0;
+}
+.dsdocs-editor .mdxeditor-source-editor .cm-editor {
+  height: 50dvh;
+  min-height: 200px;
+}
+.dsdocs-editor .mdxeditor-source-editor .cm-scroller {
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+}

@@ -1,0 +1,70 @@
+{
+  "name": "@dsanying/dsdocs",
+  "version": "0.1.0",
+  "description": "DSdocs editor and reader components for host-owned authentication and content storage",
+  "type": "module",
+  "license": "MIT",
+  "author": "dsanying",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dsanying/dsdocs.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/dsanying/dsdocs#readme",
+  "bugs": "https://github.com/dsanying/dsdocs/issues",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "exports": {
+    "./editor": {
+      "types": "./dist/editor.d.ts",
+      "import": "./dist/editor.js"
+    },
+    "./reader": {
+      "types": "./dist/reader.d.ts",
+      "import": "./dist/reader.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./locales/zh-CN": {
+      "types": "./dist/zh-CN.d.ts",
+      "import": "./dist/zh-CN.js"
+    }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node build.mjs",
+    "prepack": "pnpm build",
+    "check": "pnpm build && node --test tests/*.test.mjs"
+  },
+  "peerDependencies": {
+    "@mdxeditor/editor": "^4.3.3",
+    "fumadocs-ui": "^16.15.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@mdxeditor/editor": "4.3.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "fumadocs-ui": "16.17.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typescript": "6.0.3"
+  },
+  "peerDependenciesMeta": {
+    "@mdxeditor/editor": {
+      "optional": true
+    },
+    "fumadocs-ui": {
+      "optional": true
+    }
+  }
+}

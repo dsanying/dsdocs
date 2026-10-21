@@ -1,6 +1,6 @@
 ## Run locally
 
-Install Node.js 26 and pnpm 12.8.1, then run these commands from the project root:
+Install Node.js 26 and pnpm 12.9.0, then run these commands from the project root:
 
 ```bash
 pnpm install:all

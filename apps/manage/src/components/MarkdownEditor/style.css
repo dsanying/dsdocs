@@ -1,30 +1,5 @@
-/* MDXEditor 官方配置变量与公开类名；只桥接主题，不替换原生工具栏。 */
-.ds-markdown-editor.mdxeditor {
-  --baseBg: var(--ds-color-surface);
-  --baseText: var(--ds-color-text);
-  --baseBase: var(--ds-color-surface);
-  --baseBorder: var(--ds-color-border);
-  color: var(--ds-color-text);
-  background: var(--ds-color-surface);
-}
-.ds-markdown-editor .document-prose {
-  min-height: 320px;
-  line-height: 1.75;
-  /* 正文折行：文章不是单项标签。 */
-  overflow-wrap: anywhere;
-}
-.ds-markdown-editor .document-prose img {
-  max-width: 100%;
-}
-.ds-markdown-editor .document-toolbar > * {
-  flex-shrink: 0;
-}
-.ds-markdown-editor .mdxeditor-source-editor .cm-editor {
-  height: 50dvh;
-  min-height: 200px;
-}
-.ds-markdown-editor .mdxeditor-source-editor .cm-scroller {
-  overflow: auto;
-  overscroll-behavior: contain;
-  overflow-anchor: none;
+.ds-markdown-editor {
+  --dsdocs-surface: var(--ds-color-surface);
+  --dsdocs-text: var(--ds-color-text);
+  --dsdocs-border: var(--ds-color-border);
 }

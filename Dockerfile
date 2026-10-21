@@ -1,8 +1,9 @@
 ARG NODE_VERSION=26.10.0
 FROM node:${NODE_VERSION}-bookworm-slim AS build
 WORKDIR /app
-RUN npm install --global pnpm@12.8.1
+RUN npm install --global pnpm@12.9.0
 COPY package.json ./
+COPY packages/react ./packages/react
 COPY apps/manage/package.json apps/manage/pnpm-lock.yaml apps/manage/pnpm-workspace.yaml ./apps/manage/
 COPY apps/manage/patches ./apps/manage/patches
 COPY apps/reader/package.json apps/reader/pnpm-lock.yaml apps/reader/pnpm-workspace.yaml ./apps/reader/

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.8.1",
+  "packageManager": "pnpm@12.9.0",
   "scripts": {
-    "install:all": "pnpm -C apps/manage install --frozen-lockfile && pnpm -C apps/reader install --frozen-lockfile",
+    "install:all": "pnpm -C packages/react install --frozen-lockfile && pnpm -C packages/react build && pnpm -C apps/manage install --frozen-lockfile && pnpm -C apps/reader install --frozen-lockfile",
     "dev": "pnpm -C apps/reader dev",
     "manage": "pnpm -C apps/manage start",
     "build": "pnpm -C apps/manage build && pnpm -C apps/reader build && node scripts/manage-notices.mjs && node scripts/reader-notices.mjs",
@@ -13,14 +13,16 @@
     "test:system": "node --test apps/manage/tests/system.test.mjs apps/manage/tests/files.test.mjs",
     "test:browser": "node scripts/test-system-browser.mjs",
     "preview": "pnpm -C apps/reader start",
-    "audit:all": "pnpm -C apps/manage audit && pnpm -C apps/reader audit",
+    "audit:all": "pnpm -C packages/react audit && pnpm -C apps/manage audit && pnpm -C apps/reader audit",
     "backup:git": "node --env-file-if-exists=.env scripts/backup-git.mjs",
     "test:containers": "node scripts/test-containers.mjs",
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-include='apps/manage/server/**' --test-coverage-include='packages/content/**' apps/manage/tests/system.test.mjs scripts/tests/starter.test.mjs apps/manage/tests/files.test.mjs",
     "content:init": "node --env-file-if-exists=.env scripts/initialize-content.mjs",
     "test:starter:browser": "node scripts/test-starter-browser.mjs",
     "test:settings:browser": "node scripts/test-settings-browser.mjs",
-    "test:layout:browser": "node scripts/test-layout-browser.mjs"
+    "test:layout:browser": "node scripts/test-layout-browser.mjs",
+    "build:package": "pnpm -C packages/react build",
+    "check:package": "pnpm -C packages/react check"
   },
   "license": "MIT",
   "repository": {

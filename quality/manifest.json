@@ -9,6 +9,14 @@
       ]
     },
     {
+      "id": "published-package",
+      "rule": "docs/发布.md",
+      "command": [
+        "pnpm",
+        "check:package"
+      ]
+    },
+    {
       "id": "management-complete",
       "rule": "docs/规范/前端/08-门禁.md",
       "command": [
@@ -33,6 +41,8 @@
         "apps/manage",
         "exec",
         "prettier",
+        "--ignore-path",
+        "../../.prettierignore",
         "--check",
         "src",
         "server",

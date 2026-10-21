@@ -4,9 +4,13 @@ DSdocs 是一个可自行部署的文档站项目，包含文档管理后台和�
 
 文档正文使用 Markdown，数据库保存草稿和已发布版本。编辑自动保存为草稿，点击发布后更新读者页面，无需重新构建网站。支持目录管理、中英文关联、提示框、代码块、表格、图片和附件。
 
+## 集成到现有 React 平台
+
+公共组件包为 `@dsanying/dsdocs`，通过 `/editor`、`/reader` 和 `/style.css` 入口接入。宿主保留原有账号、权限、内容存储、历史与发布流程，不必再运行独立管理和读者服务。安装及升级契约见 [React 包说明](packages/react/README.md)。
+
 ## 本地使用
 
-需要 Node.js 26 和 pnpm 12.8.1。
+需要 Node.js 26 和 pnpm 12.9.0。
 
 ```sh
 pnpm install:all
@@ -33,7 +37,7 @@ pnpm manage
 - [Markdown 范围](docs/设计/Markdown契约.md)
 - [接口契约](docs/设计/API契约.md)
 - [验收记录](docs/设计/验收记录.md)
-- [发布准备](docs/发布.md)
+- [发布流程](docs/发布.md)
 
 运行 `pnpm check` 完整检查规范、服务行为、两端类型和构建，并执行共享组件与业务浏览器测试。首次检查前运行 `pnpm -C apps/manage exec playwright install chromium firefox`；业务测试默认使用本机 Chrome，也可设置 `DSDOCS_CHROME_CHANNEL=chromium`。CI 执行静态检查及构建，浏览器验收在本地执行。项目采用 MIT 许可证，第三方依赖保留各自许可。
 

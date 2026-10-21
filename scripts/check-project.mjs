@@ -20,8 +20,21 @@ for (const dir of ['apps/manage/src', 'apps/manage/server', 'apps/reader/src', '
   }
 for (const name of ['manage', 'reader']) {
   const pkg = JSON.parse(await readFile(`apps/${name}/package.json`));
-  for (const version of Object.values({ ...pkg.dependencies, ...pkg.devDependencies }))
-    assert(/^\d+\.\d+\.\d+(?:-.*)?$/.test(version), '依赖必须精确固定');
+  const duplicated = Object.keys(pkg.dependencies ?? {}).filter(
+    (key) => key in (pkg.devDependencies ?? {})
+  );
+  assert.deepEqual(duplicated, [], '运行与开发依赖不得重复声明版本');
+  for (const [dependency, version] of Object.entries({
+    ...pkg.dependencies,
+    ...pkg.devDependencies,
+  })) {
+    if (dependency === '@dsanying/dsdocs') {
+      assert.equal(version, 'file:../../packages/react');
+      const component = JSON.parse(await readFile('packages/react/package.json'));
+      assert.equal(component.name, dependency);
+      assert.equal(component.private, undefined);
+    } else assert(/^\d+\.\d+\.\d+(?:-.*)?$/.test(version), '依赖必须精确固定');
+  }
 }
 const server = await readFile('apps/manage/server/start.mjs', 'utf8');
 assert(

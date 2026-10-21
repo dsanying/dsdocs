@@ -1,7 +1,8 @@
+import { PublishedContent } from '@dsanying/dsdocs/reader';
 import { PublishedRefresh } from '@/content/live';
 import { notFound } from 'next/navigation';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { DocsPage, DocsTitle, DocsDescription, DocsBody } from 'fumadocs-ui/layouts/docs/page';
+import { DocsPage, DocsTitle, DocsDescription } from 'fumadocs-ui/layouts/docs/page';
 import { readPublished, pageTree, pageUrl, publishedRevision } from '@/lib/source';
 import { DocumentBody, documentHeadings } from '@/content/components';
 import { readerStyle } from '../../../../../../packages/content/settings.mjs';
@@ -63,7 +64,7 @@ export default async function Page({
             {page?.title ?? (lang === 'zh' ? '暂无已发布文档' : 'No published documents')}
           </DocsTitle>
           <DocsDescription>{page?.description}</DocsDescription>
-          <DocsBody className="document-prose">
+          <PublishedContent className="document-prose">
             {page ? (
               <DocumentBody body={page.body} />
             ) : (
@@ -73,7 +74,7 @@ export default async function Page({
                   : 'Publish your first document to get started.'}
               </p>
             )}
-          </DocsBody>
+          </PublishedContent>
         </DocsPage>
       </DocsLayout>
     </DocumentationProvider>

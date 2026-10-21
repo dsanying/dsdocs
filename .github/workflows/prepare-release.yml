@@ -16,6 +16,12 @@ jobs:
           node-version: 26
       - run: pnpm install:all
       - run: pnpm check
+      - name: Pack public React package
+        run: |
+          mkdir -p release-artifacts
+          pnpm -C packages/react pack --out "$GITHUB_WORKSPACE/release-artifacts/dsdocs.tgz"
+          cd release-artifacts
+          sha256sum dsdocs.tgz > SHA256SUMS
       - name: Build images without publishing
         run: |
           docker build --target reader --tag dsdocs-reader:preflight .
@@ -24,6 +30,8 @@ jobs:
         with:
           name: dsdocs-build-evidence
           path: |
+            release-artifacts/dsdocs.tgz
+            release-artifacts/SHA256SUMS
             apps/manage/dist
             apps/reader/public/THIRD_PARTY_NOTICES.txt
           if-no-files-found: error

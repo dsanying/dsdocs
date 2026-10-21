@@ -42,6 +42,7 @@ jobs:
           node-version: 26
           cache: pnpm
           cache-dependency-path: |
+            packages/react/pnpm-lock.yaml
             apps/manage/pnpm-lock.yaml
             apps/reader/pnpm-lock.yaml
       - run: pnpm install:all

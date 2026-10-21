@@ -93,6 +93,7 @@ try {
   report.checks.push('退出响应异常保留登录并共享通知、成功退出后重新登录');
   await page.screenshot({ path: path.join(artifacts, 'management.png') });
   await page.getByRole('menuitem', { name: '目录', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '目录', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '新增' }).click();
   await page.getByLabel('中文名称', { exact: true }).fill('指南');
   await page.getByLabel('英文名称', { exact: true }).fill('Guide');
@@ -125,6 +126,7 @@ try {
   report.checks.push('子目录创建、可视化清除父目录写入 null、删除空目录');
 
   await page.getByRole('menuitem', { name: '文档', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '文档', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '新增' }).click();
   await page.getByRole('dialog').getByLabel('标题', { exact: true }).fill('接入指南');
   await page.getByRole('dialog').getByLabel('路径', { exact: true }).fill('getting-started');
@@ -224,6 +226,7 @@ try {
   await publicPage.setViewportSize({ width: 375, height: 812 });
   await publicPage.screenshot({ path: path.join(artifacts, 'reader-mobile.png') });
   await page.getByRole('menuitem', { name: '账号管理', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '账号管理', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '创建账号', exact: true }).click();
   await page.getByLabel('用户名', { exact: true }).fill('writer');
   await page.getByLabel('密码', { exact: true }).fill('writer-pass-123');
