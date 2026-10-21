@@ -263,6 +263,28 @@ try {
   await page.screenshot({ path: path.join(artifacts, 'editor-dark.png') });
   await page.getByRole('radio', { name: 'Source mode' }).click();
   const historySource = page.locator('.cm-content[contenteditable="true"]:visible');
+  const darkSourceStyle = await historySource.evaluate((element) => ({
+    color: getComputedStyle(element).color,
+    background: getComputedStyle(element.closest('.cm-editor')).backgroundColor,
+  }));
+  await page.getByRole('menuitem', { name: '切换亮暗主题', exact: true }).click();
+  await expect(page.locator('.mdxeditor')).not.toHaveClass(/dark-theme/);
+  await expect
+    .poll(() => historySource.evaluate((element) => getComputedStyle(element).color))
+    .not.toBe(darkSourceStyle.color);
+  await expect
+    .poll(() =>
+      historySource.evaluate(
+        (element) => getComputedStyle(element.closest('.cm-editor')).backgroundColor
+      )
+    )
+    .not.toBe(darkSourceStyle.background);
+  await page.getByRole('menuitem', { name: '切换亮暗主题', exact: true }).click();
+  await expect(page.locator('.mdxeditor.dark-theme')).toBeVisible();
+  await expect
+    .poll(() => historySource.evaluate((element) => getComputedStyle(element).color))
+    .toBe(darkSourceStyle.color);
+
   await historySource.fill('## 源码草稿\n\n未发布的源码替换回归。');
   await expect(page.getByRole('status').filter({ hasText: '已保存' })).toBeVisible();
   await page.getByRole('button', { name: '历史版本', exact: true }).click();

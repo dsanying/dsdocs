@@ -1,6 +1,6 @@
 {
   "name": "@dsanying/dsdocs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DSdocs editor and reader components for host-owned authentication and content storage",
   "type": "module",
   "license": "MIT",
@@ -51,7 +51,9 @@
     "@mdxeditor/editor": "^4.3.3",
     "fumadocs-ui": "^16.15.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@codemirror/language": "^6.13.1",
+    "@lezer/highlight": "^1.2.5"
   },
   "devDependencies": {
     "@mdxeditor/editor": "4.3.3",
@@ -60,13 +62,21 @@
     "fumadocs-ui": "16.17.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "@codemirror/language": "6.13.1",
+    "@lezer/highlight": "1.2.5"
   },
   "peerDependenciesMeta": {
     "@mdxeditor/editor": {
       "optional": true
     },
     "fumadocs-ui": {
+      "optional": true
+    },
+    "@codemirror/language": {
+      "optional": true
+    },
+    "@lezer/highlight": {
       "optional": true
     }
   }

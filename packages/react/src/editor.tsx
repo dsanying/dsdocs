@@ -35,6 +35,7 @@ import {
   type MDXEditorMethods,
   type MDXEditorProps,
 } from '@mdxeditor/editor';
+import { sourceTheme } from './source-theme.js';
 import { useImperativeHandle, useMemo, useRef, useState, type Ref } from 'react';
 
 export type { MDXEditorMethods } from '@mdxeditor/editor';
@@ -135,7 +136,7 @@ export function MarkdownEditor({
       ...(admonitions
         ? [directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] })]
         : []),
-      diffSourcePlugin({ viewMode: content.mode }),
+      diffSourcePlugin({ viewMode: content.mode, codeMirrorExtensions: sourceTheme }),
       rememberMode(),
       toolbarPlugin({
         toolbarClassName: 'dsdocs-editor-toolbar',

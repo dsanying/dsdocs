@@ -6,6 +6,7 @@
   --baseText: var(--dsdocs-text, CanvasText);
   --baseBase: var(--dsdocs-surface, Canvas);
   --baseBorder: var(--dsdocs-border, GrayText);
+  --baseBorderHover: var(--dsdocs-muted-text, var(--baseText));
   color: var(--baseText);
   background: var(--baseBg);
 }
@@ -28,4 +29,31 @@
   overflow: auto;
   overscroll-behavior: contain;
   overflow-anchor: none;
+}
+
+/* CodeMirror's public styling classes; variables update without replacing state. */
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-editor {
+  color: var(--baseText);
+  background-color: var(--baseBg);
+}
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-content {
+  caret-color: var(--baseText);
+}
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-gutters {
+  color: var(--baseText);
+  background-color: var(--baseBg);
+  border-color: var(--baseBorder);
+}
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-cursor,
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-dropCursor {
+  border-left-color: var(--baseText);
+}
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-activeLine,
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-activeLineGutter {
+  background-color: var(--baseBgHover);
+}
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-editor.cm-focused .cm-selectionBackground,
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-selectionBackground,
+.dsdocs-editor.mdxeditor .mdxeditor-source-editor .cm-content ::selection {
+  background-color: var(--baseBgActive);
 }

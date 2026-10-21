@@ -223,7 +223,11 @@ try {
           await page.getByRole('button', { name: '文档列表', exact: true }).click();
           const list = page.getByRole('dialog', { name: '文档列表', exact: true });
           await expect(list).toBeVisible();
-          await list.getByRole('menuitem', { name: '使用指南', exact: true }).click();
+          const guide = list.getByRole('menuitem', { name: '使用指南', exact: true });
+          // Selecting the current document may already expand its native parent.
+          // A second unconditional click would collapse the very item we need.
+          if ((await guide.getAttribute('aria-expanded')) !== 'true') await guide.click();
+          await expect(guide).toHaveAttribute('aria-expanded', 'true');
           await list.getByRole('menuitem', { name: '欢迎使用 DSdocs · zh', exact: true }).click();
           await expect(list).toBeHidden();
         } else {

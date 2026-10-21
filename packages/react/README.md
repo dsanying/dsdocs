@@ -3,10 +3,10 @@
 DSdocs 的 React 集成包。宿主继续管理登录、权限、内容、草稿、发布和附件；无需启动 DSdocs 的 Node.js 管理服务或 Next.js 读者服务。
 
 ```sh
-npm install @dsanying/dsdocs@0.1.0
+npm install @dsanying/dsdocs@0.1.1
 ```
 
-宿主使用 React 19 与 React DOM 19。使用 `/editor` 时另需 `@mdxeditor/editor` 4；使用 `/reader` 时另需 `fumadocs-ui` 16，两者为可选 peer，以免仅使用编辑器的宿主安装整套读者依赖。本仓库验证的组合是 React 19.3.0、MDXEditor 4.3.3、Fumadocs UI 16.17.3；宿主应精确固定所选版本并提交锁文件。
+宿主使用 React 19 与 React DOM 19。使用 `/editor` 时另需 `@mdxeditor/editor` 4；使用 `/reader` 时另需 `fumadocs-ui` 16，两者为可选 peer，以免仅使用编辑器的宿主安装整套读者依赖。源码主题复用 MDXEditor 所需的 `@codemirror/language` 6.13.1+ 与 `@lezer/highlight` 1.2.5+，宿主保持同一份原生 peer 实例；仅使用读者时无需安装编辑器及这些 peer。本仓库验证的组合是 React 19.3.0、MDXEditor 4.3.3、Fumadocs UI 16.17.3；宿主应精确固定所选版本并提交锁文件。
 
 ```tsx
 import { MarkdownEditor } from '@dsanying/dsdocs/editor';
@@ -23,6 +23,6 @@ import { zhCNTranslation } from '@dsanying/dsdocs/locales/zh-CN';
 
 `PublishedContent` 使用 Fumadocs 原生正文容器；可传入受限 Markdown 渲染结果作为 children，或由宿主服务端完成校验和净化的 HTML。不得向 `dangerouslySetInnerHTML` 传入未校验的用户输入。
 
-React 19、MDXEditor 4 与 Fumadocs 16 为 peer dependencies。CSS 必须仅从文档入口加载；公开的 `--dsdocs-surface`、`--dsdocs-text`、`--dsdocs-border` 变量可映射到宿主主题。
+React 19、MDXEditor 4 与 Fumadocs 16 为 peer dependencies。CSS 必须仅从文档入口加载；公开的 `--dsdocs-surface`、`--dsdocs-text`、`--dsdocs-border` 变量可映射到宿主主题；可选 `--dsdocs-muted-text` 设置可访问的次要工具栏文字。源码的公开 CodeMirror 样式与语义高亮同步使用这些原生主题角色，切换主题不替换文档状态。
 
 包只负责编辑和阅读组件。保存不自动代表发布，存储版本冲突、历史、链接和权限由宿主适配器保证。升级先在隔离环境执行宿主的编辑、发布、历史恢复、权限和浏览器回归，再统一构建发布程序；日常正文发布无需构建。
