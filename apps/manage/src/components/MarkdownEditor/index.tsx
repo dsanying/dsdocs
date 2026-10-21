@@ -35,19 +35,20 @@ export function MarkdownEditor({
     [t]
   );
   return (
-    <DSdocsEditor
-      className="ds-markdown-editor"
-      codeBlockLanguages={languages}
-      theme={theme === 'dark' ? 'dark' : 'light'}
-      markdown={active.body}
-      readOnly={busy}
-      editorRef={editor}
-      onChange={(markdown, initialNormalize) => {
-        if (!initialNormalize) onChange(markdown);
-      }}
-      onError={({ error }) => onError(error)}
-      uploadImage={async (file) => (await upload(file)).src}
-      previewImage={async (src) => src.replace('/docs/assets/', '/__dsdocs_content/assets/')}
-    />
+    <div inert={busy}>
+      <DSdocsEditor
+        className="ds-markdown-editor"
+        codeBlockLanguages={languages}
+        theme={theme === 'dark' ? 'dark' : 'light'}
+        markdown={active.body}
+        editorRef={editor}
+        onChange={(markdown, initialNormalize) => {
+          if (!initialNormalize) onChange(markdown);
+        }}
+        onError={({ error }) => onError(error)}
+        uploadImage={async (file) => (await upload(file)).src}
+        previewImage={async (src) => src.replace('/docs/assets/', '/__dsdocs_content/assets/')}
+      />
+    </div>
   );
 }

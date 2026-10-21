@@ -15,7 +15,7 @@ import '@dsanying/dsdocs/style.css';
 import { zhCNTranslation } from '@dsanying/dsdocs/locales/zh-CN';
 ```
 
-`MarkdownEditor` 使用 MDXEditor 官方插件，接受 `markdown`、`editorRef`、`onChange`、`onError`、`readOnly`、`theme`、`translation`、`uploadImage` 和 `previewImage`。切换文档时由宿主调用 `editorRef.current.setMarkdown()`；普通重渲染不要重建编辑器。宿主不支持提示框指令时显式设置 `admonitions={false}`，服务端必须独立校验发布语法。
+`MarkdownEditor` 使用 MDXEditor 官方插件，接受 `markdown`、`editorRef`、`onChange`、`onError`、`readOnly`、`theme`、`translation`、`uploadImage` 和 `previewImage`。切换文档时由宿主调用 `editorRef.current.setMarkdown()`；显式替换会重新建立内容与撤销历史，并保留当前阅读模式；普通输入、主题变化与重渲染不重建编辑器。保存期间由宿主使用原生 `inert` 暂停交互，避免将临时网络忙碌混同于文档访问权限的 `readOnly`。宿主不支持提示框指令时显式设置 `admonitions={false}`，服务端必须独立校验发布语法。
 
 编辑器应位于客户端组件中。`onChange` 第二个参数为上游的初始化规范化标志；宿主应区分初始化与用户编辑，避免挂载即显示未保存状态。`uploadImage` 返回可写入 Markdown 的持久 URL；`previewImage` 只转换编辑会话的预览地址，不修改已保存链接。上传及预览仍须经过宿主服务端授权，不能依靠组件的 `readOnly` 实现权限。
 

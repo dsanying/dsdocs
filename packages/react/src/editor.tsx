@@ -26,6 +26,8 @@ import {
   markdownShortcutPlugin,
   MDXEditor,
   quotePlugin,
+  realmPlugin,
+  viewMode$,
   tablePlugin,
   thematicBreakPlugin,
   toolbarPlugin,
@@ -33,7 +35,7 @@ import {
   type MDXEditorMethods,
   type MDXEditorProps,
 } from '@mdxeditor/editor';
-import { useMemo, type Ref } from 'react';
+import { useImperativeHandle, useMemo, useRef, useState, type Ref } from 'react';
 
 export type { MDXEditorMethods } from '@mdxeditor/editor';
 
@@ -78,6 +80,45 @@ export function MarkdownEditor({
   admonitions = true,
   codeBlockLanguages = defaultLanguages,
 }: MarkdownEditorProps) {
+  const nativeEditor = useRef<MDXEditorMethods>(null);
+  const viewMode = useRef<'rich-text' | 'source' | 'diff'>('rich-text');
+  const [content, setContent] = useState({
+    markdown,
+    revision: 0,
+    mode: 'rich-text' as 'rich-text' | 'source' | 'diff',
+  });
+  const rememberMode = useMemo(
+    () =>
+      realmPlugin({
+        init(realm) {
+          realm.sub(viewMode$, (mode) => {
+            viewMode.current = mode;
+          });
+        },
+      }),
+    []
+  );
+  useImperativeHandle(
+    editorRef,
+    () => ({
+      getMarkdown: () => nativeEditor.current?.getMarkdown() ?? content.markdown,
+      // Explicit replacement also works when source differs from the Lexical snapshot.
+      // Remount only for replacement; typing, theme and ordinary rerenders keep the instance.
+      setMarkdown: (next) => {
+        if (nativeEditor.current?.getMarkdown() !== next)
+          setContent((previous) => ({
+            markdown: next,
+            revision: previous.revision + 1,
+            mode: viewMode.current,
+          }));
+      },
+      insertMarkdown: (next) => nativeEditor.current?.insertMarkdown(next),
+      focus: (callback, options) => nativeEditor.current?.focus(callback, options),
+      getContentEditableHTML: () => nativeEditor.current?.getContentEditableHTML() ?? '',
+      getSelectionMarkdown: () => nativeEditor.current?.getSelectionMarkdown() ?? '',
+    }),
+    [content.markdown]
+  );
   const plugins = useMemo(
     () => [
       headingsPlugin(),
@@ -94,7 +135,8 @@ export function MarkdownEditor({
       ...(admonitions
         ? [directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor] })]
         : []),
-      diffSourcePlugin(),
+      diffSourcePlugin({ viewMode: content.mode }),
+      rememberMode(),
       toolbarPlugin({
         toolbarClassName: 'dsdocs-editor-toolbar',
         toolbarContents: () => (
@@ -121,16 +163,25 @@ export function MarkdownEditor({
         ),
       }),
     ],
-    [uploadImage, previewImage, admonitions, codeBlockLanguages]
+    [
+      uploadImage,
+      previewImage,
+      admonitions,
+      codeBlockLanguages,
+      rememberMode,
+      content.revision,
+      content.mode,
+    ]
   );
   return (
     <MDXEditor
+      key={content.revision}
       className={['dsdocs-editor', className, theme === 'dark' ? 'dark-theme' : '']
         .filter(Boolean)
         .join(' ')}
       contentEditableClassName="dsdocs-editor-prose"
-      ref={editorRef}
-      markdown={markdown}
+      ref={nativeEditor}
+      markdown={content.markdown}
       readOnly={readOnly}
       suppressHtmlProcessing
       onChange={onChange}
